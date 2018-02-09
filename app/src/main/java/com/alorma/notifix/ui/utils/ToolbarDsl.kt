@@ -1,6 +1,7 @@
 package com.alorma.notifix.ui.utils;
 
 import android.support.v7.widget.Toolbar
+import com.alorma.notifix.R
 
 @DslMarker
 annotation class RiseDsl
@@ -18,6 +19,8 @@ class ItemBuilder {
 class ToolbarBuilder {
 
     lateinit var toolbar: Toolbar
+    var back: (() -> Unit)? = null
+    var backIcon: Int? = null
     var title: Int = 0
     var menu: Int = 0
     var items = mutableListOf<Pair<Int, () -> Unit>>()
@@ -30,6 +33,13 @@ class ToolbarBuilder {
 
         if (menu != 0) {
             toolbar.inflateMenu(menu)
+        }
+
+        back?.let { backAction ->
+            toolbar.setNavigationIcon(backIcon ?: R.drawable.ic_arrow)
+            toolbar.setNavigationOnClickListener {
+                backAction()
+            }
         }
 
         toolbar.setOnMenuItemClickListener {
