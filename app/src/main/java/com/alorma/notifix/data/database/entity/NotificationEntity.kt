@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 import com.alorma.notifix.data.database.dao.NotificationDao
 
 @Entity(tableName = NotificationDao.TABLE)
-class NotificationEntity(@PrimaryKey val id: Int,
+class NotificationEntity(@PrimaryKey(autoGenerate = true) val id: Int? = null,
                          @ColumnInfo(name = "text") val text: String,
-                         @ColumnInfo(name = "checked") val checked: Boolean)
+                         @ColumnInfo(name = "checked") val checked: Boolean) {
+}

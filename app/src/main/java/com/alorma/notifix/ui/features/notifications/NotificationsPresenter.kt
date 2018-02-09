@@ -1,5 +1,7 @@
 package com.alorma.notifix.ui.features.notifications
 
+import com.alorma.notifix.domain.model.CreateAppNotification
+import com.alorma.notifix.domain.usecase.InsertNotificationUseCase
 import com.alorma.notifix.domain.usecase.ObtainNotificationsUseCase
 import com.alorma.notifix.ui.commons.Action
 import com.alorma.notifix.ui.commons.BasePresenter
@@ -10,6 +12,7 @@ import javax.inject.Inject
 
 class NotificationsPresenter @Inject constructor(
         private val obtainNotificationsUseCase: ObtainNotificationsUseCase,
+        private val insertNotificationsUseCase: InsertNotificationUseCase,
         private val mapper: NotificationsMapper)
     : BasePresenter<NotificationsState, NotificationsRoute, NotificationsView>() {
 
@@ -25,5 +28,10 @@ class NotificationsPresenter @Inject constructor(
                 .subscribe({
                     render(mapper.mapSuccess(it))
                 }, {}, {})
+
+        val createAppNotification = CreateAppNotification("Test", false)
+        disposables += insertNotificationsUseCase.execute(createAppNotification)
+                .observeOnUI()
+                .subscribe({}, {})
     }
 }
