@@ -1,14 +1,11 @@
 package com.alorma.notifix.domain.usecase
 
 import com.alorma.notifix.domain.model.AppNotification
-import com.alorma.notifix.ui.utils.subscribeOnIO
+import com.alorma.notifix.domain.repository.NotificationsRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
-class ObtainNotificationsUseCase @Inject constructor(){
-    fun execute(): Single<List<AppNotification>> = Single.fromCallable {
-        (0..10).map {
-            AppNotification(it, "Notification $it", it % 2 == 0, Any())
-        }
-    }.subscribeOnIO()
+class ObtainNotificationsUseCase @Inject constructor(
+        private val notificationsRepository: NotificationsRepository) {
+    fun execute(): Single<List<AppNotification>> = notificationsRepository.getNotifications()
 }

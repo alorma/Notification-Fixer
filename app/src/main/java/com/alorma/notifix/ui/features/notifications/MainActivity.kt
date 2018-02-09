@@ -3,8 +3,8 @@ package com.alorma.notifix.ui.features.notifications
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.DiComponent.Companion.component
 import com.alorma.notifix.ui.commons.OnCreate
 import javax.inject.Inject
 
