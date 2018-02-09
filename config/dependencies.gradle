@@ -1,0 +1,69 @@
+ext {
+    minSdk = 19
+    targetSdk = 27
+    compileSdk = 27
+
+    appPackage = "com.alorma.notifix"
+
+    testRunner = "android.support.test.runner.AndroidJUnitRunner"
+
+    appCode = 1
+    appName = "0.0.1"
+
+    kotlin = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // Support
+    def supportVersion = "27.0.2"
+    def supportConstraintVersion = "1.0.2"
+    support = [
+            appcompat : "com.android.support:appcompat-v7:$supportVersion",
+            recycler  : "com.android.support:recyclerview-v7:$supportVersion",
+            design    : "com.android.support:design:$supportVersion",
+            cardview  : "com.android.support:cardview-v7:$supportVersion",
+            constraint: "com.android.support.constraint:constraint-layout:$supportConstraintVersion",
+    ]
+
+    def daggerVersion = "2.13"
+    dagger = [
+            compiler: "com.google.dagger:dagger-compiler:$daggerVersion",
+            library : "com.google.dagger:dagger:$daggerVersion",
+    ]
+
+    rx = [
+            java   : "io.reactivex.rxjava2:rxjava:2.1.6",
+            android: "io.reactivex.rxjava2:rxandroid:2.0.1"
+    ]
+
+    def databaseDebuggerVersion = "1.0.2"
+    databaseDebugger = "com.amitshekhar.android:debug-db:$databaseDebuggerVersion"
+
+    def espressoVersion = "1.0.1"
+    testing = [
+            jUnit    : "junit:junit:4.12",
+            espresso : [
+                    core   : "com.android.support.test.espresso:espresso-core:3.0.1",
+                    runner : "com.android.support.test:runner:$espressoVersion",
+                    rules  : "com.android.support.test:rules:$espressoVersion",
+                    intents: "com.android.support.test.espresso:espresso-intents:3.0.1",
+                    barista: "com.schibsted.spain:barista:2.3.0"
+            ],
+            mockito  : [
+                    core   : "org.mockito:mockito-core:2.13.0",
+                    kotlin : "com.nhaarman:mockito-kotlin:1.5.0",
+                    android: "org.mockito:mockito-android:2.13.0",
+            ]
+    ]
+
+    def roomVersion = "1.0.0"
+    cache = [
+            room: [
+                    runtime : "android.arch.persistence.room:runtime:$roomVersion",
+                    compiler: "android.arch.persistence.room:compiler:$roomVersion",
+                    test    : "android.arch.persistence.room:testing:$roomVersion",
+                    rx      : "android.arch.persistence.room:rxjava2:$roomVersion"
+            ]
+    ]
+    
+    def dexterVersion = '4.2.0'
+    dexter = "com.karumi:dexter:$dexterVersion"
+}
