@@ -14,7 +14,7 @@ class AddNotificationActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         toolbar.dsl {
-            back = { finish() }
+            back { action = { finish() } }
         }
     }
 
