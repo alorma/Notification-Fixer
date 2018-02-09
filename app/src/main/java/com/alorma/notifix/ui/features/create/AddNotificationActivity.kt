@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.R
 import kotlinx.android.synthetic.main.activity_add_notification.*
 
-class AddNotification : AppCompatActivity() {
+class AddNotificationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
