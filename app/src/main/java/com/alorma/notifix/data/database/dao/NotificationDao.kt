@@ -15,8 +15,8 @@ interface NotificationDao {
     }
 
     @Language("RoomSql")
-    @Query("SELECT * FROM $TABLE LIMIT 1")
-    fun getAccount(): Single<NotificationEntity>
+    @Query("SELECT * FROM $TABLE")
+    fun getNotifications(): Single<List<NotificationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(map: NotificationEntity)

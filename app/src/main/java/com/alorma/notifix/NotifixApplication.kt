@@ -3,6 +3,7 @@ package com.alorma.notifix
 import android.app.Application
 import com.alorma.notifix.di.ApplicationComponent
 import com.alorma.notifix.di.DaggerApplicationComponent
+import com.alorma.notifix.di.module.ApplicationModule
 
 class NotifixApplication: Application() {
 
@@ -12,6 +13,8 @@ class NotifixApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        component = DaggerApplicationComponent.create()
+        component = DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(this))
+                .build()
     }
 }
