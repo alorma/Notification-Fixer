@@ -1,5 +1,6 @@
 package com.alorma.notifix.ui.features.notifications
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -7,6 +8,7 @@ import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.commons.OnCreate
 import com.alorma.notifix.ui.commons.OnStop
+import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -29,7 +31,9 @@ class MainActivity : AppCompatActivity(), NotificationsView {
             menu = R.menu.notifications_menu
             item {
                 id = R.id.action_add_notification
-                action = { presenter.onAddNotification() }
+                action = {
+                    presenter.onAddNotification()
+                }
             }
         }
     }
@@ -56,6 +60,7 @@ class MainActivity : AppCompatActivity(), NotificationsView {
     }
 
     private fun onCreateNotification() {
-
+        val intent = Intent(this, AddNotificationActivity::class.java)
+        startActivity(intent)
     }
 }
