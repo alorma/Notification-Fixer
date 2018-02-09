@@ -1,15 +1,25 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Toolbar.Notifications" />
+
     <style name="Toolbar.CreateNotification" />
+
+    <style name="AddNotification" />
+
+    <style name="AddNotification.Button" parent="Widget.AppCompat.Button.Borderless.Colored" />
+
+    <style name="AddNotification.Stepper" />
+
+    <style name="AddNotification.Stepper.Circle">
+        <item name="android:padding">20dp</item>
+        <item name="android:src">@drawable/stepper_circle</item>
+    </style>
+
+    <style name="AddNotification.Stepper.Line">
+        <item name="android:src">@drawable/stepper_line</item>
+    </style>
+
+
 </resources>
