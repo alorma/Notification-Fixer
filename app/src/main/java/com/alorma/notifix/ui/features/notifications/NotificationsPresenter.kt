@@ -15,7 +15,8 @@ class NotificationsPresenter @Inject constructor(
 
     override fun onAction(action: Action) = when (action) {
         is OnCreate -> loadNotifications()
-        else -> { }
+        else -> {
+        }
     }
 
     private fun loadNotifications() {
@@ -23,6 +24,6 @@ class NotificationsPresenter @Inject constructor(
                 .observeOnUI()
                 .subscribe({
                     render(mapper.mapSuccess(it))
-                }, {})
+                }, {}, {})
     }
 }
