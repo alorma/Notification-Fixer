@@ -4,7 +4,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 abstract class BasePresenter<in S : State, in R : Route, in V : BaseView<S, R>> {
 
-    private val disposables: CompositeDisposable = CompositeDisposable()
+    internal val disposables: CompositeDisposable = CompositeDisposable()
     private lateinit var view: V
 
     open infix fun init(view: V) {

@@ -1,9 +1,10 @@
 package com.alorma.notifix.ui.features.notifications
 
+import com.alorma.notifix.domain.model.AppNotification
 import javax.inject.Inject
 
 class NotificationsMapper @Inject constructor(){
-    fun mapSuccess(items: Int) = ShowNotifications((0..items).map {
-        NotificationViewModel(it, "Notification $it", it % 2 == 0)
+    fun mapSuccess(items: List<AppNotification>) = ShowNotifications(items.map {
+        NotificationViewModel(it.id, it.text, it.checked)
     })
 }
