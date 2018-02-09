@@ -11,7 +11,7 @@ abstract class BasePresenter<in S : State, in R : Route, in V : BaseView<S, R>> 
         this.view = view
     }
 
-    abstract fun onAction(action: Action)
+    abstract infix fun onAction(action: Action)
 
     fun destroy() = disposables.clear()
 

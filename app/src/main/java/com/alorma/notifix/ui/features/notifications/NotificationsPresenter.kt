@@ -5,6 +5,7 @@ import com.alorma.notifix.ui.commons.Action
 import com.alorma.notifix.ui.commons.BasePresenter
 import com.alorma.notifix.ui.commons.OnCreate
 import com.alorma.notifix.ui.commons.OnStop
+import com.alorma.notifix.ui.features.create.OnCreateSucces
 import com.alorma.notifix.ui.utils.observeOnUI
 import com.alorma.notifix.ui.utils.plusAssign
 import javax.inject.Inject
@@ -17,6 +18,7 @@ class NotificationsPresenter @Inject constructor(
 
     override fun onAction(action: Action) = when (action) {
         is OnCreate -> loadNotifications()
+        is OnCreateSucces -> loadNotifications()
         is OnStop -> destroy()
         else -> {
         }
