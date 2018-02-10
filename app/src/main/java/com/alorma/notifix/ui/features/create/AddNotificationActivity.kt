@@ -29,12 +29,14 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         }
         presenter onAction OnCreate()
 
+        /*
         save.setOnClickListener {
             val action = NewNotificationAction(titleField.editText?.text.toString(),
                     textField.editText?.text.toString(),
                     enabledField.isChecked)
             presenter onAction action
         }
+        */
     }
 
     override fun render(state: CreateNotificationState) {
