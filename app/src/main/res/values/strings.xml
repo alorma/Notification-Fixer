@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Notifix</string>
     <string name="menu_add_notification">Add notification</string>
+    <string name="menu_preview_notification">Preview</string>
     <string name="title_activity_notifications">Your notifications</string>
     <string name="title_activity_add_notification">Add Notification</string>
 </resources>

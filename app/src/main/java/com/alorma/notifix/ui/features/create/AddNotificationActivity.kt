@@ -18,24 +18,43 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_notification)
-        setSupportActionBar(toolbar)
 
         component inject this
 
         presenter init this
-
-        toolbar.dsl {
-            back { action = { finish() } }
-        }
         presenter onAction OnCreate()
 
-        save.setOnClickListener {
-            val action = NewNotificationAction(titleField.text.toString(),
-                    textField.text.toString(),
-                    enabledField.isChecked)
-            presenter onAction action
+        toolbar.dsl {
+            menu = R.menu.add_notification_menu
+            item {
+                id = R.id.action_preview
+                action = {
+                    previewNotification()
+                }
+            }
+            back { action = { finish() } }
         }
 
+        save.setOnClickListener {
+            presenter onAction getNewNotificationAction()
+        }
+
+    }
+
+    private fun previewNotification() {
+        presenter onAction getPreviewNotificationAction()
+    }
+
+    private fun getNewNotificationAction(): NewNotificationAction {
+        return NewNotificationAction(titleField.text.toString(),
+                textField.text.toString(),
+                enabledField.isChecked)
+    }
+
+    private fun getPreviewNotificationAction(): PreviewNotificationAction {
+        return PreviewNotificationAction(titleField.text.toString(),
+                textField.text.toString(),
+                enabledField.isChecked)
     }
 
     override fun render(state: CreateNotificationState) {
@@ -43,7 +62,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     override fun navigate(route: CreateNotificationRoute) {
-        when(route) {
+        when (route) {
             is SuccessGoBack -> onSaveSuccess()
         }
     }

@@ -6,3 +6,6 @@ sealed class CreateNotificationAction : Action()
 data class NewNotificationAction(val title: String,
                                  val text: String,
                                  val checked: Boolean) : CreateNotificationAction()
+data class PreviewNotificationAction(val title: String,
+                                 val text: String,
+                                 val checked: Boolean) : CreateNotificationAction()
