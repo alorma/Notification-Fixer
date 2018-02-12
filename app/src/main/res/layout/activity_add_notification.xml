@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.features.create.AddNotificationActivity">
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/stepper_line"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -24,158 +33,205 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/line"
-        android:layout_width="2dp"
-        android:layout_height="0dp"
-        android:src="@drawable/stepper_line"
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/step1"
-        app:layout_constraintStart_toStartOf="@+id/step1"
-        app:layout_constraintTop_toBottomOf="@+id/appBar" />
-
-    <ImageView
-        android:id="@+id/step1"
-        style="@style/AddNotification.Stepper.Circle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:theme="@style/AppTheme.Inverse"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
 
-    <TextView
-        android:id="@+id/titleLabel"
-        android:layout_width="0dp"
-        android:layout_height="17dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/step1"
-        app:layout_constraintTop_toTopOf="@+id/step1" />
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardTitleField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-4dp"
-        android:layout_marginTop="8dp"
-        app:cardUseCompatPadding="true"
-        app:contentPaddingBottom="4dp"
-        app:contentPaddingLeft="8dp"
-        app:contentPaddingRight="8dp"
-        app:contentPaddingTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/titleLabel"
-        app:layout_constraintStart_toStartOf="@+id/titleLabel"
-        app:layout_constraintTop_toBottomOf="@+id/titleLabel">
-
-        <EditText
-            android:id="@+id/titleField"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="text" />
+            android:layout_height="match_parent">
 
-    </android.support.v7.widget.CardView>
+            <ImageView
+                android:id="@+id/step1"
+                style="@style/AddNotification.Stepper.Circle"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/AppTheme.Inverse"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/step2"
-        style="@style/AddNotification.Stepper.Circle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
-        android:theme="@style/AppTheme.Inverse"
-        app:layout_constraintStart_toStartOf="@+id/step1"
-        app:layout_constraintTop_toBottomOf="@+id/cardTitleField" />
+            <TextView
+                android:id="@+id/titleLabel"
+                android:layout_width="0dp"
+                android:layout_height="17dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/step1"
+                app:layout_constraintTop_toTopOf="@+id/step1" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardEnabledField"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="@+id/cardTitleField"
-        app:layout_constraintStart_toStartOf="@+id/cardTitleField"
-        app:layout_constraintTop_toTopOf="@+id/step2">
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardTitleField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-4dp"
+                android:layout_marginTop="8dp"
+                app:cardUseCompatPadding="true"
+                app:contentPaddingBottom="4dp"
+                app:contentPaddingLeft="8dp"
+                app:contentPaddingRight="8dp"
+                app:contentPaddingTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/titleLabel"
+                app:layout_constraintStart_toStartOf="@+id/titleLabel"
+                app:layout_constraintTop_toBottomOf="@+id/titleLabel">
 
-        <Switch
-            android:id="@+id/enabledField"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?selectableItemBackground"
-            android:checked="true"
-            android:padding="8dp"
-            android:text="Enabled" />
+                <EditText
+                    android:id="@+id/titleField"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text" />
 
-    </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-    <ImageView
-        android:id="@+id/step3"
-        style="@style/AddNotification.Stepper.Circle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
-        android:theme="@style/AppTheme.Inverse"
-        app:layout_constraintStart_toStartOf="@+id/step1"
-        app:layout_constraintTop_toBottomOf="@+id/cardEnabledField" />
+            <ImageView
+                android:id="@+id/step2"
+                style="@style/AddNotification.Stepper.Circle"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:theme="@style/AppTheme.Inverse"
+                app:layout_constraintStart_toStartOf="@+id/step1"
+                app:layout_constraintTop_toBottomOf="@+id/cardTitleField" />
 
-    <TextView
-        android:id="@+id/textLabel"
-        android:layout_width="0dp"
-        android:layout_height="17dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/step3"
-        app:layout_constraintTop_toTopOf="@+id/step3" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardEnabledField"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cardTitleField"
+                app:layout_constraintStart_toStartOf="@+id/cardTitleField"
+                app:layout_constraintTop_toTopOf="@+id/step2">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardTextField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:cardUseCompatPadding="true"
-        app:contentPaddingBottom="4dp"
-        app:contentPaddingLeft="8dp"
-        app:contentPaddingRight="8dp"
-        app:contentPaddingTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textLabel"
-        app:layout_constraintTop_toBottomOf="@+id/textLabel">
+                <Switch
+                    android:id="@+id/enabledField"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?selectableItemBackground"
+                    android:checked="true"
+                    android:padding="8dp"
+                    android:text="Enabled" />
 
-        <EditText
-            android:id="@+id/textField"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:gravity="top"
-            android:inputType="text" />
+            </android.support.v7.widget.CardView>
 
-    </android.support.v7.widget.CardView>
+            <ImageView
+                android:id="@+id/step3"
+                style="@style/AddNotification.Stepper.Circle"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:theme="@style/AppTheme.Inverse"
+                app:layout_constraintStart_toStartOf="@+id/step1"
+                app:layout_constraintTop_toBottomOf="@+id/cardEnabledField" />
 
-    <ImageView
-        android:id="@+id/step4"
-        style="@style/AddNotification.Stepper.Circle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="48dp"
-        android:theme="@style/AppTheme.Inverse"
-        app:layout_constraintStart_toStartOf="@+id/step1"
-        app:layout_constraintTop_toBottomOf="@+id/cardTextField" />
+            <TextView
+                android:id="@+id/textLabel"
+                android:layout_width="0dp"
+                android:layout_height="17dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/step3"
+                app:layout_constraintTop_toTopOf="@+id/step3" />
 
-    <Button
-        android:id="@+id/save"
-        style="@style/AddNotification.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:padding="8dp"
-        android:text="SAVE"
-        android:theme="@style/AppTheme.Inverse"
-        app:layout_constraintBottom_toBottomOf="@+id/step4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/step4"
-        app:layout_constraintTop_toTopOf="@+id/step4" />
-</android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardTextField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                app:cardUseCompatPadding="true"
+                app:contentPaddingBottom="4dp"
+                app:contentPaddingLeft="8dp"
+                app:contentPaddingRight="8dp"
+                app:contentPaddingTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textLabel"
+                app:layout_constraintTop_toBottomOf="@+id/textLabel">
+
+                <EditText
+                    android:id="@+id/textField"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:gravity="top"
+                    android:inputType="text" />
+
+            </android.support.v7.widget.CardView>
+
+            <ImageView
+                android:id="@+id/step4"
+                style="@style/AddNotification.Stepper.Circle"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:theme="@style/AppTheme.Inverse"
+                app:layout_constraintStart_toStartOf="@+id/step1"
+                app:layout_constraintTop_toBottomOf="@+id/cardTextField" />
+
+            <TextView
+                android:id="@+id/colorLabel"
+                android:layout_width="0dp"
+                android:layout_height="17dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/step4"
+                app:layout_constraintTop_toTopOf="@+id/step4" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/colorsCardField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                app:cardUseCompatPadding="true"
+                app:contentPaddingBottom="4dp"
+                app:contentPaddingLeft="8dp"
+                app:contentPaddingRight="8dp"
+                app:contentPaddingTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/colorLabel"
+                app:layout_constraintTop_toBottomOf="@+id/colorLabel">
+
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/color_selector_layout"/>
+
+            </android.support.v7.widget.CardView>
+
+            <ImageView
+                android:id="@+id/step5"
+                style="@style/AddNotification.Stepper.Circle"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:theme="@style/AppTheme.Inverse"
+                app:layout_constraintStart_toStartOf="@+id/step1"
+                app:layout_constraintTop_toBottomOf="@+id/colorsCardField" />
+
+            <Button
+                android:id="@+id/save"
+                style="@style/AddNotification.Button"
+                android:layout_width="323dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="SAVE"
+                android:theme="@style/AppTheme.Inverse"
+                app:layout_constraintEnd_toEndOf="@+id/colorsCardField"
+                app:layout_constraintStart_toStartOf="@+id/colorsCardField"
+                app:layout_constraintTop_toBottomOf="@+id/step5"
+                app:layout_constraintTop_toTopOf="@+id/step5" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
+</FrameLayout>
