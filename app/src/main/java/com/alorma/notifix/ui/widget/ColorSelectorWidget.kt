@@ -20,7 +20,8 @@ class ColorSelectorWidget @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val adapter by lazy { ColorsAdapter() }
+    private lateinit var adapter: ColorsAdapter
+    private lateinit var selectedColor: ColorItem
 
     init {
         inflate(context, R.layout.color_selector_layout, this)
@@ -32,32 +33,45 @@ class ColorSelectorWidget @JvmOverloads constructor(
 
         val colorGridColumns = resources.getInteger(R.integer.grid_colors)
         colorsRecycler.layoutManager = GridLayoutManager(context, colorGridColumns)
+        val list = ColorsProvider().get().also {
+            selectedColor = it[0]
+        }
+        adapter = ColorsAdapter(list, selectedColor) {
+            adapter.selectedColor = it
+            adapter.notifyDataSetChanged()
+        }
         colorsRecycler.adapter = adapter
     }
 
-    class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorHolder>() {
-
-        private val colors: List<ColorItem> by lazy { ColorsProvider().get() }
+    class ColorsAdapter(private val colors: List<ColorItem>,
+                        var selectedColor: ColorItem,
+                        private val update: (ColorItem) -> Unit) : RecyclerView.Adapter<ColorsAdapter.ColorHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorHolder = ColorHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.row_color_selector, parent, false))
 
         override fun onBindViewHolder(holder: ColorHolder, position: Int) {
-            holder.bind(colors[position])
+            holder.bind(colors[position], selectedColor, update)
         }
 
         override fun getItemCount(): Int = colors.size
 
         class ColorHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(@ColorInt color: ColorItem) {
+            fun bind(@ColorInt color: ColorItem,
+                     selectedColor: ColorItem,
+                     update: (ColorItem) -> Unit) {
                 itemView.colorCircle.apply {
                     background = getCircleDrawable(color)
 
-                    if (color.selected) {
+                    if (color.color == selectedColor.color) {
                         setImageResource(getCheck(color))
                     } else {
                         setImageDrawable(null)
                     }
+                }
+                itemView.setOnClickListener {
+                    update(color)
+                    itemView.colorCircle.setImageResource(getCheck(color))
                 }
             }
 

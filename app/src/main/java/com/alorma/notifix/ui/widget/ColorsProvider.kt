@@ -3,12 +3,12 @@ package com.alorma.notifix.ui.widget
 import android.support.annotation.ColorRes
 import com.alorma.notifix.R
 
-data class ColorItem(@ColorRes val color: Int, val whiteMark: Boolean, val selected: Boolean = false)
+data class ColorItem(@ColorRes val color: Int, val whiteMark: Boolean)
 
 class ColorsProvider {
 
     fun get() = mutableListOf<ColorItem>().apply {
-        add(ColorItem(R.color.red, true, true))
+        add(ColorItem(R.color.red, true))
         add(ColorItem(R.color.pink, true))
         add(ColorItem(R.color.purple, true))
         add(ColorItem(R.color.deep_purple, true))
