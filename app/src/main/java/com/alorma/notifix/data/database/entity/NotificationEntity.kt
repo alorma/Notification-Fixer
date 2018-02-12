@@ -9,4 +9,5 @@ import com.alorma.notifix.data.database.dao.NotificationDao
 class NotificationEntity(@PrimaryKey(autoGenerate = true) val id: Int? = null,
                          @ColumnInfo(name = "title") val title: String,
                          @ColumnInfo(name = "text") val text: String?,
+                         @ColumnInfo(name = "color") val color: Int,
                          @ColumnInfo(name = "checked") val checked: Boolean)

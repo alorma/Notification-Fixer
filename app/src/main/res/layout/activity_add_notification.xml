@@ -187,7 +187,6 @@
                 app:layout_constraintStart_toEndOf="@+id/step4"
                 app:layout_constraintTop_toTopOf="@+id/step4" />
 
-
             <com.alorma.notifix.ui.widget.ColorSelectorWidget
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -5,7 +5,10 @@ import com.alorma.notifix.ui.commons.Action
 sealed class CreateNotificationAction : Action()
 data class NewNotificationAction(val title: String,
                                  val text: String,
-                                 val checked: Boolean) : CreateNotificationAction()
+                                 val checked: Boolean,
+                                 val color: Int) : CreateNotificationAction()
+
 data class PreviewNotificationAction(val title: String,
-                                 val text: String,
-                                 val checked: Boolean) : CreateNotificationAction()
+                                     val text: String,
+                                     val checked: Boolean,
+                                     val color: Int) : CreateNotificationAction()

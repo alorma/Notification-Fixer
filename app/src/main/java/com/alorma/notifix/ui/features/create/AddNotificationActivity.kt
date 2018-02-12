@@ -8,6 +8,7 @@ import com.alorma.notifix.R
 import com.alorma.notifix.ui.commons.OnCreate
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_notification.*
+import kotlinx.android.synthetic.main.activity_add_notification.view.*
 import javax.inject.Inject
 
 class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
@@ -48,13 +49,15 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     private fun getNewNotificationAction(): NewNotificationAction {
         return NewNotificationAction(titleField.text.toString(),
                 textField.text.toString(),
-                enabledField.isChecked)
+                enabledField.isChecked,
+                colorSelector.selectedColor.color)
     }
 
     private fun getPreviewNotificationAction(): PreviewNotificationAction {
         return PreviewNotificationAction(titleField.text.toString(),
                 textField.text.toString(),
-                enabledField.isChecked)
+                enabledField.isChecked,
+                colorSelector.selectedColor.color)
     }
 
     override fun render(state: CreateNotificationState) {

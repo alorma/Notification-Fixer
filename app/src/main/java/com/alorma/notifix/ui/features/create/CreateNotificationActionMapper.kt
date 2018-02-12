@@ -6,6 +6,6 @@ import java.util.*
 import javax.inject.Inject
 
 class CreateNotificationActionMapper @Inject constructor() {
-    fun mapCreate(it: NewNotificationAction) = CreateAppNotification(it.title, it.text, it.checked)
-    fun mapPreview(it: PreviewNotificationAction) = AppNotification(Random().nextInt(), it.title, it.text, it.checked, Any())
+    fun mapCreate(it: NewNotificationAction) = CreateAppNotification(it.title, it.text, it.color, it.checked)
+    fun mapPreview(it: PreviewNotificationAction) = AppNotification(Random().nextInt(), it.title, it.text, it.color, it.checked, Any())
 }

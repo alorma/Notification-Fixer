@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.support.v4.app.NotificationCompat
+import android.support.v4.content.ContextCompat
 import com.alorma.notifix.R
 import com.alorma.notifix.domain.model.AppNotification
 import io.reactivex.Completable
@@ -29,6 +30,7 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
             setSmallIcon(R.drawable.ic_launcher_foreground)
             setContentTitle(appNotification.title)
             setContentText(appNotification.text)
+            color = ContextCompat.getColor(context, appNotification.color)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 priority = NotificationManager.IMPORTANCE_HIGH
             } else {

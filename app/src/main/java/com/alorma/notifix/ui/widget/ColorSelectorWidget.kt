@@ -21,7 +21,7 @@ class ColorSelectorWidget @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private lateinit var adapter: ColorsAdapter
-    private lateinit var selectedColor: ColorItem
+    lateinit var selectedColor: ColorItem
 
     init {
         inflate(context, R.layout.color_selector_layout, this)
@@ -37,7 +37,8 @@ class ColorSelectorWidget @JvmOverloads constructor(
             selectedColor = it[0]
         }
         adapter = ColorsAdapter(list, selectedColor) {
-            adapter.selectedColor = it
+            this.selectedColor = it
+            adapter.selectedColor = this.selectedColor
             adapter.notifyDataSetChanged()
         }
         colorsRecycler.adapter = adapter
