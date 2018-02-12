@@ -1,67 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:parentTag="android.widget.FrameLayout">
 
-    <ImageView
-        android:id="@+id/color1"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="#FF0000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/colorsRecycler"/>
 
-    <ImageView
-        android:id="@+id/color2"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:background="#00FF00"
-        app:layout_constraintStart_toEndOf="@+id/color1"
-        app:layout_constraintTop_toTopOf="@+id/color1" />
-
-    <ImageView
-        android:id="@+id/color3"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:background="#0000FF"
-        app:layout_constraintStart_toEndOf="@+id/color2"
-        app:layout_constraintTop_toTopOf="@+id/color2" />
-
-    <ImageView
-        android:id="@+id/color4"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:background="#FFFF00"
-        app:layout_constraintStart_toStartOf="@+id/color1"
-        app:layout_constraintTop_toBottomOf="@+id/color1" />
-
-    <ImageView
-        android:id="@+id/color5"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="#FF00FF"
-        app:layout_constraintStart_toEndOf="@+id/color4"
-        app:layout_constraintTop_toBottomOf="@+id/color2" />
-
-    <ImageView
-        android:id="@+id/color6"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="#FFFFFF"
-        android:src="@drawable/ic_check_black"
-        android:padding="12dp"
-        app:layout_constraintStart_toEndOf="@+id/color5"
-        app:layout_constraintTop_toBottomOf="@+id/color3" />
-
-
-</android.support.constraint.ConstraintLayout>
+</merge>
