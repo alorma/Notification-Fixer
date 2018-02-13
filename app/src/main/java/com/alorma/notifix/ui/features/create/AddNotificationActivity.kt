@@ -7,6 +7,11 @@ import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_notification.*
+import kotlinx.android.synthetic.main.add_item_button.*
+import kotlinx.android.synthetic.main.add_item_colors.*
+import kotlinx.android.synthetic.main.add_item_enable.*
+import kotlinx.android.synthetic.main.add_item_text.*
+import kotlinx.android.synthetic.main.add_item_title.*
 import javax.inject.Inject
 
 class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
