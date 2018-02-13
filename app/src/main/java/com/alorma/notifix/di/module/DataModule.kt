@@ -3,6 +3,8 @@ package com.alorma.notifix.di.module
 import android.arch.persistence.room.BuildConfig
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.alorma.notifix.data.AndroidLogger
+import com.alorma.notifix.data.Logger
 import com.alorma.notifix.data.database.AppDatabase
 import com.alorma.notifix.data.database.dao.NotificationDao
 import dagger.Module
@@ -26,4 +28,8 @@ class DataModule {
     @Provides
     @Singleton
     fun getNotificationDao(appDatabase: AppDatabase): NotificationDao = appDatabase.notificationDao()
+
+    @Provides
+    @Singleton
+    fun getLogger(): Logger = AndroidLogger()
 }

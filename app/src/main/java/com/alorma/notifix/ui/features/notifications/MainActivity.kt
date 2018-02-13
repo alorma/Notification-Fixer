@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.commons.OnCreate
-import com.alorma.notifix.ui.commons.OnStop
 import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.features.create.OnCreateSucces
 import com.alorma.notifix.ui.utils.dsl
@@ -31,7 +29,7 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         component inject this
 
         presenter.init(this)
-        presenter onAction OnCreate()
+        presenter attach this
 
         toolbar.dsl {
             menu = R.menu.notifications_menu
@@ -58,11 +56,6 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         when (route) {
             is CreateNotification -> onCreateNotification()
         }
-    }
-
-    override fun onStop() {
-        presenter onAction OnStop()
-        super.onStop()
     }
 
     private fun onCreateNotification() {

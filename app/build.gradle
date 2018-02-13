@@ -50,6 +50,9 @@ dependencies {
 
     implementation dexter
 
+    implementation arch.lifecycle.runtime
+    kapt arch.lifecycle.compiler
+
     testImplementation testing.jUnit
     testImplementation testing.mockito.core
     testImplementation testing.mockito.kotlin

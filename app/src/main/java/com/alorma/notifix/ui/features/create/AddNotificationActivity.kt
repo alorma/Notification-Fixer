@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.commons.OnCreate
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_notification.*
-import kotlinx.android.synthetic.main.activity_add_notification.view.*
 import javax.inject.Inject
 
 class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
@@ -23,7 +21,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         component inject this
 
         presenter init this
-        presenter onAction OnCreate()
+        presenter attach this
 
         toolbar.dsl {
             menu = R.menu.add_notification_menu
