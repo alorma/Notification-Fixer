@@ -14,19 +14,24 @@ import javax.inject.Inject
 
 class DisplayNotificationDataSource @Inject constructor(private val context: Context) {
     companion object {
-        private const val CHANNEL_ID = "channel_preview"
-        private const val CHANNEL_NAME = "Preview"
-        private const val CHANNEL_DESCRIPTION = "Preview channel"
+        private val PREVIEW_CHANNEL = NotificationConfig("channel_preview", "Preview", "Preview channel", false)
+        private val SHOW_CHANNEL = NotificationConfig("channel_show", "Fixed", "Fixed channel", true)
     }
 
-    fun showPreview(appNotification: AppNotification): Completable = Completable.fromCallable {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        createNotificationChanel(notificationManager)
-        createNotification(appNotification, notificationManager)
+    fun showPreview(notification: AppNotification): Completable = Completable.fromCallable {
+        getNotificationManager().apply {
+            createNotificationChanel(PREVIEW_CHANNEL, this)
+            createNotification(notification, PREVIEW_CHANNEL, this)
+        }
     }
 
-    private fun createNotification(appNotification: AppNotification, notificationManager: NotificationManager) {
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID).apply {
+    private fun getNotificationManager(): NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    private fun createNotification(appNotification: AppNotification,
+                                   notificationConfig: NotificationConfig,
+                                   notificationManager: NotificationManager) {
+        val notification = NotificationCompat.Builder(context, notificationConfig.channelId).apply {
             setSmallIcon(R.drawable.ic_launcher_foreground)
             setContentTitle(appNotification.title)
             setContentText(appNotification.text)
@@ -36,19 +41,31 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
             } else {
                 setDefaults(Notification.DEFAULT_ALL)
             }
+            setOngoing(notificationConfig.fixed)
         }.build()
         notificationManager.notify(appNotification.id, notification)
     }
 
-    private fun createNotificationChanel(notificationManager: NotificationManager) {
+    private fun createNotificationChanel(notificationConfig: NotificationConfig,
+                                         notificationManager: NotificationManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(CHANNEL_ID,
-                    CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH).apply {
-                description = CHANNEL_DESCRIPTION
+            val channel = NotificationChannel(notificationConfig.channelId, notificationConfig.channelName,
+                    NotificationManager.IMPORTANCE_HIGH).apply {
+                description = notificationConfig.channelDescription
                 setShowBadge(false)
             }
-
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    fun show(notifications: List<AppNotification>): Completable = Completable.fromCallable {
+        notifications.forEach { show(it) }
+    }
+
+    private fun show(notification: AppNotification) {
+        getNotificationManager().apply {
+            createNotificationChanel(SHOW_CHANNEL, this)
+            createNotification(notification, SHOW_CHANNEL, this)
         }
     }
 }

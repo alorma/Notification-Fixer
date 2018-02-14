@@ -2,6 +2,7 @@ package com.alorma.notifix.ui.features.notifications
 
 import com.alorma.notifix.data.Logger
 import com.alorma.notifix.domain.usecase.ObtainNotificationsUseCase
+import com.alorma.notifix.domain.usecase.ShowNotificationsUseCase
 import com.alorma.notifix.ui.commons.BasePresenter
 import com.alorma.notifix.ui.features.create.NotificationsAction
 import com.alorma.notifix.ui.features.create.OnCreateSucces
@@ -11,20 +12,22 @@ import javax.inject.Inject
 
 class NotificationsPresenter @Inject constructor(
         private val obtainNotificationsUseCase: ObtainNotificationsUseCase,
+        private val showNotificationsUseCase: ShowNotificationsUseCase,
         private val stateMapper: NotificationsStateMapper,
         private val routeMapper: NotificationsRouteMapper,
-        logger: Logger)
+        private val logger: Logger)
     : BasePresenter<NotificationsState, NotificationsRoute,
         NotificationsAction, NotificationsView>(logger) {
 
     override fun onAction(action: NotificationsAction) = when (action) {
-        is OnCreateSucces -> loadNotifications()
-        else -> {
+        is OnCreateSucces -> {
+            loadNotifications()
         }
     }
 
     override fun onCreate() {
         loadNotifications()
+        showNotifications()
     }
 
     private fun loadNotifications() {
@@ -33,6 +36,16 @@ class NotificationsPresenter @Inject constructor(
                 .subscribe({
                     render(stateMapper.mapSuccess(it))
                 }, {}, {})
+    }
+
+    private fun showNotifications() {
+        disposables += showNotificationsUseCase.execute()
+                .observeOnUI()
+                .subscribe({
+                    logger.i("Show completed")
+                }, {
+                    logger.e("Show error", it)
+                })
     }
 
     fun onAddNotification() {

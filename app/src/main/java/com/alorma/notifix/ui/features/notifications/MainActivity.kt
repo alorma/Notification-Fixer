@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
+import com.alorma.notifix.background.notifications.NotificationsBootBroadcast
 import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.features.create.OnCreateSucces
 import com.alorma.notifix.ui.utils.dsl
@@ -31,6 +32,18 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         presenter.init(this)
         presenter attach this
 
+
+        initNotificationsService()
+
+        initToolbar()
+    }
+
+    private fun initNotificationsService() {
+        val intent = Intent(this, NotificationsBootBroadcast::class.java)
+        startService(intent)
+    }
+
+    private fun initToolbar() {
         toolbar.dsl {
             menu = R.menu.notifications_menu
             item {

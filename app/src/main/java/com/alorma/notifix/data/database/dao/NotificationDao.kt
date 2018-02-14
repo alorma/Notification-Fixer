@@ -12,6 +12,7 @@ import org.intellij.lang.annotations.Language
 interface NotificationDao {
     companion object {
         const val TABLE = "notifications"
+        const val COL_CHECKED = "checked"
     }
 
     @Language("RoomSql")

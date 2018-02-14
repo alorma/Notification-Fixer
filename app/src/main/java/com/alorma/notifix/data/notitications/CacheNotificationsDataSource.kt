@@ -5,6 +5,7 @@ import com.alorma.notifix.domain.model.AppNotification
 import com.alorma.notifix.domain.model.CreateAppNotification
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import javax.inject.Inject
 
 class CacheNotificationsDataSource @Inject constructor(private val notificationDao: NotificationDao,
@@ -13,6 +14,9 @@ class CacheNotificationsDataSource @Inject constructor(private val notificationD
     fun getNotifications(): Flowable<List<AppNotification>> = notificationDao.getNotifications().map {
         mapper.map(it)
     }
+
+    fun getEnabledNotifications(): Flowable<List<AppNotification>> = notificationDao.getNotifications()
+            .map { mapper.mapEnabled(it) }
 
     fun insert(appNotification: CreateAppNotification): Completable = Completable.fromCallable {
         notificationDao.insert(mapper.mapInsert(appNotification))

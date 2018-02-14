@@ -20,7 +20,13 @@
         <activity
             android:name=".ui.features.create.AddNotificationActivity"
             android:label="@string/title_activity_add_notification"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+
+        <receiver android:name=".background.notifications.NotificationsBootBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

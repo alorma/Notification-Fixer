@@ -12,7 +12,13 @@ import javax.inject.Inject
 class NotificationsRepository @Inject constructor
 (private val cacheNotificationsDataSource: CacheNotificationsDataSource,
  private val displayNotificationDataSource: DisplayNotificationDataSource) {
+
     fun getNotifications(): Flowable<List<AppNotification>> = cacheNotificationsDataSource.getNotifications().subscribeOnIO()
+
+    fun showNotifications(): Completable = cacheNotificationsDataSource.getEnabledNotifications()
+            .flatMapCompletable {
+                displayNotificationDataSource.show(it)
+            }
 
     fun insertNotification(appNotification: CreateAppNotification): Completable = cacheNotificationsDataSource.insert(appNotification).subscribeOnIO()
 
