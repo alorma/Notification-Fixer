@@ -65,6 +65,10 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
         notifications.forEach { show(it) }
     }
 
+    fun showOne(notification: AppNotification): Completable = Completable.fromCallable {
+        show(notification)
+    }
+
     private fun show(notification: AppNotification) {
         getNotificationManager().apply {
             createNotificationChannel(SHOW_CHANNEL, this)

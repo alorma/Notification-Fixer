@@ -18,7 +18,8 @@ class CacheNotificationsDataSource @Inject constructor(private val notificationD
     fun getEnabledNotifications(): Flowable<List<AppNotification>> = notificationDao.getNotifications()
             .map { mapper.mapEnabled(it) }
 
-    fun insert(appNotification: CreateAppNotification): Completable = Completable.fromCallable {
-        notificationDao.insert(mapper.mapInsert(appNotification))
-    }
+    fun insert(appNotification: CreateAppNotification): Single<AppNotification> = Single.defer {
+        val rowId = notificationDao.insert(mapper.mapInsert(appNotification))
+        notificationDao.getNotification(rowId)
+    }.map { mapper.map(it) }
 }

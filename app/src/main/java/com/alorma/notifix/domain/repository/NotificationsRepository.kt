@@ -20,7 +20,12 @@ class NotificationsRepository @Inject constructor
                 displayNotificationDataSource.show(it)
             }
 
-    fun insertNotification(appNotification: CreateAppNotification): Completable = cacheNotificationsDataSource.insert(appNotification).subscribeOnIO()
+    fun insertNotification(appNotification: CreateAppNotification): Completable
+            = cacheNotificationsDataSource.insert(appNotification)
+            .flatMapCompletable {
+                displayNotificationDataSource.showOne(it)
+            }
+            .subscribeOnIO()
 
     fun showPreview(appNotification: AppNotification): Completable = displayNotificationDataSource.showPreview(appNotification)
 }
