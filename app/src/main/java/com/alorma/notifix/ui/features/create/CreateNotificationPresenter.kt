@@ -40,14 +40,21 @@ class CreateNotificationPresenter @Inject constructor(
     private fun onPreviewAction(action: PreviewNotificationAction) {
         disposables += showNotificationUseCase.showPreview(actionMapper.mapPreview(action))
                 .observeOnUI()
+                .doOnSubscribe {
+                    dismissPreview()
+                }
                 .subscribe({}, {})
     }
 
     override fun onStop() {
+        dismissPreview()
+        super.onStop()
+    }
+
+    private fun dismissPreview() {
         disposables += dismissNotificationUseCase.execute(actionMapper.mapPreviewNotificationId())
                 .observeOnUI()
                 .subscribe({}, {})
-        super.onStop()
     }
 
 }
