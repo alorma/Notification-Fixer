@@ -1,6 +1,5 @@
 package com.alorma.notifix.data.framework
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -36,16 +35,20 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
             setContentTitle(appNotification.title)
             setContentText(appNotification.text)
             color = ContextCompat.getColor(context, appNotification.color)
-            if (notificationConfig.fixed) {
-                setOngoing(true)
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    priority = NotificationManager.IMPORTANCE_HIGH
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                priority = if (notificationConfig.fixed) {
+                    NotificationCompat.PRIORITY_LOW
                 } else {
-                    setDefaults(Notification.DEFAULT_ALL)
+                    NotificationCompat.PRIORITY_HIGH
                 }
             }
-        }.build()
+        }.build().apply {
+            if (notificationConfig.fixed) {
+                flags = NotificationCompat.FLAG_NO_CLEAR
+            }
+        }
+
         notificationManager.notify(appNotification.id, notification)
     }
 
