@@ -73,9 +73,11 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
     }
 
     private fun show(notification: AppNotification) {
-        getNotificationManager().apply {
-            createNotificationChannel(SHOW_CHANNEL, this)
-            createNotification(notification, SHOW_CHANNEL, this)
+        if (notification.checked) {
+            getNotificationManager().apply {
+                createNotificationChannel(SHOW_CHANNEL, this)
+                createNotification(notification, SHOW_CHANNEL, this)
+            }
         }
     }
 
