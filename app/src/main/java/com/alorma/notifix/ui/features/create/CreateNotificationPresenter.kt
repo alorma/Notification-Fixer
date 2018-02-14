@@ -16,9 +16,10 @@ class CreateNotificationPresenter @Inject constructor(
         private val actionMapper: CreateNotificationActionMapper,
         private val routeMapper: CreateNotificationRouteMapper,
         logger: Logger)
-    : BasePresenter<CreateNotificationState, CreateNotificationRoute, CreateNotificationView>(logger) {
+    : BasePresenter<CreateNotificationState, CreateNotificationRoute,
+        CreateNotificationAction, CreateNotificationView>(logger) {
 
-    override fun onAction(action: Action) {
+    override fun onAction(action: CreateNotificationAction) {
         when (action) {
             is NewNotificationAction -> onNewAction(action)
             is PreviewNotificationAction -> onPreviewAction(action)

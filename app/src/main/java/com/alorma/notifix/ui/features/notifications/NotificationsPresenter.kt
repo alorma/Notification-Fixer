@@ -2,8 +2,8 @@ package com.alorma.notifix.ui.features.notifications
 
 import com.alorma.notifix.data.Logger
 import com.alorma.notifix.domain.usecase.ObtainNotificationsUseCase
-import com.alorma.notifix.ui.commons.Action
 import com.alorma.notifix.ui.commons.BasePresenter
+import com.alorma.notifix.ui.features.create.NotificationsAction
 import com.alorma.notifix.ui.features.create.OnCreateSucces
 import com.alorma.notifix.ui.utils.observeOnUI
 import com.alorma.notifix.ui.utils.plusAssign
@@ -14,9 +14,10 @@ class NotificationsPresenter @Inject constructor(
         private val stateMapper: NotificationsStateMapper,
         private val routeMapper: NotificationsRouteMapper,
         logger: Logger)
-    : BasePresenter<NotificationsState, NotificationsRoute, NotificationsView>(logger) {
+    : BasePresenter<NotificationsState, NotificationsRoute,
+        NotificationsAction, NotificationsView>(logger) {
 
-    override fun onAction(action: Action) = when (action) {
+    override fun onAction(action: NotificationsAction) = when (action) {
         is OnCreateSucces -> loadNotifications()
         else -> {
         }
