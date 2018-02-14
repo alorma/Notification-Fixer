@@ -1,9 +1,9 @@
 package com.alorma.notifix.ui.features.create
 
 import com.alorma.notifix.data.Logger
+import com.alorma.notifix.domain.usecase.DismissNotificationUseCase
 import com.alorma.notifix.domain.usecase.InsertNotificationUseCase
 import com.alorma.notifix.domain.usecase.ShowNotificationUseCase
-import com.alorma.notifix.ui.commons.Action
 import com.alorma.notifix.ui.commons.BasePresenter
 import com.alorma.notifix.ui.utils.observeOnUI
 import com.alorma.notifix.ui.utils.plusAssign
@@ -13,6 +13,7 @@ import javax.inject.Inject
 class CreateNotificationPresenter @Inject constructor(
         private val insertNotificationUseCase: InsertNotificationUseCase,
         private val showNotificationUseCase: ShowNotificationUseCase,
+        private val dismissNotificationUseCase: DismissNotificationUseCase,
         private val actionMapper: CreateNotificationActionMapper,
         private val routeMapper: CreateNotificationRouteMapper,
         logger: Logger)
@@ -40,6 +41,13 @@ class CreateNotificationPresenter @Inject constructor(
         disposables += showNotificationUseCase.showPreview(actionMapper.mapPreview(action))
                 .observeOnUI()
                 .subscribe({}, {})
+    }
+
+    override fun onStop() {
+        disposables += dismissNotificationUseCase.execute(actionMapper.mapPreviewNotificationId())
+                .observeOnUI()
+                .subscribe({}, {})
+        super.onStop()
     }
 
 }

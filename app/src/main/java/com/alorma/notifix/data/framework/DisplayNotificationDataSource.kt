@@ -78,4 +78,8 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
             createNotification(notification, SHOW_CHANNEL, this)
         }
     }
+
+    fun dismiss(notificationId: Int): Completable = Completable.fromCallable {
+        getNotificationManager().cancel(notificationId)
+    }
 }

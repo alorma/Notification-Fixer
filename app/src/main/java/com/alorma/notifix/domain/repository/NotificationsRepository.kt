@@ -28,4 +28,6 @@ class NotificationsRepository @Inject constructor
             .subscribeOnIO()
 
     fun showPreview(appNotification: AppNotification): Completable = displayNotificationDataSource.showPreview(appNotification)
+
+    fun dismissNotification(notificationId: Int): Completable = displayNotificationDataSource.dismiss(notificationId).subscribeOnIO()
 }
