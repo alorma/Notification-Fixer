@@ -51,4 +51,8 @@ class NotificationsPresenter @Inject constructor(
     fun onAddNotification() {
         navigate(routeMapper.mapCreate())
     }
+
+    fun updateNotification(vm: NotificationViewModel, isChecked: Boolean) {
+
+    }
 }

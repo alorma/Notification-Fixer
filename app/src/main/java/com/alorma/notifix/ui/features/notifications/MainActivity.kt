@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.background.notifications.NotificationsBootBroadcast
@@ -23,6 +22,8 @@ class MainActivity : AppCompatActivity(), NotificationsView {
     @Inject
     lateinit var presenter: NotificationsPresenter
 
+    private lateinit var adapter: NotificationsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,10 +33,9 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         presenter.init(this)
         presenter attach this
 
-
         initNotificationsService()
-
         initToolbar()
+        initAdapter()
     }
 
     private fun initNotificationsService() {
@@ -55,6 +55,15 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         }
     }
 
+    private fun initAdapter() {
+        adapter = NotificationsAdapter {
+            presenter.updateNotification(this, it)
+        }
+        recycler.adapter = adapter
+        adapter.hasStableIds()
+        recycler.setHasFixedSize(true)
+    }
+
     override fun render(state: NotificationsState) {
         return when (state) {
             is ShowNotifications -> onNotificationsList(state.list)
@@ -62,7 +71,7 @@ class MainActivity : AppCompatActivity(), NotificationsView {
     }
 
     private fun onNotificationsList(list: List<NotificationViewModel>) {
-        Toast.makeText(this, "List: ${list.size}", Toast.LENGTH_SHORT).show()
+        adapter.addAll(list)
     }
 
     override fun navigate(route: NotificationsRoute) {
