@@ -1,9 +1,6 @@
 package com.alorma.notifix.data.database.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.alorma.notifix.data.database.entity.NotificationEntity
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -25,5 +22,8 @@ interface NotificationDao {
     fun getNotifications(): Flowable<List<NotificationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(map: NotificationEntity): Long
+    fun insert(notificationEntity: NotificationEntity): Long
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(notificationEntity: NotificationEntity)
 }

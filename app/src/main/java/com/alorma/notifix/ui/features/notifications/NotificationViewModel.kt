@@ -1,3 +1,4 @@
 package com.alorma.notifix.ui.features.notifications
 
-data class NotificationViewModel(val id: Int, val title: String, val checked: Boolean)
+data class NotificationViewModel(val id: Int, val title: String, val text: String?,
+                                 val checked: Boolean, val color: Int)

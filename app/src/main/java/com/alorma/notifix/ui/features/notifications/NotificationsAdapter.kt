@@ -29,11 +29,19 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
     override fun getItemId(position: Int): Long = items[position].id.toLong()
 
     fun addAll(newItems: List<NotificationViewModel>) {
-        val diffResult = DiffUtil.calculateDiff(Diff(items, newItems))
+        if (items.isEmpty()) {
+            items.addAll(newItems)
+            notifyDataSetChanged()
+        } else {
+            val diffResult = DiffUtil.calculateDiff(Diff(items, newItems))
 
-        diffResult.dispatchUpdatesTo(this)
-        this.items.clear()
-        this.items.addAll(newItems)
+            diffResult.dispatchUpdatesTo(this).also {
+                with(this.items) {
+                    clear()
+                    addAll(newItems)
+                }
+            }
+        }
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -42,6 +50,7 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                  onChange: NotificationViewModel.(isChecked: Boolean) -> Unit) {
             itemView.switchTitle.apply {
                 text = viewModel.title
+                setOnCheckedChangeListener(null)
                 isChecked = viewModel.checked
                 setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
                     viewModel.onChange(isChecked)
@@ -58,7 +67,7 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
 
         override fun getNewListSize(): Int = newItems.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = items[oldItemPosition] == newItems[newItemPosition] &&
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
                 items[oldItemPosition].id == newItems[newItemPosition].id
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = items[oldItemPosition].title == newItems[newItemPosition].title

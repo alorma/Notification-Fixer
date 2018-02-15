@@ -22,4 +22,8 @@ class CacheNotificationsDataSource @Inject constructor(private val notificationD
         val rowId = notificationDao.insert(mapper.mapInsert(appNotification))
         notificationDao.getNotification(rowId)
     }.map { mapper.map(it) }
+
+    fun update(appNotification: AppNotification): Completable = Completable.fromCallable {
+        notificationDao.update(mapper.mapUpdate(appNotification))
+    }
 }

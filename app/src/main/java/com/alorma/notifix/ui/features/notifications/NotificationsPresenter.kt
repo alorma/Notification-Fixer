@@ -3,6 +3,7 @@ package com.alorma.notifix.ui.features.notifications
 import com.alorma.notifix.data.Logger
 import com.alorma.notifix.domain.usecase.ObtainNotificationsUseCase
 import com.alorma.notifix.domain.usecase.ShowNotificationsUseCase
+import com.alorma.notifix.domain.usecase.UpdateNotificationUseCase
 import com.alorma.notifix.ui.commons.BasePresenter
 import com.alorma.notifix.ui.features.create.NotificationsAction
 import com.alorma.notifix.ui.features.create.OnCreateSucces
@@ -13,6 +14,7 @@ import javax.inject.Inject
 class NotificationsPresenter @Inject constructor(
         private val obtainNotificationsUseCase: ObtainNotificationsUseCase,
         private val showNotificationsUseCase: ShowNotificationsUseCase,
+        private val updateNotificationUseCase: UpdateNotificationUseCase,
         private val stateMapper: NotificationsStateMapper,
         private val routeMapper: NotificationsRouteMapper,
         private val logger: Logger)
@@ -34,7 +36,7 @@ class NotificationsPresenter @Inject constructor(
         disposables += obtainNotificationsUseCase.execute()
                 .observeOnUI()
                 .subscribe({
-                    render(stateMapper.mapSuccess(it))
+                    render(stateMapper.mapSuccessState(it))
                 }, {}, {})
     }
 
@@ -53,6 +55,14 @@ class NotificationsPresenter @Inject constructor(
     }
 
     fun updateNotification(vm: NotificationViewModel, isChecked: Boolean) {
+        val notification = stateMapper.mapUpdate(vm.copy(checked = isChecked))
 
+        disposables += updateNotificationUseCase.execute(notification)
+                .observeOnUI()
+                .subscribe({
+
+                }, {
+
+                })
     }
 }
