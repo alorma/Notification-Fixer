@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -31,8 +31,7 @@ class ColorSelectorWidget @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        val colorGridColumns = resources.getInteger(R.integer.grid_colors)
-        colorsRecycler.layoutManager = GridLayoutManager(context, colorGridColumns)
+        colorsRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val list = ColorsProvider().get().also {
             selectedColor = it[0]
         }
