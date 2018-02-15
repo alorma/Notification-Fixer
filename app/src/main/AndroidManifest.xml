@@ -24,7 +24,10 @@
             android:label="@string/title_activity_add_notification"
             android:theme="@style/AppTheme" />
 
-        <receiver android:name=".background.notifications.NotificationsBootBroadcast">
+        <receiver android:name=".background.notifications.NotificationsBootBroadcast"
+            android:enabled="true"
+            android:exported="true"
+            android:label="NotificationsBootBroadcast">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
