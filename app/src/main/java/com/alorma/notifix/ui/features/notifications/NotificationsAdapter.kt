@@ -1,5 +1,6 @@
 package com.alorma.notifix.ui.features.notifications
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -55,6 +56,9 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                 setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
                     viewModel.onChange(isChecked)
                 }
+            }
+            itemView.colorLabel.apply {
+                setBackgroundColor(ContextCompat.getColor(context, viewModel.color))
             }
         }
     }

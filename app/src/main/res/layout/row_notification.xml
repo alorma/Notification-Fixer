@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="8dp"
+        android:layout_height="?actionBarSize"
+        android:id="@+id/colorLabel"/>
 
     <Switch
         android:id="@+id/switchTitle"
@@ -14,6 +19,6 @@
         android:padding="8dp"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
-        tools:text="@tools:sample/full_names"
-        tools:checked="@sample/booleans"/>
+        tools:checked="@sample/booleans"
+        tools:text="@tools:sample/full_names" />
 </LinearLayout>

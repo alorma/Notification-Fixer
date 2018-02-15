@@ -32,6 +32,10 @@ class NotificationsPresenter @Inject constructor(
         showNotifications()
     }
 
+    override fun onStart() {
+        loadNotifications()
+    }
+
     private fun loadNotifications() {
         disposables += obtainNotificationsUseCase.execute()
                 .observeOnUI()
