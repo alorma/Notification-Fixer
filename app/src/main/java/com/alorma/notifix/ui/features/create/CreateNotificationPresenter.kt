@@ -20,7 +20,7 @@ class CreateNotificationPresenter @Inject constructor(
     : BasePresenter<CreateNotificationState, CreateNotificationRoute,
         CreateNotificationAction, CreateNotificationView>(logger) {
 
-    override fun onAction(action: CreateNotificationAction) {
+    override fun action(action: CreateNotificationAction) {
         when (action) {
             is NewNotificationAction -> onNewAction(action)
             is PreviewNotificationAction -> onPreviewAction(action)

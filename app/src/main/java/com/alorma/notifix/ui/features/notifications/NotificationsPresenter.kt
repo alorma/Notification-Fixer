@@ -21,7 +21,7 @@ class NotificationsPresenter @Inject constructor(
     : BasePresenter<NotificationsState, NotificationsRoute,
         NotificationsAction, NotificationsView>(logger) {
 
-    override fun onAction(action: NotificationsAction) = when (action) {
+    override fun action(action: NotificationsAction) = when (action) {
         is OnCreateSucces -> {
             loadNotifications()
         }

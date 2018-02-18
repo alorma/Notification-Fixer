@@ -25,7 +25,7 @@ abstract class BasePresenter<in S : State, in R : Route, in A: Action, in V : Ba
         }
     }
 
-    abstract infix fun onAction(action: A)
+    abstract infix fun action(action: A)
 
     @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
     open fun onAny() {

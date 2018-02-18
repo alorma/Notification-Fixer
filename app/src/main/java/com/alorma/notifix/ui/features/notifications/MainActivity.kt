@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), NotificationsView {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CREATE && resultCode == Activity.RESULT_OK) {
-            presenter onAction OnCreateSucces()
+            presenter action OnCreateSucces()
         }
     }
 }

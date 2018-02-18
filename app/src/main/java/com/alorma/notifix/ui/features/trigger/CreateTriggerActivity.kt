@@ -11,7 +11,10 @@ import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_trigger.*
 import javax.inject.Inject
 
-class CreateTriggerActivity : AppCompatActivity() {
+class CreateTriggerActivity : AppCompatActivity(), CreateTriggerView {
+
+    @Inject
+    lateinit var presenter: CreateTriggerPresenter
 
     @Inject
     lateinit var logger: Logger
@@ -21,6 +24,8 @@ class CreateTriggerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_trigger)
 
         component inject this
+        presenter init this
+        presenter attach this
 
         toolbar.dsl {
             back { action = { finish() } }
@@ -32,14 +37,22 @@ class CreateTriggerActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                when (position) {
-                    0 -> logger.i("SMS")
-                    1 -> logger.i("PHONE")
-                    2 -> logger.i("TIME")
-                    3 -> logger.i("ZONE")
+                presenter action when (position) {
+                    0 -> SMS()
+                    1 -> PHONE()
+                    2 -> TIME()
+                    3 -> ZONE()
+                    else -> UNKNOW()
                 }
             }
         }
     }
 
+    override fun render(state: CreateTriggerState) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun navigate(route: CreateTriggerRoute) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

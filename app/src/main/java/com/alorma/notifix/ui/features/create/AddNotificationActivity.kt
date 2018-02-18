@@ -43,17 +43,17 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         }
 
         save.setOnClickListener {
-            presenter onAction getNewNotificationAction()
+            presenter action getNewNotificationAction()
         }
 
         addTrigger.setOnClickListener {
-            presenter onAction AddTriggerAction()
+            presenter action AddTriggerAction()
         }
 
     }
 
     private fun previewNotification() {
-        presenter onAction getPreviewNotificationAction()
+        presenter action getPreviewNotificationAction()
     }
 
     private fun getNewNotificationAction(): NewNotificationAction {
