@@ -1,10 +1,12 @@
 package com.alorma.notifix.ui.features.create
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
+import com.alorma.notifix.ui.features.trigger.CreateTriggerActivity
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_notification.*
 import kotlinx.android.synthetic.main.add_item_button.*
@@ -12,6 +14,7 @@ import kotlinx.android.synthetic.main.add_item_colors.*
 import kotlinx.android.synthetic.main.add_item_enable.*
 import kotlinx.android.synthetic.main.add_item_text.*
 import kotlinx.android.synthetic.main.add_item_title.*
+import kotlinx.android.synthetic.main.add_item_triggers.*
 import javax.inject.Inject
 
 class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
@@ -43,6 +46,10 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
             presenter onAction getNewNotificationAction()
         }
 
+        addTrigger.setOnClickListener {
+            presenter onAction AddTriggerAction()
+        }
+
     }
 
     private fun previewNotification() {
@@ -70,7 +77,13 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     override fun navigate(route: CreateNotificationRoute) {
         when (route) {
             is SuccessGoBack -> onSaveSuccess()
+            is AddTrigger -> openNewTrigger()
         }
+    }
+
+    private fun openNewTrigger() {
+        val intent = Intent(this, CreateTriggerActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onSaveSuccess() {

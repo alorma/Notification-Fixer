@@ -74,10 +74,10 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
 
     private fun getCurrentNotifications(): List<Int> =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                getNotificationManager().activeNotifications
+                getNotificationManager().activeNotifications.toList().map { it.id }
             } else {
-                arrayOf()
-            }.map { it.id }
+                listOf()
+            }
 
     fun showOne(notification: AppNotification): Completable = Completable.fromCallable {
         if (!getCurrentNotifications().contains(notification.id)) {

@@ -12,3 +12,5 @@ data class PreviewNotificationAction(val title: String,
                                      val text: String,
                                      val checked: Boolean,
                                      val color: Int) : CreateNotificationAction()
+
+class AddTriggerAction: CreateNotificationAction()

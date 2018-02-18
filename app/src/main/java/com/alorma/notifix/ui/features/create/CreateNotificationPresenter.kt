@@ -24,6 +24,7 @@ class CreateNotificationPresenter @Inject constructor(
         when (action) {
             is NewNotificationAction -> onNewAction(action)
             is PreviewNotificationAction -> onPreviewAction(action)
+            is AddTriggerAction -> navigate(AddTrigger())
         }
     }
 
