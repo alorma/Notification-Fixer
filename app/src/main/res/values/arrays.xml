@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <array name="trigger_actions">
+        <item>@string/trigger_SMS</item>
+        <item>@string/trigger_PHONE</item>
+        <item>@string/trigger_TIME</item>
+        <item>@string/trigger_ZONE</item>
+    </array>
+
+    <string name="trigger_SMS">SMS</string>
+    <string name="trigger_PHONE">PHONE</string>
+    <string name="trigger_TIME">TIME</string>
+    <string name="trigger_ZONE">ZONE</string>
+
+</resources>

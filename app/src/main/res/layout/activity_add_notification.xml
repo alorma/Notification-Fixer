@@ -46,9 +46,9 @@
             android:orientation="vertical">
             <include layout="@layout/add_item_title" />
             <include layout="@layout/add_item_enable" />
+            <include layout="@layout/add_item_triggers" />
             <include layout="@layout/add_item_text" />
             <include layout="@layout/add_item_colors" />
-            <include layout="@layout/add_item_triggers" />
             <include layout="@layout/add_item_button" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
