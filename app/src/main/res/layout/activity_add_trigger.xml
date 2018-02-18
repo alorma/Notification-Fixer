@@ -34,11 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Spinner
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/actionSelector"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:entries="@array/trigger_actions" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

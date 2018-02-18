@@ -2,11 +2,11 @@ package com.alorma.notifix.ui.features.trigger
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
-import android.widget.AdapterView
+import android.support.v7.widget.GridLayoutManager
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.data.Logger
+import com.alorma.notifix.domain.model.Trigger
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_trigger.*
 import javax.inject.Inject
@@ -18,6 +18,8 @@ class CreateTriggerActivity : AppCompatActivity(), CreateTriggerView {
 
     @Inject
     lateinit var logger: Logger
+
+    private val adapter: TriggersAdapter by lazy { TriggersAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,28 +33,21 @@ class CreateTriggerActivity : AppCompatActivity(), CreateTriggerView {
             back { action = { finish() } }
         }
 
-        actionSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                presenter action when (position) {
-                    0 -> SMS()
-                    1 -> PHONE()
-                    2 -> TIME()
-                    3 -> ZONE()
-                    else -> UNKNOW()
-                }
-            }
-        }
+        actionSelector.adapter = adapter
+        actionSelector.layoutManager = GridLayoutManager(this, 3)
     }
 
     override fun render(state: CreateTriggerState) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when (state) {
+            is TriggersSuccess -> displayTriggers(state.triggers)
+        }
+    }
+
+    private fun displayTriggers(triggers: List<Trigger>) {
+        adapter addAll triggers
     }
 
     override fun navigate(route: CreateTriggerRoute) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }
