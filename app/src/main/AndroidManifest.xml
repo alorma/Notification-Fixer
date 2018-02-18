@@ -3,6 +3,8 @@
     package="com.alorma.notifix">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
 
     <application
         android:name=".NotifixApplication"
@@ -24,12 +26,20 @@
             android:label="@string/title_activity_add_notification"
             android:theme="@style/AppTheme" />
 
-        <receiver android:name=".background.notifications.NotificationsBootBroadcast"
+        <receiver
+            android:name=".background.notifications.NotificationsBootBroadcast"
             android:enabled="true"
             android:exported="true"
             android:label="NotificationsBootBroadcast">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".background.notifications.CallTriggerBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
     </application>
