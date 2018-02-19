@@ -4,21 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="center_horizontal"
-        android:padding="10dp"
+        android:padding="12dp"
         tools:src="@drawable/ic_phone_in_talk" />
 
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
         android:padding="8dp"
         tools:text="PHONE" />
 

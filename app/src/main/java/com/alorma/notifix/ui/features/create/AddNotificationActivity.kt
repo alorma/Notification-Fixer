@@ -1,12 +1,12 @@
 package com.alorma.notifix.ui.features.create
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.CreateTriggerActivity
+import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_notification.*
 import kotlinx.android.synthetic.main.add_item_button.*
@@ -82,8 +82,9 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openNewTrigger() {
-        val intent = Intent(this, CreateTriggerActivity::class.java)
-        startActivity(intent)
+        val fragment: BottomSheetDialogFragment = SelectTriggerTypeFragment()
+
+        fragment.show(supportFragmentManager, "trigger")
     }
 
     private fun onSaveSuccess() {

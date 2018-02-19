@@ -6,6 +6,8 @@
 
     <style name="Toolbar.CreateNotification" />
 
+    <style name="Toolbar.White" parent="ThemeOverlay.AppCompat.ActionBar" />
+
     <style name="AddNotification" />
 
     <style name="AddNotification.Button" parent="Widget.AppCompat.Button.Borderless.Colored" />

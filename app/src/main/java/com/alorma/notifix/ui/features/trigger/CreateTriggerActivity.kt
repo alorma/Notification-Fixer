@@ -2,7 +2,7 @@ package com.alorma.notifix.ui.features.trigger
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.data.Logger
@@ -34,7 +34,7 @@ class CreateTriggerActivity : AppCompatActivity(), CreateTriggerView {
         }
 
         actionSelector.adapter = adapter
-        actionSelector.layoutManager = GridLayoutManager(this, 3)
+        actionSelector.layoutManager = LinearLayoutManager(this)
     }
 
     override fun render(state: CreateTriggerState) {

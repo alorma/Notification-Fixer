@@ -15,4 +15,9 @@
         <item name="colorPrimary">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.White" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorAccent">@color/grey</item>
+    </style>
+
 </resources>
