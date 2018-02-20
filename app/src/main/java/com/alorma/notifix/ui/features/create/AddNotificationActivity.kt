@@ -2,7 +2,6 @@ package com.alorma.notifix.ui.features.create
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
@@ -82,7 +81,11 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openNewTrigger() {
-        val fragment: BottomSheetDialogFragment = SelectTriggerTypeFragment()
+        val fragment = SelectTriggerTypeFragment()
+
+        fragment.addListener {
+
+        }
 
         fragment.show(supportFragmentManager, "trigger")
     }

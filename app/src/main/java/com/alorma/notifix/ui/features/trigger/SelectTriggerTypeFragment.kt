@@ -10,6 +10,9 @@ import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.bottom_sheet_trigger_selector.*
 
 class SelectTriggerTypeFragment : BottomSheetDialogFragment() {
+
+    private lateinit var callback: (TriggerType) -> Unit
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
@@ -27,9 +30,21 @@ class SelectTriggerTypeFragment : BottomSheetDialogFragment() {
             }
         }
 
-        triggerPhone.setOnClickListener {}
-        triggerSms.setOnClickListener {}
-        triggerTime.setOnClickListener {}
-        triggerZone.setOnClickListener {}
+        triggerPhone.setOnClickListener {
+            callback.invoke(Phone)
+        }
+        triggerSms.setOnClickListener {
+            callback.invoke(Sms)
+        }
+        triggerTime.setOnClickListener {
+            callback.invoke(Time)
+        }
+        triggerZone.setOnClickListener {
+            callback.invoke(Zone)
+        }
+    }
+
+    public fun addListener(onTriggerType: (TriggerType) -> Unit) {
+        this.callback = onTriggerType
     }
 }

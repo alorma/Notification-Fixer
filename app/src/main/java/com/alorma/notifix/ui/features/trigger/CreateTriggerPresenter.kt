@@ -9,7 +9,7 @@ import com.alorma.notifix.ui.utils.plusAssign
 import javax.inject.Inject
 
 class CreateTriggerPresenter @Inject constructor(
-        private val logger: Logger,
+        logger: Logger,
         private val obtainTriggersUseCase: ObtainTriggersUseCase,
         private val createTriggerMapper: CreateTriggerMapper) :
         BasePresenter<CreateTriggerState, CreateTriggerRoute, CreateTriggerAction, CreateTriggerView>(logger) {
