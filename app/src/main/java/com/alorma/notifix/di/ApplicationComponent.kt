@@ -5,7 +5,6 @@ import com.alorma.notifix.di.module.ApplicationModule
 import com.alorma.notifix.di.module.DataModule
 import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.features.notifications.MainActivity
-import com.alorma.notifix.ui.features.trigger.CreateTriggerActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,7 +13,6 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     infix fun inject(activity: MainActivity)
     infix fun inject(activity: AddNotificationActivity)
-    infix fun inject(activity: CreateTriggerActivity)
 
     infix fun inject(bootBroadcast: NotificationsBootBroadcast)
 }

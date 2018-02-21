@@ -76,7 +76,8 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     override fun navigate(route: CreateNotificationRoute) {
         when (route) {
             is SuccessGoBack -> onSaveSuccess()
-            is AddTrigger -> openNewTrigger()
+            is SelectTrigger -> openNewTrigger()
+            is ConfigureTrigger -> openConfTrigger(route)
         }
     }
 
@@ -84,10 +85,14 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         val fragment = SelectTriggerTypeFragment()
 
         fragment.addListener {
-
+            presenter action OnTriggerSelected(it)
         }
 
         fragment.show(supportFragmentManager, "trigger")
+    }
+
+    private fun openConfTrigger(route: ConfigureTrigger) {
+
     }
 
     private fun onSaveSuccess() {

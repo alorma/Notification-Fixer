@@ -22,9 +22,10 @@ class CreateNotificationPresenter @Inject constructor(
 
     override fun action(action: CreateNotificationAction) {
         when (action) {
+            is OnTriggerSelected -> navigate(routeMapper.mapTrigger(action.type))
             is NewNotificationAction -> onNewAction(action)
             is PreviewNotificationAction -> onPreviewAction(action)
-            is AddTriggerAction -> navigate(AddTrigger())
+            is AddTriggerAction -> navigate(SelectTrigger())
         }
     }
 
