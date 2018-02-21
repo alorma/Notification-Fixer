@@ -82,13 +82,13 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openNewTrigger() {
-        val fragment = SelectTriggerTypeFragment()
+        SelectTriggerTypeFragment().apply {
+            addListener {
+                presenter action OnTriggerSelected(it)
+            }
 
-        fragment.addListener {
-            presenter action OnTriggerSelected(it)
+            show(supportFragmentManager, "trigger")
         }
-
-        fragment.show(supportFragmentManager, "trigger")
     }
 
     private fun openConfTrigger(route: ConfigureTrigger) {
