@@ -30,18 +30,15 @@ class SelectTriggerTypeFragment : BottomSheetDialogFragment() {
             }
         }
 
-        triggerPhone.setOnClickListener {
-            callback.invoke(Phone)
-        }
-        triggerSms.setOnClickListener {
-            callback.invoke(Sms)
-        }
-        triggerTime.setOnClickListener {
-            callback.invoke(Time)
-        }
-        triggerZone.setOnClickListener {
-            callback.invoke(Zone)
-        }
+        triggerPhone.setOnClickListener { sendBack(Phone) }
+        triggerSms.setOnClickListener { sendBack(Sms) }
+        triggerTime.setOnClickListener { sendBack(Time) }
+        triggerZone.setOnClickListener { sendBack(Zone) }
+    }
+
+    private fun sendBack(type: TriggerType) {
+        dismiss()
+        callback.invoke(type)
     }
 
     public fun addListener(onTriggerType: (TriggerType) -> Unit) {

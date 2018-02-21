@@ -1,12 +1,16 @@
 package com.alorma.notifix.ui.features.create
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
+import com.alorma.notifix.ui.features.trigger.ConfigurePhoneTriggerActivity
+import com.alorma.notifix.ui.features.trigger.ConfigureSmsTriggerActivity
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
 import com.alorma.notifix.ui.utils.dsl
+import com.alorma.notifix.ui.utils.toast
 import kotlinx.android.synthetic.main.activity_add_notification.*
 import kotlinx.android.synthetic.main.add_item_button.*
 import kotlinx.android.synthetic.main.add_item_colors.*
@@ -20,6 +24,11 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
 
     @Inject
     lateinit var presenter: CreateNotificationPresenter
+
+    companion object {
+        private const val REQUEST_TRIGGER_PHONE = 112
+        private const val REQUEST_TRIGGER_SMS = 113
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +101,22 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openConfTrigger(route: ConfigureTrigger) {
+        when (route) {
+            is SmsTrigger -> openSmsTrigger()
+            is PhoneTrigger -> openPhoneTrigger()
+            is TimeTrigger -> toast("Not yet...")
+            is ZoneTrigger -> toast("Not yet...")
+        }
+    }
 
+    private fun openSmsTrigger() {
+        startActivityForResult(Intent(this, ConfigureSmsTriggerActivity::class.java),
+                REQUEST_TRIGGER_SMS)
+    }
+
+    private fun openPhoneTrigger() {
+        startActivityForResult(Intent(this, ConfigurePhoneTriggerActivity::class.java),
+                REQUEST_TRIGGER_PHONE)
     }
 
     private fun onSaveSuccess() {
