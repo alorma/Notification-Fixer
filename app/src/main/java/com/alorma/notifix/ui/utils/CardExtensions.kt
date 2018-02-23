@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,12 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.alorma.notifix.R
 
-class NotificationCardAnimations {
+class NotificationCardAnimations() {
+
+    private var currentAnimation: AnimatorSet? = null
 
     fun toggleElevation(card: CardView, expandView: View) {
+        currentAnimation?.cancel()
         if (card.cardElevation > 0) {
             card.flat(expandView)
         } else {
@@ -32,24 +34,20 @@ class NotificationCardAnimations {
             addListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator) {}
                 override fun onAnimationEnd(animation: Animator) {
-                    with(expandView) {
-                        animate().alpha(1f)
-                                .setDuration(time)
-                                .setInterpolator(AccelerateDecelerateInterpolator())
-                                .withStartAction {
-                                    expandView.visibility = View.VISIBLE
-                                }
-                                .start()
-                    }
+                    expandView.visibility = View.VISIBLE
                 }
 
-                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationCancel(animation: Animator) {
+                    expandView.visibility = View.GONE
+                }
+
                 override fun onAnimationStart(animation: Animator) {
-                    expandView.alpha = 0f
                     expandView.visibility = View.GONE
                 }
             })
-        }.start()
+        }.also {
+                    this@NotificationCardAnimations.currentAnimation = it
+                }.start()
     }
 
     private fun CardView.flat(expandView: View,
@@ -61,12 +59,16 @@ class NotificationCardAnimations {
             addListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator) {}
                 override fun onAnimationEnd(animation: Animator) {
-                    expandView.alpha = 0f
                     expandView.visibility = View.GONE
                 }
 
-                override fun onAnimationCancel(animation: Animator) {}
-                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationCancel(animation: Animator) {
+                    expandView.visibility = View.GONE
+                }
+
+                override fun onAnimationStart(animation: Animator) {
+                    expandView.visibility = View.GONE
+                }
             })
         }.start()
     }

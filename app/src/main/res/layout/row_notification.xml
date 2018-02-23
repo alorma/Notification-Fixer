@@ -60,7 +60,7 @@
     <LinearLayout
         android:id="@+id/expandedLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/notification_row_expand_height"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/notification_row_flat_height"
         android:orientation="vertical"
         android:visibility="gone"
