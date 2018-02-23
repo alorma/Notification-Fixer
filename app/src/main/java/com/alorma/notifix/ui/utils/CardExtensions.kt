@@ -4,10 +4,9 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.CardView
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -15,54 +14,60 @@ import com.alorma.notifix.R
 
 class NotificationCardAnimations {
 
-    fun toggleElevation(card: CardView, expandView: View? = null) {
+    fun toggleElevation(card: CardView, expandView: View) {
         if (card.cardElevation > 0) {
-            card.flat()
+            card.flat(expandView)
         } else {
             card.lift(expandView)
         }
     }
 
-    private fun CardView.lift(expandView: View? = null,
+    private fun CardView.lift(expandView: View,
                               elevation: Float = resources.getDimension(R.dimen.notification_card_elevation),
                               margin: Int = resources.getDimension(R.dimen.notification_card_margin).toInt(),
                               time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong()) {
-
-        expandView?.let {
-            it.visibility = VISIBLE
-        }
-
-        val expandHeight = resources.getDimension(R.dimen.notification_row_expand_height).toInt()
-        val toHeight = resources.getDimension(R.dimen.notification_card_elevation).toInt() + expandHeight
-
         AnimatorSet().apply {
             duration = time
-            val expandViewAnim = expandView?.animateAlpha(1f, View.VISIBLE)
+            playTogether(animateElevation(elevation), animateMargin(margin))
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
+                    with(expandView) {
+                        animate().alpha(1f)
+                                .setDuration(time)
+                                .setInterpolator(AccelerateDecelerateInterpolator())
+                                .withStartAction {
+                                    expandView.visibility = View.VISIBLE
+                                }
+                                .start()
+                    }
+                }
 
-            if (expandViewAnim != null) {
-                playTogether(animateElevation(elevation), animateMargin(margin), animateHeight(toHeight), expandViewAnim)
-            } else {
-                playTogether(animateElevation(elevation), animateMargin(margin), animateHeight(toHeight))
-            }
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationStart(animation: Animator) {
+                    expandView.alpha = 0f
+                    expandView.visibility = View.GONE
+                }
+            })
         }.start()
     }
 
-    private fun CardView.flat(expandView: View? = null,
-                              toHeight: Int = resources.getDimension(R.dimen.notification_row_flat_height).toInt(),
+    private fun CardView.flat(expandView: View,
                               time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong()) {
-        expandView?.let {
-            it.visibility = INVISIBLE
-        }
 
         AnimatorSet().apply {
             duration = time
-            val expandViewAnim = expandView?.animateAlpha(0f, View.GONE)
+            playTogether(animateElevation(0F), animateMargin(0))
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
+                    expandView.alpha = 0f
+                    expandView.visibility = View.GONE
+                }
 
-            if (expandViewAnim != null) {
-                playTogether(animateElevation(0F), animateMargin(0), animateHeight(toHeight), expandViewAnim)
-            } else {
-                playTogether(animateElevation(0F), animateMargin(0), animateHeight(toHeight))
-            }
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationStart(animation: Animator) {}
+            })
         }.start()
     }
 
