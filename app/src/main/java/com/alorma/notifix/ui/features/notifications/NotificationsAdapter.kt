@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.utils.flat
-import com.alorma.notifix.ui.utils.lift
-import com.alorma.notifix.ui.utils.toggleElevation
+import com.alorma.notifix.ui.utils.NotificationCardAnimations
 import kotlinx.android.synthetic.main.row_notification.view.*
 
 class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecked: Boolean) -> Unit)
     : RecyclerView.Adapter<NotificationsAdapter.Holder>() {
+
+    private val notificationAnimations = NotificationCardAnimations()
 
     private val items = mutableListOf<NotificationViewModel>()
 
@@ -25,7 +25,7 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(items[position], onChange)
+        holder.bind(items[position], onChange, notificationAnimations)
     }
 
     override fun getItemCount(): Int = items.size
@@ -51,7 +51,8 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(viewModel: NotificationViewModel,
-                 onChange: NotificationViewModel.(isChecked: Boolean) -> Unit) {
+                 onChange: NotificationViewModel.(isChecked: Boolean) -> Unit,
+                 notificationAnimations: NotificationCardAnimations) {
 
             with(itemView) {
                 title.text = viewModel.title
@@ -67,7 +68,7 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                 }
 
                 title.setOnClickListener {
-                    notificationCard.toggleElevation()
+                    notificationAnimations.toggleElevation(notificationCard)
                 }
             }
         }
