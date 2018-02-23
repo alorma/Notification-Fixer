@@ -3,5 +3,5 @@
     <dimen name="notification_card_elevation">12dp</dimen>
     <dimen name="notification_card_margin">8dp</dimen>
     <dimen name="notification_row_flat_height">56dp</dimen>
-    <dimen name="notification_row_expand_height">100dp</dimen>
+    <dimen name="notification_row_expand_height">130dp</dimen>
 </resources>

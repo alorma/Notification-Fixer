@@ -68,7 +68,7 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                 }
 
                 title.setOnClickListener {
-                    notificationAnimations.toggleElevation(notificationCard)
+                    notificationAnimations.toggleElevation(notificationCard, expandedLayout)
                 }
             }
         }
