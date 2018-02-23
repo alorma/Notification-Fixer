@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import com.alorma.notifix.R
+import com.alorma.notifix.ui.utils.flat
+import com.alorma.notifix.ui.utils.lift
+import com.alorma.notifix.ui.utils.toggleElevation
 import kotlinx.android.synthetic.main.row_notification.view.*
 
 class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecked: Boolean) -> Unit)
@@ -61,6 +64,10 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                 }
                 colorLabel.apply {
                     setBackgroundColor(ContextCompat.getColor(context, viewModel.color))
+                }
+
+                title.setOnClickListener {
+                    notificationCard.toggleElevation()
                 }
             }
         }
