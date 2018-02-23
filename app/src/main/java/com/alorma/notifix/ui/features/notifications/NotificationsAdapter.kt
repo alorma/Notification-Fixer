@@ -14,8 +14,6 @@ import kotlinx.android.synthetic.main.row_notification.view.*
 class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecked: Boolean) -> Unit)
     : RecyclerView.Adapter<NotificationsAdapter.Holder>() {
 
-    private val notificationAnimations = NotificationCardAnimations()
-
     private val items = mutableListOf<NotificationViewModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -25,7 +23,7 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(items[position], onChange, notificationAnimations)
+        holder.bind(items[position], onChange)
     }
 
     override fun getItemCount(): Int = items.size
@@ -50,9 +48,10 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val animations = NotificationCardAnimations()
+
         fun bind(viewModel: NotificationViewModel,
-                 onChange: NotificationViewModel.(isChecked: Boolean) -> Unit,
-                 notificationAnimations: NotificationCardAnimations) {
+                 onChange: NotificationViewModel.(isChecked: Boolean) -> Unit) {
 
             with(itemView) {
                 title.text = viewModel.title
@@ -68,7 +67,7 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                 }
 
                 title.setOnClickListener {
-                    notificationAnimations.toggleElevation(notificationCard, expandedLayout)
+                    animations.toggleElevation(notificationCard, topLayout, expandedLayout)
                 }
             }
         }
