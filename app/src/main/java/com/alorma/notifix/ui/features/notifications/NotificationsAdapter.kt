@@ -49,16 +49,19 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
 
         fun bind(viewModel: NotificationViewModel,
                  onChange: NotificationViewModel.(isChecked: Boolean) -> Unit) {
-            itemView.switchTitle.apply {
-                text = viewModel.title
-                setOnCheckedChangeListener(null)
-                isChecked = viewModel.checked
-                setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-                    viewModel.onChange(isChecked)
+
+            with(itemView) {
+                title.text = viewModel.title
+                notificationSwitch.apply {
+                    setOnCheckedChangeListener(null)
+                    isChecked = viewModel.checked
+                    setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
+                        viewModel.onChange(isChecked)
+                    }
                 }
-            }
-            itemView.colorLabel.apply {
-                setBackgroundColor(ContextCompat.getColor(context, viewModel.color))
+                colorLabel.apply {
+                    setBackgroundColor(ContextCompat.getColor(context, viewModel.color))
+                }
             }
         }
     }

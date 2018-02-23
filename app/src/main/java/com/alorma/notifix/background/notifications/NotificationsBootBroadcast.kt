@@ -21,9 +21,8 @@ class NotificationsBootBroadcast : BroadcastReceiver() {
     private val disposable: CompositeDisposable by lazy { CompositeDisposable() }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        component inject this
-
         if (intent?.action == Intent.ACTION_BOOT_COMPLETED) {
+            component inject this
             disposable += useCase.execute()
                     .observeOnUI()
                     .subscribe({}, {})
