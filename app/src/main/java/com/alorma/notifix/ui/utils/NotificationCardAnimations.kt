@@ -17,48 +17,63 @@ class NotificationCardAnimations {
     fun toggleElevation(card: CardView, topLayout: View, expandView: View) {
         currentAnimation?.cancel()
         if (card.cardElevation > 0) {
-            card.flat {
-                with(expandView) {
-                    val time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong()
-
-                    AnimatorSet().setDuration(time).apply {
-                        playTogether(
-                                card.animateHeight(topLayout.height),
-                                animateHeight(0))
-                        start()
-                    }
-                }
-            }
+            card.flat(topLayout, expandView)
         } else {
-            card.lift(topLayout, expandView)
+            card.lift(expandView)
         }
     }
 
-    private fun CardView.lift(topLayout: View,
-                              expandView: View,
+    private fun CardView.lift(expandView: View,
                               elevation: Float = resources.getDimension(R.dimen.notification_card_elevation),
+                              radius: Float = resources.getDimension(R.dimen.notification_card_radius),
                               margin: Int = resources.getDimension(R.dimen.notification_card_margin).toInt(),
                               time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong()) {
-        val toHeight = resources.getDimension(R.dimen.notification_row_expand_height).toInt()
-        currentAnimation = AnimatorSet().setDuration(time).apply {
+        val toHeight = resources.getDimension(R.dimen.notification_row_expand_height)
 
+        val anim1 = AnimatorSet().apply {
             playTogether(
                     animateElevation(elevation),
                     animateMargin(margin),
-                    animateHeight(topLayout.height + toHeight),
-                    expandView.animateHeight(toHeight))
-            start()
+                    animateCardRadius(radius),
+                    animateHeight(toHeight.toInt())
+            )
         }
+
+        val anim2 = AnimatorSet().apply {
+            playTogether(
+                    expandView.animateHeight(toHeight.toInt()),
+                    expandView.animateAlpha(1f)
+            )
+        }
+
+        currentAnimation = AnimatorSet().setDuration(time).apply {
+            playTogether(anim1, anim2)
+        }.also { it.start() }
     }
 
-    private fun CardView.flat(time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong(),
-                              animationStart: () -> Unit) {
+    private fun CardView.flat(topLayout: View,
+                              expandView: View,
+                              time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong()) {
 
-        AnimatorSet().apply {
-            duration = time
-            playTogether(animateElevation(0F), animateMargin(0))
-            addListener(AnimatorUtils(animationStart = animationStart))
-        }.start()
+        val anim1 = AnimatorSet().apply {
+            playTogether(
+                    animateElevation(0F),
+                    animateMargin(0),
+                    animateCardRadius(0f),
+                    animateHeight(topLayout.height)
+            )
+        }
+
+        val anim2 = AnimatorSet().apply {
+            playTogether(
+                    expandView.animateAlpha(0f),
+                    expandView.animateHeight(0)
+            )
+        }
+
+        currentAnimation = AnimatorSet().setDuration(time).apply {
+            playTogether(anim1, anim2)
+        }.also { it.start() }
     }
 
     private fun CardView.animateElevation(to: Float) = ObjectAnimator.ofFloat(cardElevation, to)
@@ -66,6 +81,14 @@ class NotificationCardAnimations {
                 interpolator = DecelerateInterpolator()
                 addUpdateListener {
                     cardElevation = it.animatedValue as Float
+                }
+            }
+
+    private fun CardView.animateCardRadius(toRadius: Float) = ObjectAnimator.ofFloat(radius, toRadius)
+            .apply {
+                interpolator = DecelerateInterpolator()
+                addUpdateListener {
+                    radius = it.animatedValue as Float
                 }
             }
 
@@ -92,4 +115,24 @@ class NotificationCardAnimations {
                             }
                         }
                     }
+
+    private fun View.animateTranslationY(toY: Float): ValueAnimator {
+        return ObjectAnimator.ofFloat(0f, toY)
+                .apply {
+                    interpolator = AccelerateDecelerateInterpolator()
+                    addUpdateListener {
+                        layoutParams = layoutParams.apply {
+                            y = it.animatedValue as Float
+                        }
+                    }
+                }
+    }
+
+    private fun View.animateAlpha(toAlpha: Float): ValueAnimator = ObjectAnimator.ofFloat(0f, toAlpha)
+            .apply {
+                interpolator = AccelerateDecelerateInterpolator()
+                addUpdateListener {
+                    alpha = it.animatedValue as Float
+                }
+            }
 }
