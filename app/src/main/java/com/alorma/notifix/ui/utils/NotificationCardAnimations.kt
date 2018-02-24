@@ -128,7 +128,7 @@ class NotificationCardAnimations {
                 }
     }
 
-    private fun View.animateAlpha(toAlpha: Float): ValueAnimator = ObjectAnimator.ofFloat(0f, toAlpha)
+    private fun View.animateAlpha(toAlpha: Float): ValueAnimator = ObjectAnimator.ofFloat(alpha, toAlpha)
             .apply {
                 interpolator = AccelerateDecelerateInterpolator()
                 addUpdateListener {
