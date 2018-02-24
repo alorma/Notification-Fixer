@@ -14,7 +14,7 @@ class NotificationCardAnimations {
 
     private var currentAnimation: AnimatorSet? = null
 
-    fun toggleElevation(card: CardView, topLayout : View, expandView: View) {
+    fun toggleElevation(card: CardView, topLayout: View, expandView: View) {
         currentAnimation?.cancel()
         if (card.cardElevation > 0) {
             card.flat {
@@ -30,29 +30,23 @@ class NotificationCardAnimations {
                 }
             }
         } else {
-            card.lift {
-                with(expandView) {
-                    val toHeight = resources.getDimension(R.dimen.notification_row_expand_height).toInt()
-                    val time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong()
-
-                    AnimatorSet().setDuration(time).apply {
-                        playTogether(
-                                card.animateHeight(topLayout.height + toHeight),
-                                animateHeight(toHeight))
-                        start()
-                    }
-                }
-            }
+            card.lift(topLayout, expandView)
         }
     }
 
-    private fun CardView.lift(elevation: Float = resources.getDimension(R.dimen.notification_card_elevation),
+    private fun CardView.lift(topLayout: View,
+                              expandView: View,
+                              elevation: Float = resources.getDimension(R.dimen.notification_card_elevation),
                               margin: Int = resources.getDimension(R.dimen.notification_card_margin).toInt(),
-                              time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong(),
-                              animationEnd: () -> Unit) {
+                              time: Long = resources.getInteger(R.integer.notification_card_anim_time).toLong()) {
+        val toHeight = resources.getDimension(R.dimen.notification_row_expand_height).toInt()
         currentAnimation = AnimatorSet().setDuration(time).apply {
-            playTogether(animateElevation(elevation), animateMargin(margin))
-            addListener(AnimatorUtils(animationEnd = animationEnd))
+
+            playTogether(
+                    animateElevation(elevation),
+                    animateMargin(margin),
+                    animateHeight(topLayout.height + toHeight),
+                    expandView.animateHeight(toHeight))
             start()
         }
     }
