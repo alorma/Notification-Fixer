@@ -12,6 +12,14 @@
 
     <style name="AddNotification.Button" parent="Widget.AppCompat.Button.Borderless.Colored" />
 
+    <style name="ConfigureNumber" />
+
+    <style name="ConfigureNumber.Button" parent="Widget.AppCompat.Button.Borderless.Colored" />
+
+    <style name="ConfigureNumber.Button.SelectContact" >
+        <item name="android:text">@string/config_num_select_contact</item>
+    </style>
+
     <style name="AddNotification.Stepper" />
 
     <style name="AddNotification.Stepper.Circle">
@@ -24,4 +32,5 @@
     </style>
 
 
+    <string name="config_num_select_contact">Select contact</string>
 </resources>
