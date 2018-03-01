@@ -36,7 +36,6 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         component inject this
 
         presenter init this
-        presenter attach this
 
         toolbar.dsl {
             menu = R.menu.add_notification_menu

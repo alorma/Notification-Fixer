@@ -32,7 +32,6 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
         component add CreateTriggerModule(this) inject this
 
         presenter init this
-        presenter attach this
 
         toolbar.dsl {
             back { action = { finish() } }

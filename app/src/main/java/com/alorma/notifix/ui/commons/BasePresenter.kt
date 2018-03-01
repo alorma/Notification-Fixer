@@ -17,9 +17,12 @@ abstract class BasePresenter<in S : State, in R : Route, in A: Action, in V : Ba
 
     open infix fun init(view: V) {
         this.view = view
+        if (view is LifecycleOwner) {
+            attach(view)
+        }
     }
 
-    open infix fun attach(lifecycle: LifecycleOwner) {
+    private infix fun attach(lifecycle: LifecycleOwner) {
         this.lifecycle = lifecycle.lifecycle.apply {
             addObserver(this@BasePresenter)
         }

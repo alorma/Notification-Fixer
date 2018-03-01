@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         component inject this
 
         presenter.init(this)
-        presenter attach this
 
         initNotificationsService()
         initToolbar()
