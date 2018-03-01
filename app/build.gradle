@@ -50,6 +50,9 @@ dependencies {
 
     implementation dexter
 
+    implementation glide.library
+    kapt glide.compiler
+
     implementation arch.lifecycle.runtime
     kapt arch.lifecycle.compiler
 

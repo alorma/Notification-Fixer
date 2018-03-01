@@ -32,10 +32,7 @@ class AndroidGetContact @Inject constructor(private val context: Context) {
             val email: String? = loadEmail(id)
             val phone: String? = loadPhone(id)
 
-            return Contact(androidId = id,
-                    name = name,
-                    userEmail = email,
-                    userPhone = phone)
+            return Contact(id, name, email, phone)
         } else {
             throw NoSuchElementException()
         }

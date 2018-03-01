@@ -1,7 +1,6 @@
 package com.alorma.notifix.domain.model;
 
-data class Contact(val id: String? = null,
-                   val androidId: String?,
+data class Contact(val id: String,
                    val name: String,
-                   val userEmail: String? = null,
-                   val userPhone: String? = null)
+                   val email: String? = null,
+                   val phone: String? = null)

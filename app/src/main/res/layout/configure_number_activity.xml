@@ -29,4 +29,24 @@
         android:layout_height="wrap_content"
         style="@style/ConfigureNumber.Button.SelectContact"
         android:theme="@style/AppTheme.Inverse"/>
+
+    <ImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/userPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/userEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
