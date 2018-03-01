@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
-import com.alorma.notifix.ui.grantContactsPermission
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.configure_number_activity.*
 import javax.inject.Inject
@@ -37,27 +36,15 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
         }
 
         selectContact.setOnClickListener {
-            presenter action ContactPermissionAction.RequestContactAction()
+            presenter action RequestContactAction()
         }
     }
 
     override fun render(state: CreateTriggerState) {
         when(state) {
-            is RequestContactPermission -> requestContactPermission()
             is DeniedPermissionMessage -> Toast.makeText(this, "Will try later", Toast.LENGTH_SHORT).show()
             is DeniedAlwaysPermissionMessage -> Toast.makeText(this, " :( ", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun requestContactPermission() {
-        grantContactsPermission(
-                onPermissionsGranted = {
-                    presenter action ContactPermissionAction.Approved()
-                },
-                onPermissionDenied = {
-                    presenter action ContactPermissionAction.Denied(it)
-                }
-        )
     }
 
     override fun navigate(route: CreateTriggerRoute) {
