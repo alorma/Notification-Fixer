@@ -30,7 +30,4 @@
     <style name="AddNotification.Stepper.Line">
         <item name="android:src">@drawable/stepper_line</item>
     </style>
-
-
-    <string name="config_num_select_contact">Select contact</string>
 </resources>

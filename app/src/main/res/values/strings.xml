@@ -6,12 +6,13 @@
     <string name="title_activity_add_notification">Add Notification</string>
     <string name="title_activity_add_trigger_notification">Add trigger</string>
     <string name="title_bottom_sheet_add_trigger_notification">Select trigger type</string>
-    <string name="title_activity_configure_phone_trigger">Configure phone</string>
-    <string name="title_activity_configure_sms_trigger">Configure SMS</string>
+    <string name="title_activity_configure_contact_trigger">Configure contact</string>
 
     <string name="trigger_SMS">SMS</string>
     <string name="trigger_PHONE">PHONE</string>
     <string name="trigger_TIME">TIME</string>
     <string name="trigger_ZONE">ZONE</string>
     <string name="menu_close_action">Close</string>
+
+    <string name="config_num_select_contact">Select contact</string>
 </resources>

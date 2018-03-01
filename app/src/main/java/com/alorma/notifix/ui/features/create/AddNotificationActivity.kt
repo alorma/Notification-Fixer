@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.ConfigurePhoneTriggerActivity
-import com.alorma.notifix.ui.features.trigger.ConfigureSmsTriggerActivity
+import com.alorma.notifix.ui.features.trigger.ConfigureNumberTriggerActivity
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
 import com.alorma.notifix.ui.utils.dsl
 import com.alorma.notifix.ui.utils.toast
@@ -110,12 +109,12 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openSmsTrigger() {
-        startActivityForResult(Intent(this, ConfigureSmsTriggerActivity::class.java),
+        startActivityForResult(Intent(this, ConfigureNumberTriggerActivity::class.java),
                 REQUEST_TRIGGER_SMS)
     }
 
     private fun openPhoneTrigger() {
-        startActivityForResult(Intent(this, ConfigurePhoneTriggerActivity::class.java),
+        startActivityForResult(Intent(this, ConfigureNumberTriggerActivity::class.java),
                 REQUEST_TRIGGER_PHONE)
     }
 
