@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.Toast
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
@@ -37,7 +38,11 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
             back { action = { finish() } }
         }
 
-        selectContact.setOnClickListener {
+        fakeContactCard.setOnClickListener {
+            presenter action RequestContactAction()
+        }
+
+        contactCard.setOnClickListener {
             presenter action RequestContactAction()
         }
     }
@@ -78,6 +83,9 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
     }
 
     private fun onContactLoaded(state: ContactLoaded) {
+        contactCard.visibility = View.VISIBLE
+        fakeContactCard.visibility = View.GONE
+
         with(state.contact) {
             GlideApp.with(userAvatar).load(getContactPhoto(id)).into(userAvatar)
             userName.text = name

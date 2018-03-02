@@ -26,4 +26,9 @@
     <color name="brown">#795548</color>
     <color name="grey">#9E9E9E</color>
     <color name="blue_grey">#607D8B</color>
+
+    <color name="fake_grey1">#9E9E9E</color>
+    <color name="fake_grey2">#BDBDBD</color>
+    <color name="fake_grey3">#E0E0E0</color>
+    <color name="fake_grey4">#EEEEEE</color>
 </resources>
