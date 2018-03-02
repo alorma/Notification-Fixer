@@ -15,4 +15,6 @@
     <string name="menu_close_action">Close</string>
 
     <string name="config_num_select_contact">Select contact</string>
+    <string name="no_phone">No phone</string>
+    <string name="no_email">No Email</string>
 </resources>

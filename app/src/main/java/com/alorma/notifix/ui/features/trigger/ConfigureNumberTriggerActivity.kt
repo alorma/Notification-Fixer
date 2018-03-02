@@ -3,9 +3,11 @@ package com.alorma.notifix.ui.features.trigger
 import android.app.Activity
 import android.content.ContentUris
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
@@ -14,6 +16,7 @@ import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
 import com.alorma.notifix.ui.utils.GlideApp
 import com.alorma.notifix.ui.utils.dsl
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.configure_number_activity.*
 import javax.inject.Inject
 
@@ -38,10 +41,16 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
             back { action = { finish() } }
         }
 
-        fakeContactCard.setOnClickListener {
+        val colorDrawable = ColorDrawable(ContextCompat.getColor(this@ConfigureNumberTriggerActivity, R.color.fake_grey1))
+        GlideApp.with(fakeUserAvatar)
+                .load(colorDrawable)
+                .fallback(colorDrawable)
+                .transform(CircleCrop())
+                .into(fakeUserAvatar)
+
+        fakeUserSelectButton.setOnClickListener {
             presenter action RequestContactAction()
         }
-
         contactCard.setOnClickListener {
             presenter action RequestContactAction()
         }
@@ -83,14 +92,20 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
     }
 
     private fun onContactLoaded(state: ContactLoaded) {
-        contactCard.visibility = View.VISIBLE
-        fakeContactCard.visibility = View.GONE
+        contactLayout.visibility = View.VISIBLE
+        fakeContactLayout.visibility = View.GONE
 
         with(state.contact) {
-            GlideApp.with(userAvatar).load(getContactPhoto(id)).into(userAvatar)
+            val colorDrawable = ColorDrawable(ContextCompat.getColor(this@ConfigureNumberTriggerActivity, R.color.fake_grey1))
+            GlideApp.with(userAvatar)
+                    .load(getContactPhoto(id))
+                    .fallback(colorDrawable)
+                    .transform(CircleCrop())
+                    .into(userAvatar)
+
             userName.text = name
-            userPhone.text = phone
-            userEmail.text = email
+            userPhone.text = phone ?: getString(R.string.no_phone)
+            userEmail.text = email ?: getString(R.string.no_email)
         }
     }
 
