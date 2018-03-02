@@ -23,48 +23,20 @@ class AndroidGetContact @Inject constructor(private val context: Context) {
         if (cursor.moveToFirst()) {
             val idIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID)
             val nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+            val phoneIndex = cursor.getColumnIndex(ContactsContract.Contacts.Data.DATA1)
+            val photoIndex = cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI)
 
             val id = cursor.getString(idIndex)
             val name = cursor.getString(nameIndex)
+            val phone = cursor.getString(phoneIndex)
+            val photo = cursor.getString(photoIndex)
 
             cursor.close()
-            
-            val email: String? = loadEmail(id)
-            val phone: String? = loadPhone(id)
 
-            return Contact(id, name, email, phone)
+            return Contact(id, name, phone, photo)
         } else {
             throw NoSuchElementException()
         }
     }
-
-    private fun loadEmail(id: String): String? {
-        val cur1 = contentResolver().query(
-                ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
-                arrayOf(id), null, null)
-        var email: String? = null
-        if (cur1.moveToFirst()) {
-            email = cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
-        }
-
-        cur1.close()
-        return email
-    }
-
-    private fun loadPhone(id: String): String? {
-        val cur1 = contentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                arrayOf(id), null, null)
-        var phone: String? = null
-        if (cur1.moveToFirst()) {
-            phone = cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA))
-        }
-
-        cur1.close()
-        return phone
-    }
-
     private fun contentResolver(): ContentResolver = context.contentResolver
 }

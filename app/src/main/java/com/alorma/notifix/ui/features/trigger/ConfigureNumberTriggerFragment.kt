@@ -86,8 +86,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
     }
 
     private fun openContactPicker() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = ContactsContract.Contacts.CONTENT_TYPE
+        val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
         startActivityForResult(intent, REQ_CONTACT_DIRECTORY)
     }
 
@@ -114,7 +113,6 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
             loadAvatar(this)
             userName.text = name
             userPhone.text = phone ?: getString(R.string.no_phone)
-            userEmail.text = email ?: getString(R.string.no_email)
         }
     }
 
@@ -122,7 +120,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
         context?.let {
             val colorDrawable = ColorDrawable(ContextCompat.getColor(it, R.color.fake_grey1))
             GlideApp.with(userAvatar)
-                    .load(getContactPhoto(contact.id))
+                    .load(contact.photo)
                     .fallback(colorDrawable)
                     .transform(CircleCrop())
                     .into(userAvatar)
