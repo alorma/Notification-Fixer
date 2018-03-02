@@ -3,24 +3,27 @@ package com.alorma.notifix.ui.features.trigger
 import android.app.Activity
 import android.content.ContentUris
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
+import com.alorma.notifix.domain.model.Contact
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
 import com.alorma.notifix.ui.utils.GlideApp
-import com.alorma.notifix.ui.utils.dsl
+import com.alorma.notifix.ui.utils.toast
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.configure_number_activity.*
 import javax.inject.Inject
 
-class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
+class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
 
     companion object {
         private const val REQ_CONTACT_DIRECTORY = 110
@@ -29,37 +32,49 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
     @Inject
     lateinit var presenter: CreateTriggerPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.configure_number_activity)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        return inflater.inflate(R.layout.configure_number_activity, null, false)
+    }
 
-        component add CreateTriggerModule(this) inject this
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        presenter init this
+        activity?.let {
+            component add CreateTriggerModule(it) inject this
 
-        toolbar.dsl {
-            back { action = { finish() } }
+            presenter init this
+
+            loadDefaultAvatar()
+
+            fakeUserSelectButton.setOnClickListener {
+                presenter action RequestContactAction()
+            }
+            contactCard.setOnClickListener {
+                presenter action RequestContactAction()
+            }
+            userSelectButton.setOnClickListener {
+
+            }
         }
+    }
 
-        val colorDrawable = ColorDrawable(ContextCompat.getColor(this@ConfigureNumberTriggerActivity, R.color.fake_grey1))
-        GlideApp.with(fakeUserAvatar)
-                .load(colorDrawable)
-                .fallback(colorDrawable)
-                .transform(CircleCrop())
-                .into(fakeUserAvatar)
-
-        fakeUserSelectButton.setOnClickListener {
-            presenter action RequestContactAction()
-        }
-        contactCard.setOnClickListener {
-            presenter action RequestContactAction()
+    private fun loadDefaultAvatar() {
+        context?.let {
+            val colorDrawable = ColorDrawable(ContextCompat.getColor(it, R.color.fake_grey1))
+            GlideApp.with(fakeUserAvatar)
+                    .load(colorDrawable)
+                    .fallback(colorDrawable)
+                    .transform(CircleCrop())
+                    .into(fakeUserAvatar)
         }
     }
 
     override fun render(state: CreateTriggerState) {
         when (state) {
-            is DeniedPermissionMessage -> Toast.makeText(this, "Will try later", Toast.LENGTH_SHORT).show()
-            is DeniedAlwaysPermissionMessage -> Toast.makeText(this, " :( ", Toast.LENGTH_SHORT).show()
+            is DeniedPermissionMessage -> context.toast("Will try later")
+            is DeniedAlwaysPermissionMessage -> context.toast(" :( ")
             is ContactLoaded -> onContactLoaded(state)
         }
     }
@@ -96,16 +111,21 @@ class ConfigureNumberTriggerActivity : AppCompatActivity(), CreateTriggerView {
         fakeContactLayout.visibility = View.GONE
 
         with(state.contact) {
-            val colorDrawable = ColorDrawable(ContextCompat.getColor(this@ConfigureNumberTriggerActivity, R.color.fake_grey1))
-            GlideApp.with(userAvatar)
-                    .load(getContactPhoto(id))
-                    .fallback(colorDrawable)
-                    .transform(CircleCrop())
-                    .into(userAvatar)
-
+            loadAvatar(this)
             userName.text = name
             userPhone.text = phone ?: getString(R.string.no_phone)
             userEmail.text = email ?: getString(R.string.no_email)
+        }
+    }
+
+    private fun loadAvatar(contact: Contact) {
+        context?.let {
+            val colorDrawable = ColorDrawable(ContextCompat.getColor(it, R.color.fake_grey1))
+            GlideApp.with(userAvatar)
+                    .load(getContactPhoto(contact.id))
+                    .fallback(colorDrawable)
+                    .transform(CircleCrop())
+                    .into(userAvatar)
         }
     }
 

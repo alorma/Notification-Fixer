@@ -24,9 +24,6 @@
             android:name=".ui.features.create.AddNotificationActivity"
             android:label="@string/title_activity_add_notification"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.features.trigger.ConfigureNumberTriggerActivity"
-            android:label="@string/title_activity_configure_contact_trigger"
-            android:theme="@style/AppTheme" />
         <receiver android:name=".background.notifications.NotificationsBootBroadcast"
             android:enabled="true"
             android:exported="true"

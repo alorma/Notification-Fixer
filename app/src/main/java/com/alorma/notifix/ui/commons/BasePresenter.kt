@@ -7,13 +7,13 @@ import android.arch.lifecycle.OnLifecycleEvent
 import com.alorma.notifix.data.Logger
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BasePresenter<in S : State, in R : Route, in A: Action, in V : BaseView<S, R>>(private val logger: Logger)
+abstract class BasePresenter<in S : State, in R : Route, in A : Action, in V : BaseView<S, R>>(private val logger: Logger)
     : LifecycleObserver {
 
     internal val disposables: CompositeDisposable = CompositeDisposable()
 
     private lateinit var view: V
-    private lateinit var lifecycle: Lifecycle
+    private var lifecycle: Lifecycle? = null
 
     open infix fun init(view: V) {
         this.view = view
@@ -22,7 +22,7 @@ abstract class BasePresenter<in S : State, in R : Route, in A: Action, in V : Ba
         }
     }
 
-    private infix fun attach(lifecycle: LifecycleOwner) {
+    infix fun attach(lifecycle: LifecycleOwner) {
         this.lifecycle = lifecycle.lifecycle.apply {
             addObserver(this@BasePresenter)
         }
@@ -32,7 +32,9 @@ abstract class BasePresenter<in S : State, in R : Route, in A: Action, in V : Ba
 
     @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
     open fun onAny() {
-        logger.d("${this.javaClass.simpleName} - ${lifecycle.currentState}")
+        if (lifecycle?.currentState != Lifecycle.State.DESTROYED) {
+            logger.d("${this.javaClass.simpleName} - ${lifecycle?.currentState}")
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -62,7 +64,7 @@ abstract class BasePresenter<in S : State, in R : Route, in A: Action, in V : Ba
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onDestroy() {
-        lifecycle.removeObserver(this)
+        lifecycle?.removeObserver(this)
         destroy()
     }
 

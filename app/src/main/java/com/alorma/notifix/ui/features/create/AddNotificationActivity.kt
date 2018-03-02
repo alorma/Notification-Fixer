@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.ConfigureNumberTriggerActivity
+import com.alorma.notifix.ui.features.trigger.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
 import com.alorma.notifix.ui.utils.dsl
 import com.alorma.notifix.ui.utils.toast
@@ -25,8 +25,8 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     lateinit var presenter: CreateNotificationPresenter
 
     companion object {
-        private const val REQUEST_TRIGGER_PHONE = 112
-        private const val REQUEST_TRIGGER_SMS = 113
+        private const val REQUEST_TRIGGER_PHONE = "PHONE"
+        private const val REQUEST_TRIGGER_SMS = "SMS"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,14 +107,12 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         }
     }
 
-    private fun openSmsTrigger() {
-        startActivityForResult(Intent(this, ConfigureNumberTriggerActivity::class.java),
-                REQUEST_TRIGGER_SMS)
+    private fun openPhoneTrigger() {
+        ConfigureNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_PHONE)
     }
 
-    private fun openPhoneTrigger() {
-        startActivityForResult(Intent(this, ConfigureNumberTriggerActivity::class.java),
-                REQUEST_TRIGGER_PHONE)
+    private fun openSmsTrigger() {
+        ConfigureNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_SMS)
     }
 
     private fun onSaveSuccess() {

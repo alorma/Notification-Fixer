@@ -1,14 +1,9 @@
 package com.alorma.notifix.ui.features.trigger.di
 
-import com.alorma.notifix.ui.features.trigger.ConfigureNumberTriggerActivity
+import com.alorma.notifix.ui.features.trigger.ConfigureNumberTriggerFragment
 import dagger.Subcomponent
 
 @Subcomponent(modules = [(CreateTriggerModule::class)])
 interface CreateTriggerComponent {
-
-    //infix fun inject(activity: ConfigurePhoneTriggerActivity)
-    //infix fun inject(activity: ConfigureSmsTriggerActivity)
-
-    infix fun inject(activity: ConfigureNumberTriggerActivity)
-
+    infix fun inject(fragment: ConfigureNumberTriggerFragment)
 }
