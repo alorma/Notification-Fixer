@@ -1,12 +1,11 @@
 package com.alorma.notifix.ui.features.create
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.ConfigureNumberTriggerFragment
+import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
 import com.alorma.notifix.ui.utils.dsl
 import com.alorma.notifix.ui.utils.toast

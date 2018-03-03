@@ -1,8 +1,7 @@
-package com.alorma.notifix.ui.features.trigger
+package com.alorma.notifix.ui.features.trigger.number
 
 import com.alorma.notifix.data.Logger
 import com.alorma.notifix.data.framework.AndroidGetContact
-import com.alorma.notifix.domain.model.Contact
 import com.alorma.notifix.ui.commons.BasePresenter
 import com.alorma.notifix.ui.utils.observeOnUI
 import com.alorma.notifix.ui.utils.plusAssign
@@ -15,7 +14,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.BasePermissionListener
 import javax.inject.Inject
 
-class CreateTriggerPresenter @Inject constructor(
+class CreateNumberTriggerPresenter @Inject constructor(
         private val permissionRequest: DexterBuilder.SinglePermissionListener,
         private val androidGetContact: AndroidGetContact,
         val logger: Logger)
@@ -23,22 +22,22 @@ class CreateTriggerPresenter @Inject constructor(
 
     override fun action(action: CreateTriggerAction) {
         when (action) {
-            is RequestContactAction -> onContactRequest()
-            is ContactImportAction -> onContactImport(action)
+            is CreateTriggerAction.RequestContactAction -> onContactRequest()
+            is CreateTriggerAction.ContactImportAction -> onContactImport(action)
         }
     }
 
     private fun onContactRequest() {
         permissionRequest.withListener(object : BasePermissionListener() {
             override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                navigate(SelectContact())
+                navigate(CreateTriggerRoute.SelectContact())
             }
 
             override fun onPermissionDenied(response: PermissionDeniedResponse) {
                 render(if (response.isPermanentlyDenied) {
-                    DeniedAlwaysPermissionMessage()
+                    CreateTriggerState.DeniedAlwaysPermissionMessage()
                 } else {
-                    DeniedPermissionMessage()
+                    CreateTriggerState.DeniedPermissionMessage()
                 })
             }
 
@@ -48,12 +47,12 @@ class CreateTriggerPresenter @Inject constructor(
         }).check()
     }
 
-    private fun onContactImport(action: ContactImportAction) {
+    private fun onContactImport(action: CreateTriggerAction.ContactImportAction) {
         disposables += androidGetContact.loadContact(action.uri)
                 .subscribeOnIO()
                 .observeOnUI()
                 .subscribe({
-                    render(ContactLoaded(it))
+                    render(CreateTriggerState.ContactLoaded(it))
                 }, {
                     logger.e("Contact error: $it", it)
                 })

@@ -1,4 +1,4 @@
-package com.alorma.notifix.ui.features.trigger
+package com.alorma.notifix.ui.features.trigger.number
 
 import android.app.Activity
 import android.content.ContentUris
@@ -30,7 +30,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
     }
 
     @Inject
-    lateinit var presenter: CreateTriggerPresenter
+    lateinit var presenterNumber: CreateNumberTriggerPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -44,15 +44,15 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
         activity?.let {
             component add CreateTriggerModule(it) inject this
 
-            presenter init this
+            presenterNumber init this
 
             loadDefaultAvatar()
 
             fakeUserSelectButton.setOnClickListener {
-                presenter action RequestContactAction()
+                presenterNumber action CreateTriggerAction.RequestContactAction()
             }
             contactCard.setOnClickListener {
-                presenter action RequestContactAction()
+                presenterNumber action CreateTriggerAction.RequestContactAction()
             }
             userSelectButton.setOnClickListener {
 
@@ -73,15 +73,15 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
 
     override fun render(state: CreateTriggerState) {
         when (state) {
-            is DeniedPermissionMessage -> context.toast("Will try later")
-            is DeniedAlwaysPermissionMessage -> context.toast(" :( ")
-            is ContactLoaded -> onContactLoaded(state)
+            is CreateTriggerState.DeniedPermissionMessage -> context.toast("Will try later")
+            is CreateTriggerState.DeniedAlwaysPermissionMessage -> context.toast(" :( ")
+            is CreateTriggerState.ContactLoaded -> onContactLoaded(state)
         }
     }
 
     override fun navigate(route: CreateTriggerRoute) {
         when (route) {
-            is SelectContact -> openContactPicker()
+            is CreateTriggerRoute.SelectContact -> openContactPicker()
         }
     }
 
@@ -97,7 +97,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
                         data?.data?.let {
-                            presenter action ContactImportAction(it)
+                            presenterNumber action CreateTriggerAction.ContactImportAction(it)
                         }
                     }
                 }
@@ -105,7 +105,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateTriggerView {
         }
     }
 
-    private fun onContactLoaded(state: ContactLoaded) {
+    private fun onContactLoaded(state: CreateTriggerState.ContactLoaded) {
         contactLayout.visibility = View.VISIBLE
         fakeContactLayout.visibility = View.GONE
 
