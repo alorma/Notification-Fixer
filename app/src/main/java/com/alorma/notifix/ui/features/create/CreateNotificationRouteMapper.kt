@@ -6,9 +6,9 @@ import javax.inject.Inject
 class CreateNotificationRouteMapper @Inject constructor() {
     fun mapComplete() = SuccessGoBack()
     fun mapTrigger(type: TriggerType): CreateNotificationRoute = when(type) {
-        Sms -> SmsTrigger()
-        Phone -> PhoneTrigger()
-        Time -> TimeTrigger()
-        Zone -> ZoneTrigger()
+        Sms -> ConfigureTrigger.SmsTrigger()
+        Phone -> ConfigureTrigger.PhoneTrigger()
+        Time -> ConfigureTrigger.TimeTrigger()
+        Zone -> ConfigureTrigger.ZoneTrigger()
     }
 }

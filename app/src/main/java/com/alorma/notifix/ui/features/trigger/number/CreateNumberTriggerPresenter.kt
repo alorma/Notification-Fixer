@@ -18,26 +18,26 @@ class CreateNumberTriggerPresenter @Inject constructor(
         private val permissionRequest: DexterBuilder.SinglePermissionListener,
         private val androidGetContact: AndroidGetContact,
         val logger: Logger)
-    : BasePresenter<CreateTriggerState, CreateTriggerRoute, CreateTriggerAction, CreateTriggerView>(logger) {
+    : BasePresenter<CreateNumberTriggerState, CreateNumberTriggerRoute, CreateNumberTriggerAction, CreateNumberTriggerView>(logger) {
 
-    override fun action(action: CreateTriggerAction) {
+    override fun action(action: CreateNumberTriggerAction) {
         when (action) {
-            is CreateTriggerAction.RequestContactAction -> onContactRequest()
-            is CreateTriggerAction.ContactImportAction -> onContactImport(action)
+            is CreateNumberTriggerAction.RequestContactActionNumber -> onContactRequest()
+            is CreateNumberTriggerAction.ContactImportActionNumber -> onContactImport(action)
         }
     }
 
     private fun onContactRequest() {
         permissionRequest.withListener(object : BasePermissionListener() {
             override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                navigate(CreateTriggerRoute.SelectContact())
+                navigate(CreateNumberTriggerRoute.SelectContact())
             }
 
             override fun onPermissionDenied(response: PermissionDeniedResponse) {
                 render(if (response.isPermanentlyDenied) {
-                    CreateTriggerState.DeniedAlwaysPermissionMessage()
+                    CreateNumberTriggerState.DeniedAlwaysPermissionMessage()
                 } else {
-                    CreateTriggerState.DeniedPermissionMessage()
+                    CreateNumberTriggerState.DeniedPermissionMessage()
                 })
             }
 
@@ -47,12 +47,12 @@ class CreateNumberTriggerPresenter @Inject constructor(
         }).check()
     }
 
-    private fun onContactImport(action: CreateTriggerAction.ContactImportAction) {
-        disposables += androidGetContact.loadContact(action.uri)
+    private fun onContactImport(actionNumber: CreateNumberTriggerAction.ContactImportActionNumber) {
+        disposables += androidGetContact.loadContact(actionNumber.uri)
                 .subscribeOnIO()
                 .observeOnUI()
                 .subscribe({
-                    render(CreateTriggerState.ContactLoaded(it))
+                    render(CreateNumberTriggerState.ContactLoaded(it))
                 }, {
                     logger.e("Contact error: $it", it)
                 })

@@ -3,12 +3,13 @@ package com.alorma.notifix.ui.features.create
 import com.alorma.notifix.ui.commons.Route
 
 sealed class CreateNotificationRoute : Route()
-class SuccessGoBack: CreateNotificationRoute()
+class SuccessGoBack : CreateNotificationRoute()
 
-class SelectTrigger: CreateNotificationRoute()
+class SelectTrigger : CreateNotificationRoute()
 
-sealed class ConfigureTrigger : CreateNotificationRoute()
-class SmsTrigger: ConfigureTrigger()
-class PhoneTrigger: ConfigureTrigger()
-class TimeTrigger: ConfigureTrigger()
-class ZoneTrigger: ConfigureTrigger()
+sealed class ConfigureTrigger : CreateNotificationRoute() {
+    class SmsTrigger : ConfigureTrigger()
+    class PhoneTrigger : ConfigureTrigger()
+    class TimeTrigger : ConfigureTrigger()
+    class ZoneTrigger : ConfigureTrigger()
+}

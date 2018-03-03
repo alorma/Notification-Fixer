@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
+import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
+import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
 import com.alorma.notifix.ui.utils.dsl
 import com.alorma.notifix.ui.utils.toast
 import kotlinx.android.synthetic.main.activity_add_notification.*
@@ -26,6 +27,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     companion object {
         private const val REQUEST_TRIGGER_PHONE = "PHONE"
         private const val REQUEST_TRIGGER_SMS = "SMS"
+        private const val REQUEST_TRIGGER_TIME = "TIME"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,19 +101,23 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
 
     private fun openConfTrigger(route: ConfigureTrigger) {
         when (route) {
-            is SmsTrigger -> openSmsTrigger()
-            is PhoneTrigger -> openPhoneTrigger()
-            is TimeTrigger -> toast("Not yet...")
-            is ZoneTrigger -> toast("Not yet...")
+            is ConfigureTrigger.SmsTrigger -> openSmsTrigger()
+            is ConfigureTrigger.PhoneTrigger -> openPhoneTrigger()
+            is ConfigureTrigger.TimeTrigger -> openTimeTrigger()
+            is ConfigureTrigger.ZoneTrigger -> toast("Not yet...")
         }
     }
 
     private fun openPhoneTrigger() {
-        ConfigureNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_PHONE)
+        ConfigureNumberNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_PHONE)
     }
 
     private fun openSmsTrigger() {
-        ConfigureNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_SMS)
+        ConfigureNumberNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_SMS)
+    }
+
+    private fun openTimeTrigger() {
+        ConfigureTimeTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_TIME)
     }
 
     private fun onSaveSuccess() {

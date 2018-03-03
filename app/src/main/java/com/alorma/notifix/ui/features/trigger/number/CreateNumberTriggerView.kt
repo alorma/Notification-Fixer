@@ -7,19 +7,19 @@ import com.alorma.notifix.ui.commons.BaseView
 import com.alorma.notifix.ui.commons.Route
 import com.alorma.notifix.ui.commons.State
 
-sealed class CreateTriggerAction : Action() {
-    class RequestContactAction : CreateTriggerAction()
-    class ContactImportAction(val uri: Uri) : CreateTriggerAction()
+sealed class CreateNumberTriggerAction : Action() {
+    class RequestContactActionNumber : CreateNumberTriggerAction()
+    class ContactImportActionNumber(val uri: Uri) : CreateNumberTriggerAction()
 }
 
-sealed class CreateTriggerRoute : Route() {
-    class SelectContact : CreateTriggerRoute()
+sealed class CreateNumberTriggerRoute : Route() {
+    class SelectContact : CreateNumberTriggerRoute()
 }
 
-sealed class CreateTriggerState : State() {
-    class DeniedPermissionMessage : CreateTriggerState()
-    class DeniedAlwaysPermissionMessage : CreateTriggerState()
-    class ContactLoaded(val contact: Contact) : CreateTriggerState()
+sealed class CreateNumberTriggerState : State() {
+    class DeniedPermissionMessage : CreateNumberTriggerState()
+    class DeniedAlwaysPermissionMessage : CreateNumberTriggerState()
+    class ContactLoaded(val contact: Contact) : CreateNumberTriggerState()
 }
 
-interface CreateTriggerView : BaseView<CreateTriggerState, CreateTriggerRoute>
+interface CreateNumberTriggerView : BaseView<CreateNumberTriggerState, CreateNumberTriggerRoute>
