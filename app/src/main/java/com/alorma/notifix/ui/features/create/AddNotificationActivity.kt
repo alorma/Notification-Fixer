@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
+import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
+import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerFragment
 import com.alorma.notifix.ui.utils.dsl
-import com.alorma.notifix.ui.utils.toast
 import kotlinx.android.synthetic.main.activity_add_notification.*
 import kotlinx.android.synthetic.main.add_item_button.*
 import kotlinx.android.synthetic.main.add_item_colors.*
@@ -28,6 +28,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         private const val REQUEST_TRIGGER_PHONE = "PHONE"
         private const val REQUEST_TRIGGER_SMS = "SMS"
         private const val REQUEST_TRIGGER_TIME = "TIME"
+        private const val REQUEST_TRIGGER_ZONE = "ZONE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +105,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
             is ConfigureTrigger.SmsTrigger -> openSmsTrigger()
             is ConfigureTrigger.PhoneTrigger -> openPhoneTrigger()
             is ConfigureTrigger.TimeTrigger -> openTimeTrigger()
-            is ConfigureTrigger.ZoneTrigger -> toast("Not yet...")
+            is ConfigureTrigger.ZoneTrigger -> openZoneTrigger()
         }
     }
 
@@ -118,6 +119,10 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
 
     private fun openTimeTrigger() {
         ConfigureTimeTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_TIME)
+    }
+
+    private fun openZoneTrigger() {
+        ConfigureZoneTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_ZONE)
     }
 
     private fun onSaveSuccess() {

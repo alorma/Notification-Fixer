@@ -16,6 +16,7 @@
 
     <string name="config_num_select_contact">Select contact</string>
     <string name="config_time">Select time</string>
+    <string name="config_zone">Select location</string>
     <string name="use_num_select_contact">Use contact</string>
     <string name="no_phone">No phone</string>
 </resources>
