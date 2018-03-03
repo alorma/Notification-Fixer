@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.alorma.notifix.NotifixApplication
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
+import kotlinx.android.synthetic.main.configure_time_fragment.*
 import javax.inject.Inject
 
 class ConfigureTimeTriggerFragment : DialogFragment(), CreateTimeTriggerView {
@@ -30,6 +31,14 @@ class ConfigureTimeTriggerFragment : DialogFragment(), CreateTimeTriggerView {
         return inflater.inflate(R.layout.configure_time_fragment, null, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        selectTime.setOnClickListener {
+            presenter action CreateTimeTriggerAction.TimeSelectedAction(timePicker.hour, timePicker.minute)
+        }
+    }
+
     override fun render(state: CreateTimeTriggerState) {
 
     }
@@ -37,5 +46,4 @@ class ConfigureTimeTriggerFragment : DialogFragment(), CreateTimeTriggerView {
     override fun navigate(route: CreateTimeTriggerRoute) {
 
     }
-
 }

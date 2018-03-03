@@ -20,6 +20,14 @@
         <item name="android:text">@string/config_num_select_contact</item>
     </style>
 
+    <style name="ConfigureTime" />
+
+    <style name="ConfigureTime.Button" parent="Widget.AppCompat.Button.Borderless.Colored" />
+
+    <style name="ConfigureTime.Button.SelectTime" >
+        <item name="android:text">@string/config_time</item>
+    </style>
+
     <style name="AddNotification.Stepper" />
 
     <style name="AddNotification.Stepper.Circle">

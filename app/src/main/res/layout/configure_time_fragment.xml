@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.v7.widget.CardView
         android:id="@+id/contactCard"
         android:layout_width="360dp"
@@ -13,10 +12,27 @@
         app:cardElevation="8dp"
         app:cardUseCompatPadding="true">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:text="Patata"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.Inverse" />
+
+            <Button
+                android:id="@+id/selectTime"
+                style="@style/ConfigureTime.Button.SelectTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:theme="@style/AppTheme.Inverse"/>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 

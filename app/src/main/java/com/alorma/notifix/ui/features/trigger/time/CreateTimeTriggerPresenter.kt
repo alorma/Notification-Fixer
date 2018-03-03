@@ -10,8 +10,11 @@ class CreateTimeTriggerPresenter @Inject constructor(
 
     override fun action(action: CreateTimeTriggerAction) {
         when (action) {
-
+            is CreateTimeTriggerAction.TimeSelectedAction -> onTimeSelected(action)
         }
     }
 
+    private fun onTimeSelected(action: CreateTimeTriggerAction.TimeSelectedAction) {
+
+    }
 }

@@ -6,7 +6,7 @@ import com.alorma.notifix.ui.commons.Route
 import com.alorma.notifix.ui.commons.State
 
 sealed class CreateTimeTriggerAction : Action() {
-
+    class TimeSelectedAction(val hour: Int, val minute: Int) : CreateTimeTriggerAction()
 }
 
 sealed class CreateTimeTriggerRoute : Route() {

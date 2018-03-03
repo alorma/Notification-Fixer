@@ -21,7 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.configure_number_fragment.*
 import javax.inject.Inject
 
-class ConfigureNumberNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView {
+class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView {
 
     companion object {
         private const val REQ_CONTACT_DIRECTORY = 110
