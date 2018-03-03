@@ -28,13 +28,13 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
     }
 
     @Inject
-    lateinit var presenterNumber: CreateNumberTriggerPresenter
+    lateinit var presenter: CreateNumberTriggerPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.let {
             component add CreateTriggerModule(it) inject this
-            presenterNumber init this
+            presenter init this
         }
     }
 
@@ -51,10 +51,10 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
             loadDefaultAvatar()
 
             fakeUserSelectButton.setOnClickListener {
-                presenterNumber action CreateNumberTriggerAction.RequestContactActionNumber()
+                presenter action CreateNumberTriggerAction.RequestContactActionNumber()
             }
             contactCard.setOnClickListener {
-                presenterNumber action CreateNumberTriggerAction.RequestContactActionNumber()
+                presenter action CreateNumberTriggerAction.RequestContactActionNumber()
             }
             userSelectButton.setOnClickListener {
 
@@ -99,7 +99,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
                 when (resultCode) {
                     Activity.RESULT_OK -> {
                         data?.data?.let {
-                            presenterNumber action CreateNumberTriggerAction.ContactImportActionNumber(it)
+                            presenter action CreateNumberTriggerAction.ContactImportActionNumber(it)
                         }
                     }
                 }

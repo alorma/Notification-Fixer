@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".NotifixApplication"
@@ -24,7 +25,9 @@
             android:name=".ui.features.create.AddNotificationActivity"
             android:label="@string/title_activity_add_notification"
             android:theme="@style/AppTheme" />
-        <receiver android:name=".background.notifications.NotificationsBootBroadcast"
+
+        <receiver
+            android:name=".background.notifications.NotificationsBootBroadcast"
             android:enabled="true"
             android:exported="true"
             android:label="NotificationsBootBroadcast">

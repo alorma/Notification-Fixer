@@ -80,4 +80,13 @@ ext {
 
     def dexterVersion = '4.2.0'
     dexter = "com.karumi:dexter:$dexterVersion"
+
+    playServices = [
+            maps: "com.google.android.gms:play-services-maps:11.8.0"
+    ]
+
+    mapbox = [
+            library : "com.mapbox.mapboxsdk:mapbox-android-sdk:5.5.0",
+            location: "com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.3.0"
+    ]
 }
