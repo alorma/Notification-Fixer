@@ -3,6 +3,7 @@ package com.alorma.notifix.ui.features.trigger.zone
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
@@ -15,17 +16,25 @@ import com.alorma.notifix.ui.utils.toast
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.services.android.telemetry.location.AndroidLocationEngine
+import com.mapbox.services.android.telemetry.location.LocationEngine
+import com.mapbox.services.android.telemetry.location.LocationEngineListener
+import com.mapbox.services.android.telemetry.location.LocationEnginePriority
 import kotlinx.android.synthetic.main.configure_zone_fragment.*
 import javax.inject.Inject
 
 
-class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView {
-
+class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, LocationEngineListener {
     @Inject
     lateinit var presenter: CreateZoneTriggerPresenter
 
     private lateinit var map: MapboxMap
+    private var currentMarker: Marker? = null
+    private var locationEngine: LocationEngine? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +59,6 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView {
         mapView.getMapAsync {
             it?.let {
                 map = it
-
                 presenter action CreateZoneTriggerAction.OnMapReadyAction()
             }
         }
@@ -76,19 +84,40 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView {
         }
     }
 
-    private var currentMarker: Marker? = null
-
     @SuppressLint("MissingPermission")
     private fun onMapAllowed() {
-        map.addOnMapClickListener { latLng ->
-            currentMarker?.let {
-                map.removeMarker(it)
-            }
-            currentMarker = MarkerOptions().position(latLng).let {
-                map.addMarker(it)
-            }
-            selectZone.isEnabled = true
+        locationEngine = AndroidLocationEngine(context).apply {
+            priority = LocationEnginePriority.HIGH_ACCURACY
+            activate()
+
+            lastLocation?.let {
+                setupPositionMarker(LatLng(it.latitude, it.longitude))
+            } ?: addLocationEngineListener(this@ConfigureZoneTriggerFragment)
+
         }
+        map.addOnMapClickListener { latLng ->
+            setupPositionMarker(latLng)
+        }
+    }
+
+    private fun setupPositionMarker(latLng: LatLng) {
+        CameraPosition.Builder().apply {
+            target(latLng)
+            zoom(15.toDouble())
+        }.build().let {
+            CameraUpdateFactory.newCameraPosition(it)
+        }.run { map.moveCamera(this) }
+
+        locationEngine?.removeLocationEngineListener(this)
+
+        currentMarker?.let {
+            map.removeMarker(it)
+        }
+
+        currentMarker = MarkerOptions().position(latLng).let {
+            map.addMarker(it)
+        }
+        selectZone.isEnabled = true
     }
 
     private fun onMapDenied() {
@@ -98,6 +127,18 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView {
     private fun onMapDeniedAlways() {
         context?.toast("Location disabled")
     }
+
+    @SuppressLint("MissingPermission")
+    override fun onConnected() {
+        locationEngine?.requestLocationUpdates()
+    }
+
+    override fun onLocationChanged(location: Location?) {
+        location?.let {
+            setupPositionMarker(LatLng(it.latitude, it.longitude))
+        }
+    }
+
 
     override fun navigate(route: CreateZoneTriggerRoute) {
 
@@ -120,6 +161,7 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView {
 
     override fun onStop() {
         super.onStop()
+        locationEngine?.removeLocationUpdates()
         mapView.onStop()
     }
 
@@ -130,6 +172,7 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView {
 
     override fun onDestroy() {
         mapView?.onDestroy()
+        locationEngine?.deactivate()
         super.onDestroy()
     }
 
