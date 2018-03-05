@@ -1,14 +1,20 @@
 package com.alorma.notifix.ui.features.trigger.zone
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.TypeEvaluator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnticipateOvershootInterpolator
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
@@ -20,12 +26,20 @@ import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.services.android.telemetry.location.*
+import com.mapbox.services.android.telemetry.location.LocationEngine
+import com.mapbox.services.android.telemetry.location.LocationEngineListener
+import com.mapbox.services.android.telemetry.location.LocationEnginePriority
+import com.mapbox.services.android.telemetry.location.LocationEngineProvider
 import kotlinx.android.synthetic.main.configure_zone_fragment.*
 import javax.inject.Inject
 
 
 class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, LocationEngineListener {
+
+    companion object {
+        private const val ANIMATION_DELAY_FACTOR = 1.5
+    }
+
     @Inject
     lateinit var presenter: CreateZoneTriggerPresenter
 
@@ -98,23 +112,35 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, Lo
     }
 
     private fun setupPositionMarker(latLng: LatLng) {
-        CameraPosition.Builder().apply {
-            target(latLng)
-            zoom(15.toDouble())
-        }.build().let {
-            CameraUpdateFactory.newCameraPosition(it)
-        }.run { map.moveCamera(this) }
 
         locationEngine?.removeLocationEngineListener(this)
 
         currentMarker?.let {
             map.removeMarker(it)
-        }
+            animateMapPosition(latLng)
+        } ?: moveDirectTo(latLng)
 
         currentMarker = MarkerOptions().position(latLng).let {
             map.addMarker(it)
         }
         selectZone.isEnabled = true
+    }
+
+    private fun animateMapPosition(latLng: LatLng) {
+        createMapAnimator(map.cameraPosition, createCameraPosition(latLng)).start()
+    }
+
+    private fun moveDirectTo(latLng: LatLng) {
+        createCameraPosition(latLng).let {
+            CameraUpdateFactory.newCameraPosition(it)
+        }.run { map.moveCamera(this) }
+    }
+
+    private fun createCameraPosition(latLng: LatLng): CameraPosition {
+        return CameraPosition.Builder().apply {
+            target(latLng)
+            zoom(15.toDouble())
+        }.build()
     }
 
     private fun onMapDenied() {
@@ -136,6 +162,43 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, Lo
         }
     }
 
+    private fun createMapAnimator(currentPosition: CameraPosition, targetPosition: CameraPosition): Animator {
+        val animatorSet = AnimatorSet()
+        animatorSet.play(createLatLngAnimator(currentPosition.target, targetPosition.target))
+        animatorSet.play(createZoomAnimator(currentPosition.zoom, targetPosition.zoom))
+        return animatorSet
+    }
+
+    private fun createLatLngAnimator(currentPosition: LatLng, targetPosition: LatLng): Animator {
+        val latLngAnimator = ValueAnimator.ofObject(LatLngEvaluator(), currentPosition, targetPosition)
+        latLngAnimator.duration = (1000 * ANIMATION_DELAY_FACTOR).toLong()
+        latLngAnimator.interpolator = FastOutSlowInInterpolator()
+        latLngAnimator.addUpdateListener { animation -> map.setLatLng(animation.animatedValue as LatLng) }
+        return latLngAnimator
+    }
+
+    private fun createZoomAnimator(currentZoom: Double, targetZoom: Double): Animator {
+        val zoomAnimator = ValueAnimator.ofFloat(currentZoom.toFloat(), targetZoom.toFloat())
+        zoomAnimator.duration = (2200 * ANIMATION_DELAY_FACTOR).toLong()
+        zoomAnimator.startDelay = (600 * ANIMATION_DELAY_FACTOR).toLong()
+        zoomAnimator.interpolator = AnticipateOvershootInterpolator()
+        zoomAnimator.addUpdateListener { animation ->
+            val animatedValue = animation.animatedValue as Float
+            map.setZoom(animatedValue.toDouble())
+        }
+        return zoomAnimator
+    }
+
+    private class LatLngEvaluator : TypeEvaluator<LatLng> {
+
+        private val latLng = LatLng()
+
+        override fun evaluate(fraction: Float, startValue: LatLng, endValue: LatLng): LatLng {
+            latLng.latitude = startValue.latitude + ((endValue.latitude - startValue.latitude) * fraction)
+            latLng.longitude = startValue.longitude + ((endValue.longitude - startValue.longitude) * fraction);
+            return latLng
+        }
+    }
 
     override fun navigate(route: CreateZoneTriggerRoute) {
 
