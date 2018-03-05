@@ -20,10 +20,7 @@ import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.services.android.telemetry.location.AndroidLocationEngine
-import com.mapbox.services.android.telemetry.location.LocationEngine
-import com.mapbox.services.android.telemetry.location.LocationEngineListener
-import com.mapbox.services.android.telemetry.location.LocationEnginePriority
+import com.mapbox.services.android.telemetry.location.*
 import kotlinx.android.synthetic.main.configure_zone_fragment.*
 import javax.inject.Inject
 
@@ -86,7 +83,7 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, Lo
 
     @SuppressLint("MissingPermission")
     private fun onMapAllowed() {
-        locationEngine = AndroidLocationEngine(context).apply {
+        locationEngine = LocationEngineProvider(context).obtainBestLocationEngineAvailable().apply {
             priority = LocationEnginePriority.HIGH_ACCURACY
             activate()
 
