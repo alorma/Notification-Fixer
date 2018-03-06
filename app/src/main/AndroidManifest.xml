@@ -25,6 +25,7 @@
             android:name=".ui.features.create.AddNotificationActivity"
             android:label="@string/title_activity_add_notification"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ui.features.trigger.zone.ConfigureZoneTriggerActivity" />
 
         <receiver
             android:name=".background.notifications.NotificationsBootBroadcast"

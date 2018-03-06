@@ -1,6 +1,7 @@
 package com.alorma.notifix.ui.features.create
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
@@ -8,7 +9,7 @@ import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
 import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
-import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerFragment
+import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerActivity
 import com.alorma.notifix.ui.utils.dsl
 import kotlinx.android.synthetic.main.activity_add_notification.*
 import kotlinx.android.synthetic.main.add_item_button.*
@@ -122,7 +123,8 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openZoneTrigger() {
-        ConfigureZoneTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_ZONE)
+        val intent = Intent(this, ConfigureZoneTriggerActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onSaveSuccess() {

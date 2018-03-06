@@ -5,19 +5,15 @@ import android.animation.AnimatorSet
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v4.view.animation.FastOutSlowInInterpolator
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.app.AppCompatActivity
 import android.view.animation.AnticipateOvershootInterpolator
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
+import com.alorma.notifix.ui.utils.dsl
 import com.alorma.notifix.ui.utils.toast
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.annotations.Marker
@@ -30,11 +26,11 @@ import com.mapbox.services.android.telemetry.location.LocationEngine
 import com.mapbox.services.android.telemetry.location.LocationEngineListener
 import com.mapbox.services.android.telemetry.location.LocationEnginePriority
 import com.mapbox.services.android.telemetry.location.LocationEngineProvider
-import kotlinx.android.synthetic.main.configure_zone_fragment.*
+import kotlinx.android.synthetic.main.configure_zone_activity.*
 import javax.inject.Inject
 
 
-class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, LocationEngineListener {
+class ConfigureZoneTriggerActivity : AppCompatActivity(), CreateZoneTriggerView, LocationEngineListener {
 
     companion object {
         private const val ANIMATION_DELAY_FACTOR = 1.5
@@ -49,21 +45,16 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, Lo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.let {
-            component add CreateTriggerModule(it) inject this
-            Mapbox.getInstance(it, getString(R.string.MAPS_KEY))
-            presenter init this
+        setContentView(R.layout.configure_zone_activity)
+
+        component add CreateTriggerModule(this) inject this
+        Mapbox.getInstance(this, getString(R.string.MAPS_KEY))
+        presenter init this
+
+
+        toolbar.dsl {
+            back { action = { finish() } }
         }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        return inflater.inflate(R.layout.configure_zone_fragment, null, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         mapView.onCreate(savedInstanceState)
 
@@ -97,13 +88,13 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, Lo
 
     @SuppressLint("MissingPermission")
     private fun onMapAllowed() {
-        locationEngine = LocationEngineProvider(context).obtainBestLocationEngineAvailable().apply {
+        locationEngine = LocationEngineProvider(this).obtainBestLocationEngineAvailable().apply {
             priority = LocationEnginePriority.HIGH_ACCURACY
             activate()
 
             lastLocation?.let {
                 setupPositionMarker(LatLng(it.latitude, it.longitude))
-            } ?: addLocationEngineListener(this@ConfigureZoneTriggerFragment)
+            } ?: addLocationEngineListener(this@ConfigureZoneTriggerActivity)
 
         }
         map.addOnMapClickListener { latLng ->
@@ -144,11 +135,11 @@ class ConfigureZoneTriggerFragment : DialogFragment(), CreateZoneTriggerView, Lo
     }
 
     private fun onMapDenied() {
-        context?.toast("Location denied")
+        toast("Location denied")
     }
 
     private fun onMapDeniedAlways() {
-        context?.toast("Location disabled")
+        toast("Location disabled")
     }
 
     @SuppressLint("MissingPermission")

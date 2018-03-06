@@ -4,6 +4,7 @@
     <string name="menu_preview_notification">Preview</string>
     <string name="title_activity_notifications">Your notifications</string>
     <string name="title_activity_add_notification">Add Notification</string>
+    <string name="title_activity_select_zone">Select location</string>
     <string name="title_activity_add_trigger_notification">Add trigger</string>
     <string name="title_bottom_sheet_add_trigger_notification">Select trigger type</string>
     <string name="title_activity_configure_contact_trigger">Configure contact</string>
