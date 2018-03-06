@@ -20,6 +20,8 @@ class CreateNotificationPresenter @Inject constructor(
     : BasePresenter<CreateNotificationState, CreateNotificationRoute,
         CreateNotificationAction, CreateNotificationView>(logger) {
 
+    private var triggerId: Long? = null
+
     override fun action(action: CreateNotificationAction) {
         when (action) {
             is OnTriggerSelected -> navigate(routeMapper.mapTrigger(action.type))
@@ -31,7 +33,8 @@ class CreateNotificationPresenter @Inject constructor(
     }
 
     private fun onNewAction(action: NewNotificationAction) {
-        disposables += insertNotificationUseCase.execute(actionMapper.mapCreate(action))
+        val appNotification = actionMapper.mapCreate(action, triggerId)
+        disposables += insertNotificationUseCase.execute(appNotification)
                 .subscribeOnIO()
                 .subscribe({
                     navigate(routeMapper.mapComplete())
@@ -47,8 +50,8 @@ class CreateNotificationPresenter @Inject constructor(
     }
 
     private fun onTriggerCreated(action: TriggerCreatedAction) {
-        val triggerId = action.triggerId
-        render(CreateNotificationState.Trigger.Any(triggerId))
+        triggerId = action.triggerId
+        render(CreateNotificationState.Trigger.Any(action.triggerId))
     }
 
     override fun onStop() {
@@ -61,5 +64,4 @@ class CreateNotificationPresenter @Inject constructor(
                 .observeOnUI()
                 .subscribe({}, {})
     }
-
 }

@@ -86,7 +86,7 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
     }
 
     private fun show(notification: AppNotification) {
-        if (notification.checked) {
+        if (notification.checked == true) {
             getNotificationManager().apply {
                 createNotificationChannel(SHOW_CHANNEL, this)
                 createNotification(notification, SHOW_CHANNEL, this)
@@ -97,4 +97,6 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
     fun dismiss(notificationId: Int): Completable = Completable.fromCallable {
         getNotificationManager().cancel(notificationId)
     }
+
+    fun prepareTrigger(it: AppNotification): Completable = Completable.complete()
 }

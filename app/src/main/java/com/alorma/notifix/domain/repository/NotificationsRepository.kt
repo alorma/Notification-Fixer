@@ -22,7 +22,11 @@ class NotificationsRepository @Inject constructor
 
     fun insertNotification(appNotification: CreateAppNotification): Completable = cacheNotificationsDataSource.insert(appNotification)
             .flatMapCompletable {
-                displayNotificationDataSource.showOne(it)
+                if (it.triggerId == null) {
+                    displayNotificationDataSource.showOne(it)
+                } else {
+                    displayNotificationDataSource.prepareTrigger(it)
+                }
             }
             .subscribeOnIO()
 
@@ -30,7 +34,7 @@ class NotificationsRepository @Inject constructor
     fun updateNotification(appNotification: AppNotification): Completable = Completable.concatArray(
             cacheNotificationsDataSource.update(appNotification),
             Completable.defer {
-                if (appNotification.checked) {
+                if (appNotification.checked == true) {
                     displayNotificationDataSource.showOne(appNotification)
                 } else {
                     dismissNotification(appNotification.id)

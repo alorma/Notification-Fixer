@@ -18,4 +18,9 @@ class NotificationEntity(@PrimaryKey(autoGenerate = true) val id: Int? = null,
 @Entity(tableName = TriggersDao.TABLE)
 class TriggerEntity(@PrimaryKey(autoGenerate = true) val id: Int? = null,
                     @ColumnInfo(name = "type") val type: String,
-                    @ColumnInfo(name = "title") val payload: String)
+                    @ColumnInfo(name = "title") val payload: String) {
+    companion object {
+        const val FIELD_ID = "id"
+        const val FIELD_TYPE = "type"
+    }
+}
