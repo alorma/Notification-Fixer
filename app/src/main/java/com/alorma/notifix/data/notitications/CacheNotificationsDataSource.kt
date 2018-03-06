@@ -50,7 +50,8 @@ class CacheNotificationsDataSource @Inject constructor(private val notificationD
         return when (trigger) {
             is PayloadLauncher.Phone -> {
                 val clazz = NotificationTriggerPayload.NumberPayload.PhonePayload::class.java
-                gson.fromJson(it.payload, clazz).phone == trigger.phone
+                gson.fromJson(it.payload, clazz).phone.replace(" ", "").replace("-", "") == trigger.phone.trim()
+                        .replace(" ", "").replace("-", "")
             }
             else -> false
         }
