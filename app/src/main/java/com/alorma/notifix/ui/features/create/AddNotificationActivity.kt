@@ -126,7 +126,11 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openTimeTrigger() {
-        ConfigureTimeTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_TIME)
+        ConfigureTimeTriggerFragment().apply {
+            callback = { id ->
+                this@AddNotificationActivity.presenter action TriggerCreatedAction(id)
+            }
+        }.show(supportFragmentManager, REQUEST_TRIGGER_TIME)
     }
 
     private fun openZoneTrigger() {

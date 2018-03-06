@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.alorma.notifix.NotifixApplication
 import com.alorma.notifix.R
+import com.alorma.notifix.ui.features.trigger.TriggerRoute
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
 import kotlinx.android.synthetic.main.configure_time_fragment.*
 import javax.inject.Inject
@@ -16,6 +17,8 @@ import javax.inject.Inject
 class ConfigureTimeTriggerFragment : DialogFragment(), CreateTimeTriggerView {
     @Inject
     lateinit var presenter: CreateTimeTriggerPresenter
+
+    var callback: ((Long) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,12 @@ class ConfigureTimeTriggerFragment : DialogFragment(), CreateTimeTriggerView {
 
     }
 
-    override fun navigate(route: CreateTimeTriggerRoute) {
-
+    override fun navigate(route: TriggerRoute) {
+        when(route) {
+            is TriggerRoute.Success -> {
+                callback?.invoke(route.triggerId)
+                dismiss()
+            }
+        }
     }
 }

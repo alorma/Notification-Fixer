@@ -6,7 +6,7 @@ sealed class NotificationTriggerPayload {
         class SmsPayload(phone: String) : NumberPayload(phone)
     }
 
-    class TimePayload : NotificationTriggerPayload()
+    class TimePayload(val hour: Int, val minute: Int) : NotificationTriggerPayload()
     class ZonePayload(val lat: Double, val lon: Double) : NotificationTriggerPayload()
 }
 
