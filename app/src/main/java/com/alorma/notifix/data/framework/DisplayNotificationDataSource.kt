@@ -69,15 +69,31 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
 
     fun show(notifications: List<AppNotification>): Completable = Completable.fromCallable {
         val activeNotifications = getCurrentNotifications()
-        notifications.filter { !activeNotifications.contains(it.id) }.forEach { show(it) }
+        notifications.filter { !activeNotifications.contains(it.id) }.forEach {
+            if (it.triggerId == null) {
+                show(it)
+            } else {
+                configureTrigger(it)
+            }
+        }
+    }
+
+    fun showFromTrigger(notifications: List<AppNotification>): Completable = Completable.fromCallable {
+        val activeNotifications = getCurrentNotifications()
+        notifications.filter { !activeNotifications.contains(it.id) }.forEach {
+            show(it)
+        }
+    }
+
+    fun showOneFromTrigger(notification: AppNotification): Completable = Completable.fromCallable {
+        val activeNotifications = getCurrentNotifications()
+        if (!activeNotifications.contains(notification.id)) {
+            show(notification)
+        }
     }
 
     private fun getCurrentNotifications(): List<Int> =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                getNotificationManager().activeNotifications.toList().map { it.id }
-            } else {
-                listOf()
-            }
+            getNotificationManager().activeNotifications.toList().map { it.id }
 
     fun showOne(notification: AppNotification): Completable = Completable.fromCallable {
         if (!getCurrentNotifications().contains(notification.id)) {
@@ -98,5 +114,9 @@ class DisplayNotificationDataSource @Inject constructor(private val context: Con
         getNotificationManager().cancel(notificationId)
     }
 
-    fun prepareTrigger(it: AppNotification): Completable = Completable.complete()
+    fun prepareTrigger(it: AppNotification): Completable = Completable.fromCallable { configureTrigger(it) }
+
+    private fun configureTrigger(it: AppNotification) {
+
+    }
 }

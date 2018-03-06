@@ -4,6 +4,7 @@ import com.alorma.notifix.data.framework.DisplayNotificationDataSource
 import com.alorma.notifix.data.notitications.CacheNotificationsDataSource
 import com.alorma.notifix.domain.model.AppNotification
 import com.alorma.notifix.domain.model.CreateAppNotification
+import com.alorma.notifix.domain.model.PayloadLauncher
 import com.alorma.notifix.ui.utils.subscribeOnIO
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -19,6 +20,13 @@ class NotificationsRepository @Inject constructor
             .flatMapCompletable {
                 displayNotificationDataSource.show(it)
             }
+            .subscribeOnIO()
+
+    fun showNotifications(trigger: PayloadLauncher): Completable = cacheNotificationsDataSource.getEnabledNotifications(trigger)
+            .flatMapCompletable {
+                displayNotificationDataSource.showOneFromTrigger(it)
+            }
+            .subscribeOnIO()
 
     fun insertNotification(appNotification: CreateAppNotification): Completable = cacheNotificationsDataSource.insert(appNotification)
             .flatMapCompletable {
@@ -29,7 +37,6 @@ class NotificationsRepository @Inject constructor
                 }
             }
             .subscribeOnIO()
-
 
     fun updateNotification(appNotification: AppNotification): Completable = Completable.concatArray(
             cacheNotificationsDataSource.update(appNotification),

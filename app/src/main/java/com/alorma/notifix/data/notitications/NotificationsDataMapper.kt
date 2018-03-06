@@ -12,9 +12,7 @@ class NotificationsDataMapper @Inject constructor() {
 
     fun mapEnabled(it: List<NotificationEntity>): List<AppNotification> = it.filter {
         it.checked
-    }.map {
-                map(it)
-            }
+    }.map { map(it) }
 
     fun map(it: NotificationEntity): AppNotification = AppNotification(it.id
             ?: 0, it.title, it.text, it.color, it.trigger, it.checked)

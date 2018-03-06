@@ -3,6 +3,7 @@ package com.alorma.notifix.di;
 import com.alorma.notifix.background.notifications.NotificationsBootBroadcast
 import com.alorma.notifix.di.module.ApplicationModule
 import com.alorma.notifix.di.module.DataModule
+import com.alorma.notifix.receiver.CallReceiver
 import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.features.notifications.MainActivity
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerComponent
@@ -17,6 +18,7 @@ interface ApplicationComponent {
     infix fun inject(activity: AddNotificationActivity)
 
     infix fun inject(bootBroadcast: NotificationsBootBroadcast)
+    infix fun inject(callReceiver: CallReceiver)
 
     infix fun add(module: CreateTriggerModule): CreateTriggerComponent
 }

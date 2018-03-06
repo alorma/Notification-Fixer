@@ -14,12 +14,16 @@ interface TriggersDao {
     }
 
     @Language("RoomSql")
-    @Query("SELECT * FROM $TABLE WHERE id=:id LIMIT 1")
+    @Query("SELECT * FROM $TABLE WHERE ${TriggerEntity.FIELD_ID}=:id LIMIT 1")
     fun getTrigger(id: Long): Single<TriggerEntity>
 
     @Language("RoomSql")
     @Query("SELECT * FROM $TABLE")
     fun getTriggers(): Flowable<List<TriggerEntity>>
+
+    @Language("RoomSql")
+    @Query("SELECT * FROM $TABLE WHERE ${TriggerEntity.FIELD_TYPE}=:type ")
+    fun getTriggers(type: String): Flowable<List<TriggerEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(triggerEntity: TriggerEntity): Long

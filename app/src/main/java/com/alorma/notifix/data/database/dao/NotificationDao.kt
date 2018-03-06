@@ -18,6 +18,10 @@ interface NotificationDao {
     fun getNotification(id: Long): Single<NotificationEntity>
 
     @Language("RoomSql")
+    @Query("SELECT * FROM $TABLE WHERE ${NotificationEntity.FIELD_TRIGGER}=:triggerId")
+    fun getNotificationByTrigger(triggerId: Long): Single<List<NotificationEntity>>
+
+    @Language("RoomSql")
     @Query("SELECT * FROM $TABLE")
     fun getNotifications(): Flowable<List<NotificationEntity>>
 

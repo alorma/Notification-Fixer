@@ -18,8 +18,10 @@ class CreateTriggerModule(activity: Activity) : ActivityModule(activity) {
 
     @Provides
     @Named(PERMISSION_READ_CONTACTS)
-    fun getContactPermission(): DexterBuilder.SinglePermissionListener
-            = getPermission().withPermission(Manifest.permission.READ_CONTACTS)
+    fun getContactPermission(): DexterBuilder.MultiPermissionListener
+            = getPermission().withPermissions(Manifest.permission.READ_CONTACTS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_SMS)
 
     @Provides
     @Named(PERMISSION_LOCATION)

@@ -13,23 +13,23 @@ import com.alorma.notifix.ui.utils.observeOnUI
 import com.alorma.notifix.ui.utils.plusAssign
 import com.alorma.notifix.ui.utils.subscribeOnIO
 import com.karumi.dexter.DexterBuilder
+import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.BasePermissionListener
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import javax.inject.Inject
 import javax.inject.Named
 
 class CreateNumberTriggerPresenter @Inject constructor(
         private val createTriggerUseCase: CreateTriggerUseCase,
         @Named(CreateTriggerModule.PERMISSION_READ_CONTACTS)
-        private val permissionRequest: DexterBuilder.SinglePermissionListener,
+        private val permissionRequest: DexterBuilder.MultiPermissionListener,
         private val androidGetContact: AndroidGetContact,
         val logger: Logger)
     : BasePresenter<CreateNumberTriggerState, Route, CreateNumberTriggerAction, CreateNumberTriggerView>(logger) {
 
     private lateinit var selectedUri: Uri
+    private lateinit var contactPhone: String
 
     override fun action(action: CreateNumberTriggerAction) {
         when (action) {
@@ -40,20 +40,21 @@ class CreateNumberTriggerPresenter @Inject constructor(
     }
 
     private fun onContactRequest() {
-        permissionRequest.withListener(object : BasePermissionListener() {
-            override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                navigate(CreateNumberTriggerRoute.SelectContactRoute())
-            }
-
-            override fun onPermissionDenied(response: PermissionDeniedResponse) {
-                render(if (response.isPermanentlyDenied) {
-                    CreateNumberTriggerState.DeniedAlwaysPermissionMessage()
+        permissionRequest.withListener(object : MultiplePermissionsListener {
+            override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                if (report.areAllPermissionsGranted()) {
+                    navigate(CreateNumberTriggerRoute.SelectContactRoute())
                 } else {
-                    CreateNumberTriggerState.DeniedPermissionMessage()
-                })
+                    render(if (report.isAnyPermissionPermanentlyDenied) {
+                        CreateNumberTriggerState.DeniedAlwaysPermissionMessage()
+                    } else {
+                        CreateNumberTriggerState.DeniedPermissionMessage()
+                    })
+                }
             }
 
-            override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest, token: PermissionToken) {
+            override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>,
+                                                            token: PermissionToken) {
                 token.continuePermissionRequest()
             }
         }).check()
@@ -65,16 +66,19 @@ class CreateNumberTriggerPresenter @Inject constructor(
                 .subscribeOnIO()
                 .observeOnUI()
                 .subscribe({
-                    render(CreateNumberTriggerState.ContactLoaded(it))
+                    if (it.phone != null) {
+                        this@CreateNumberTriggerPresenter.contactPhone = it.phone
+                        render(CreateNumberTriggerState.ContactLoaded(it))
+                    }
                 }, {
                     logger.e("Contact error: $it", it)
                 })
     }
 
     private fun onSelectContact(action: CreateNumberTriggerAction.SelectContactAction) {
-        val payload: NotificationTriggerPayload.NumberPayload = when(action.type) {
-            is Type.PHONE -> NotificationTriggerPayload.NumberPayload.PhonePayload(selectedUri.toString())
-            is Type.SMS -> NotificationTriggerPayload.NumberPayload.SmsPayload(selectedUri.toString())
+        val payload: NotificationTriggerPayload.NumberPayload = when (action.type) {
+            is Type.PHONE -> NotificationTriggerPayload.NumberPayload.PhonePayload(selectedUri.toString(), contactPhone)
+            is Type.SMS -> NotificationTriggerPayload.NumberPayload.SmsPayload(selectedUri.toString(), contactPhone)
         }
         disposables += createTriggerUseCase.execute(payload)
                 .observeOnUI()
