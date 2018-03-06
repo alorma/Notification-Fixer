@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.domain.model.Contact
+import com.alorma.notifix.ui.commons.Route
+import com.alorma.notifix.ui.features.trigger.TriggerRoute
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
 import com.alorma.notifix.ui.utils.GlideApp
 import com.alorma.notifix.ui.utils.toast
@@ -25,10 +27,16 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
 
     companion object {
         private const val REQ_CONTACT_DIRECTORY = 110
+        val PHONE = Type.PHONE()
+        val SMS = Type.SMS()
     }
 
     @Inject
     lateinit var presenter: CreateNumberTriggerPresenter
+
+    lateinit var type: Type
+
+    var callback: ((Long) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +59,13 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
             loadDefaultAvatar()
 
             fakeUserSelectButton.setOnClickListener {
-                presenter action CreateNumberTriggerAction.RequestContactActionNumber()
+                presenter action CreateNumberTriggerAction.RequestContactAction()
             }
             contactCard.setOnClickListener {
-                presenter action CreateNumberTriggerAction.RequestContactActionNumber()
+                presenter action CreateNumberTriggerAction.RequestContactAction()
             }
             userSelectButton.setOnClickListener {
-
+                presenter action CreateNumberTriggerAction.SelectContactAction(type)
             }
         }
     }
@@ -81,9 +89,13 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
         }
     }
 
-    override fun navigate(route: CreateNumberTriggerRoute) {
+    override fun navigate(route: Route) {
         when (route) {
-            is CreateNumberTriggerRoute.SelectContact -> openContactPicker()
+            is CreateNumberTriggerRoute.SelectContactRoute -> openContactPicker()
+            is TriggerRoute.Success -> {
+                callback?.invoke(route.triggerId)
+                dismiss()
+            }
         }
     }
 
@@ -99,7 +111,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
                 when (resultCode) {
                     Activity.RESULT_OK -> {
                         data?.data?.let {
-                            presenter action CreateNumberTriggerAction.ContactImportActionNumber(it)
+                            presenter action CreateNumberTriggerAction.ContactImportAction(it)
                         }
                     }
                 }

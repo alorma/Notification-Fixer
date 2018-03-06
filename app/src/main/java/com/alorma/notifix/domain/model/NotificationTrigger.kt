@@ -1,9 +1,9 @@
 package com.alorma.notifix.domain.model
 
 sealed class NotificationTriggerPayload {
-    sealed class NumberPayload(val number: String) : NotificationTriggerPayload() {
-        class PhonePayload(phone: String) : NumberPayload(phone)
-        class SmsPayload(phone: String) : NumberPayload(phone)
+    sealed class NumberPayload(val uri: String) : NotificationTriggerPayload() {
+        class PhonePayload(uri: String) : NumberPayload(uri)
+        class SmsPayload(uri: String) : NumberPayload(uri)
     }
 
     class TimePayload(val hour: Int, val minute: Int) : NotificationTriggerPayload()

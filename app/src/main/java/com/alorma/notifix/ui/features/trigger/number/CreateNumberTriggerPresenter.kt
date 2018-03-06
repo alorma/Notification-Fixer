@@ -1,8 +1,13 @@
 package com.alorma.notifix.ui.features.trigger.number
 
+import android.net.Uri
 import com.alorma.notifix.data.Logger
 import com.alorma.notifix.data.framework.AndroidGetContact
+import com.alorma.notifix.domain.model.NotificationTriggerPayload
+import com.alorma.notifix.domain.usecase.CreateTriggerUseCase
 import com.alorma.notifix.ui.commons.BasePresenter
+import com.alorma.notifix.ui.commons.Route
+import com.alorma.notifix.ui.features.trigger.TriggerRoute
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
 import com.alorma.notifix.ui.utils.observeOnUI
 import com.alorma.notifix.ui.utils.plusAssign
@@ -17,23 +22,27 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class CreateNumberTriggerPresenter @Inject constructor(
+        private val createTriggerUseCase: CreateTriggerUseCase,
         @Named(CreateTriggerModule.PERMISSION_READ_CONTACTS)
         private val permissionRequest: DexterBuilder.SinglePermissionListener,
         private val androidGetContact: AndroidGetContact,
         val logger: Logger)
-    : BasePresenter<CreateNumberTriggerState, CreateNumberTriggerRoute, CreateNumberTriggerAction, CreateNumberTriggerView>(logger) {
+    : BasePresenter<CreateNumberTriggerState, Route, CreateNumberTriggerAction, CreateNumberTriggerView>(logger) {
+
+    private lateinit var selectedUri: Uri
 
     override fun action(action: CreateNumberTriggerAction) {
         when (action) {
-            is CreateNumberTriggerAction.RequestContactActionNumber -> onContactRequest()
-            is CreateNumberTriggerAction.ContactImportActionNumber -> onContactImport(action)
+            is CreateNumberTriggerAction.RequestContactAction -> onContactRequest()
+            is CreateNumberTriggerAction.ContactImportAction -> onContactImport(action)
+            is CreateNumberTriggerAction.SelectContactAction -> onSelectContact(action)
         }
     }
 
     private fun onContactRequest() {
         permissionRequest.withListener(object : BasePermissionListener() {
             override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                navigate(CreateNumberTriggerRoute.SelectContact())
+                navigate(CreateNumberTriggerRoute.SelectContactRoute())
             }
 
             override fun onPermissionDenied(response: PermissionDeniedResponse) {
@@ -50,8 +59,9 @@ class CreateNumberTriggerPresenter @Inject constructor(
         }).check()
     }
 
-    private fun onContactImport(actionNumber: CreateNumberTriggerAction.ContactImportActionNumber) {
-        disposables += androidGetContact.loadContact(actionNumber.uri)
+    private fun onContactImport(action: CreateNumberTriggerAction.ContactImportAction) {
+        this.selectedUri = action.uri
+        disposables += androidGetContact.loadContact(action.uri)
                 .subscribeOnIO()
                 .observeOnUI()
                 .subscribe({
@@ -59,5 +69,17 @@ class CreateNumberTriggerPresenter @Inject constructor(
                 }, {
                     logger.e("Contact error: $it", it)
                 })
+    }
+
+    private fun onSelectContact(action: CreateNumberTriggerAction.SelectContactAction) {
+        val payload: NotificationTriggerPayload.NumberPayload = when(action.type) {
+            is Type.PHONE -> NotificationTriggerPayload.NumberPayload.PhonePayload(selectedUri.toString())
+            is Type.SMS -> NotificationTriggerPayload.NumberPayload.SmsPayload(selectedUri.toString())
+        }
+        disposables += createTriggerUseCase.execute(payload)
+                .observeOnUI()
+                .subscribe({
+                    navigate(TriggerRoute.Success(it))
+                }, {})
     }
 }

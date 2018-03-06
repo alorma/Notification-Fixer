@@ -7,13 +7,19 @@ import com.alorma.notifix.ui.commons.BaseView
 import com.alorma.notifix.ui.commons.Route
 import com.alorma.notifix.ui.commons.State
 
+sealed class Type {
+    class PHONE : Type()
+    class SMS : Type()
+}
+
 sealed class CreateNumberTriggerAction : Action() {
-    class RequestContactActionNumber : CreateNumberTriggerAction()
-    class ContactImportActionNumber(val uri: Uri) : CreateNumberTriggerAction()
+    class RequestContactAction : CreateNumberTriggerAction()
+    class ContactImportAction(val uri: Uri) : CreateNumberTriggerAction()
+    class SelectContactAction(val type: Type) : CreateNumberTriggerAction()
 }
 
 sealed class CreateNumberTriggerRoute : Route() {
-    class SelectContact : CreateNumberTriggerRoute()
+    class SelectContactRoute : CreateNumberTriggerRoute()
 }
 
 sealed class CreateNumberTriggerState : State() {
@@ -22,4 +28,4 @@ sealed class CreateNumberTriggerState : State() {
     class ContactLoaded(val contact: Contact) : CreateNumberTriggerState()
 }
 
-interface CreateNumberTriggerView : BaseView<CreateNumberTriggerState, CreateNumberTriggerRoute>
+interface CreateNumberTriggerView : BaseView<CreateNumberTriggerState, Route>

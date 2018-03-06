@@ -82,7 +82,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     override fun render(state: CreateNotificationState) {
-        when(state) {
+        when (state) {
             is CreateNotificationState.Trigger.Any -> {
                 triggerData.visibility = View.VISIBLE
                 triggerData.text = state.triggerId.toString()
@@ -118,11 +118,21 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     private fun openPhoneTrigger() {
-        ConfigureNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_PHONE)
+        ConfigureNumberTriggerFragment().apply {
+            type = ConfigureNumberTriggerFragment.PHONE
+            callback = { id ->
+                this@AddNotificationActivity.presenter action TriggerCreatedAction(id)
+            }
+        }.show(supportFragmentManager, REQUEST_TRIGGER_PHONE)
     }
 
     private fun openSmsTrigger() {
-        ConfigureNumberTriggerFragment().show(supportFragmentManager, REQUEST_TRIGGER_SMS)
+        ConfigureNumberTriggerFragment().apply {
+            type = ConfigureNumberTriggerFragment.SMS
+            callback = { id ->
+                this@AddNotificationActivity.presenter action TriggerCreatedAction(id)
+            }
+        }.show(supportFragmentManager, REQUEST_TRIGGER_SMS)
     }
 
     private fun openTimeTrigger() {
