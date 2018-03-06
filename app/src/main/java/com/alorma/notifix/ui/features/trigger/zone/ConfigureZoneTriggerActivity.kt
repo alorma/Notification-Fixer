@@ -5,6 +5,8 @@ import android.animation.AnimatorSet
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.view.animation.FastOutSlowInInterpolator
@@ -12,6 +14,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.animation.AnticipateOvershootInterpolator
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
+import com.alorma.notifix.ui.features.trigger.TriggerRoute
+import com.alorma.notifix.ui.features.trigger.TriggerRoute.Companion.TRIGGER_ID
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
 import com.alorma.notifix.ui.utils.dsl
 import com.alorma.notifix.ui.utils.toast
@@ -191,8 +195,18 @@ class ConfigureZoneTriggerActivity : AppCompatActivity(), CreateZoneTriggerView,
         }
     }
 
-    override fun navigate(route: CreateZoneTriggerRoute) {
-
+    override fun navigate(route: TriggerRoute) {
+        when(route) {
+            is TriggerRoute.Success -> {
+                val intent: Intent = Intent().apply {
+                    putExtras(Bundle().apply {
+                        putLong(TRIGGER_ID, route.triggerId)
+                    })
+                }
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }
     }
 
     override fun onStart() {

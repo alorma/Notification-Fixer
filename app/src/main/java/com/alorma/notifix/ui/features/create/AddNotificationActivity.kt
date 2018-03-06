@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
+import com.alorma.notifix.ui.features.trigger.TriggerRoute
 import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
 import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerActivity
@@ -29,7 +31,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         private const val REQUEST_TRIGGER_PHONE = "PHONE"
         private const val REQUEST_TRIGGER_SMS = "SMS"
         private const val REQUEST_TRIGGER_TIME = "TIME"
-        private const val REQUEST_TRIGGER_ZONE = "ZONE"
+        private const val REQUEST_TRIGGER_ZONE = 112
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +82,12 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     }
 
     override fun render(state: CreateNotificationState) {
-
+        when(state) {
+            is CreateNotificationState.Trigger.Any -> {
+                triggerData.visibility = View.VISIBLE
+                triggerData.text = state.triggerId.toString()
+            }
+        }
     }
 
     override fun navigate(route: CreateNotificationRoute) {
@@ -124,12 +131,22 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
 
     private fun openZoneTrigger() {
         val intent = Intent(this, ConfigureZoneTriggerActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_TRIGGER_ZONE)
     }
 
     private fun onSaveSuccess() {
         setResult(Activity.RESULT_OK)
         finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_TRIGGER_ZONE) {
+                val triggerId = data?.extras?.getLong(TriggerRoute.TRIGGER_ID) ?: 0
+                presenter action TriggerCreatedAction(triggerId)
+            }
+        }
     }
 
 }

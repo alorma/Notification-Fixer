@@ -26,6 +26,7 @@ class CreateNotificationPresenter @Inject constructor(
             is NewNotificationAction -> onNewAction(action)
             is PreviewNotificationAction -> onPreviewAction(action)
             is AddTriggerAction -> navigate(SelectTrigger())
+            is TriggerCreatedAction -> onTriggerCreated(action)
         }
     }
 
@@ -43,6 +44,11 @@ class CreateNotificationPresenter @Inject constructor(
         disposables += showNotificationUseCase.showPreview(actionMapper.mapPreview(action))
                 .observeOnUI()
                 .subscribe({}, {})
+    }
+
+    private fun onTriggerCreated(action: TriggerCreatedAction) {
+        val triggerId = action.triggerId
+        render(CreateNotificationState.Trigger.Any(triggerId))
     }
 
     override fun onStop() {

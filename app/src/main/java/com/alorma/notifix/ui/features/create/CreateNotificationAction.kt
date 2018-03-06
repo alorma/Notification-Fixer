@@ -18,3 +18,5 @@ data class PreviewNotificationAction(val title: String,
                                      val color: Int) : CreateNotificationAction()
 
 class AddTriggerAction: CreateNotificationAction()
+
+class TriggerCreatedAction(val triggerId: Long): CreateNotificationAction()
