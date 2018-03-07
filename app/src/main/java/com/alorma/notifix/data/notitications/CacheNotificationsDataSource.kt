@@ -50,12 +50,16 @@ class CacheNotificationsDataSource @Inject constructor(private val notificationD
         return when (trigger) {
             is PayloadLauncher.Phone -> {
                 val clazz = NotificationTriggerPayload.NumberPayload.PhonePayload::class.java
-                gson.fromJson(it.payload, clazz).phone.replace(" ", "").replace("-", "") == trigger.phone.trim()
-                        .replace(" ", "").replace("-", "")
+                val phone = gson.fromJson(it.payload, clazz).phone
+                checkPhone(phone, trigger.phone) ||checkPhone(trigger.phone, phone)
             }
             else -> false
         }
     }
+
+    private fun checkPhone(phone: String, trigger: String) =
+            phone.trim().replace(" ", "").replace("-", "").contains(trigger.trim()
+                    .replace(" ", "").replace("-", ""))
 
     private fun obtainNotificationsFromTrigger(it: Int): Flowable<NotificationEntity> =
             notificationDao.getNotificationByTrigger(it.toLong()).toFlowable()
