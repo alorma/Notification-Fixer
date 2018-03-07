@@ -8,6 +8,10 @@ import javax.inject.Inject
 
 class TimeNotificationService: IntentService("TimeNotificationService") {
 
+    companion object {
+        const val TRIGGER_ID = "trigger_id"
+    }
+
     @Inject
     lateinit var logger: Logger
 

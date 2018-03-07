@@ -15,7 +15,7 @@ data class NotificationTrigger(val id: Int? = null, val payload: NotificationTri
 sealed class PayloadLauncher {
     class Phone(val phone: String) : PayloadLauncher()
     class Sms(val phone: String) : PayloadLauncher()
-    class Time : PayloadLauncher()
+    class Time(val hour: Int, val minute: Int) : PayloadLauncher()
     class Zone : PayloadLauncher()
 }
 

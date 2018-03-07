@@ -5,6 +5,7 @@ import android.app.AlarmManager.RTC_WAKEUP
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import com.alorma.notifix.data.database.dao.TriggersDao
 import com.alorma.notifix.data.database.entity.TriggerEntity
 import com.alorma.notifix.domain.model.NotificationTrigger
@@ -42,7 +43,11 @@ class CacheTriggersDataSource @Inject constructor(
         val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val millisRepeat = TimeUnit.SECONDS.toMillis(30)
 
-        val intent = Intent(context, TimeNotificationService::class.java)
+        val intent = Intent(context, TimeNotificationService::class.java).apply {
+            putExtras(Bundle().apply {
+                putLong(TimeNotificationService.TRIGGER_ID, triggerId)
+            })
+        }
         val pending = PendingIntent.getService(context, REQUEST, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         val time = Calendar.getInstance().apply {
@@ -58,23 +63,33 @@ class CacheTriggersDataSource @Inject constructor(
                 triggersMapper.map(it)
             }.filter {
                         when (payloadLauncher) {
-                            is PayloadLauncher.Phone -> {
-                                val phone = it.payload as? NotificationTriggerPayload.NumberPayload.PhonePayload
-                                phone?.let {
-                                    checkPhone(payloadLauncher.phone, phone.phone)
-                                } ?: false
-                            }
-                            is PayloadLauncher.Sms -> {
-                                val phone = it.payload as? NotificationTriggerPayload.NumberPayload.SmsPayload
-                                phone?.let {
-                                    checkPhone(payloadLauncher.phone, phone.phone)
-                                } ?: false
-                            }
-                            else -> false
+                            is PayloadLauncher.Phone -> checkPhoneTrigger(it, payloadLauncher)
+                            is PayloadLauncher.Sms -> checkSmsTrigger(it, payloadLauncher)
+                            is PayloadLauncher.Time -> checkTimeTrigger(it, payloadLauncher)
+                            is PayloadLauncher.Zone -> checkZoneTrigger(it, payloadLauncher)
                         }
                     }.firstOrError()
+
+    private fun checkPhoneTrigger(it: NotificationTrigger, payloadLauncher: PayloadLauncher.Phone): Boolean =
+            (it.payload as? NotificationTriggerPayload.NumberPayload.PhonePayload)?.let {
+                checkPhone(payloadLauncher.phone, it.phone)
+            } ?: false
+
+    private fun checkSmsTrigger(it: NotificationTrigger, payloadLauncher: PayloadLauncher.Sms): Boolean =
+            (it.payload as? NotificationTriggerPayload.NumberPayload.SmsPayload)?.let {
+                checkPhone(payloadLauncher.phone, it.phone)
+            } ?: false
 
     private fun checkPhone(phone: String, trigger: String) =
             phone.trim().replace(" ", "").replace("-", "").contains(trigger.trim()
                     .replace(" ", "").replace("-", ""))
+
+
+    private fun checkTimeTrigger(it: NotificationTrigger, payloadLauncher: PayloadLauncher.Time): Boolean =
+            (it.payload as? NotificationTriggerPayload.TimePayload)?.let {
+                it.hour == payloadLauncher.hour && it.minute == payloadLauncher.minute
+            } ?: false
+
+    private fun checkZoneTrigger(it: NotificationTrigger, payloadLauncher: PayloadLauncher.Zone): Boolean =
+            throw Exception() // TODO --> Resolve position
 }
