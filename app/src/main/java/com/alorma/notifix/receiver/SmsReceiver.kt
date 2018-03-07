@@ -3,7 +3,7 @@ package com.alorma.notifix.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.telephony.TelephonyManager
+import android.provider.Telephony
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.data.Logger
 import com.alorma.notifix.domain.model.PayloadLauncher
@@ -13,7 +13,7 @@ import com.alorma.notifix.ui.utils.plusAssign
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class CallReceiver : BroadcastReceiver() {
+class SmsReceiver: BroadcastReceiver() {
 
     @Inject
     lateinit var useCase: ShowNotificationsUseCase
@@ -21,21 +21,18 @@ class CallReceiver : BroadcastReceiver() {
     @Inject
     lateinit var logger: Logger
 
+
     override fun onReceive(context: Context, intent: Intent) {
-
         component inject this
-
-        if (intent.action == Intent.ACTION_NEW_OUTGOING_CALL) {
-            intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER)?.let { onPhoneReceived(it) }
-        } else if (intent.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
-            intent.getStringExtra("incoming_number")?.let {
-                onPhoneReceived(it)
-            }
+        if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
+            Telephony.Sms.Intents.getMessagesFromIntent(intent)
+                    .map { it.displayOriginatingAddress }
+                    .forEach { onPhoneReceived(it) }
         }
     }
 
     private fun onPhoneReceived(phone: String) {
-        CompositeDisposable() += useCase.execute(PayloadLauncher.Phone(phone))
+        CompositeDisposable() += useCase.execute(PayloadLauncher.Sms(phone))
                 .observeOnUI()
                 .subscribe({
                     logger.d("Call success")
@@ -44,4 +41,3 @@ class CallReceiver : BroadcastReceiver() {
                 })
     }
 }
-

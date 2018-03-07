@@ -53,6 +53,11 @@ class CacheNotificationsDataSource @Inject constructor(private val notificationD
                 val phone = gson.fromJson(it.payload, clazz).phone
                 checkPhone(phone, trigger.phone) ||checkPhone(trigger.phone, phone)
             }
+            is PayloadLauncher.Sms -> {
+                val clazz = NotificationTriggerPayload.NumberPayload.SmsPayload::class.java
+                val phone = gson.fromJson(it.payload, clazz).phone
+                checkPhone(phone, trigger.phone) ||checkPhone(trigger.phone, phone)
+            }
             else -> false
         }
     }
