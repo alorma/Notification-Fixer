@@ -9,6 +9,7 @@ import com.alorma.notifix.data.database.dao.TriggersDao
 import com.alorma.notifix.data.database.entity.TriggerEntity
 import com.alorma.notifix.domain.model.NotificationTrigger
 import com.alorma.notifix.domain.model.NotificationTriggerPayload
+import com.alorma.notifix.domain.model.PayloadLauncher
 import com.alorma.notifix.service.TimeNotificationService
 import io.reactivex.Single
 import java.util.*
@@ -51,4 +52,29 @@ class CacheTriggersDataSource @Inject constructor(
 
         am.setRepeating(RTC_WAKEUP, time, millisRepeat, pending)
     }
+
+    fun get(payloadLauncher: PayloadLauncher): Single<NotificationTrigger> =
+            triggersDao.getTriggers().flatMapIterable { it }.map {
+                triggersMapper.map(it)
+            }.filter {
+                        when (payloadLauncher) {
+                            is PayloadLauncher.Phone -> {
+                                val phone = it.payload as? NotificationTriggerPayload.NumberPayload.PhonePayload
+                                phone?.let {
+                                    checkPhone(payloadLauncher.phone, phone.phone)
+                                } ?: false
+                            }
+                            is PayloadLauncher.Sms -> {
+                                val phone = it.payload as? NotificationTriggerPayload.NumberPayload.SmsPayload
+                                phone?.let {
+                                    checkPhone(payloadLauncher.phone, phone.phone)
+                                } ?: false
+                            }
+                            else -> false
+                        }
+                    }.firstOrError()
+
+    private fun checkPhone(phone: String, trigger: String) =
+            phone.trim().replace(" ", "").replace("-", "").contains(trigger.trim()
+                    .replace(" ", "").replace("-", ""))
 }

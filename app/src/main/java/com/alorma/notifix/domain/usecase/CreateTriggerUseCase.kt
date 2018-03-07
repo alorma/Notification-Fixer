@@ -9,5 +9,5 @@ import javax.inject.Inject
 class CreateTriggerUseCase @Inject constructor(private val triggersRepository: TriggersRepository) {
 
     fun execute(payload: NotificationTriggerPayload): Single<Long>
-            = triggersRepository.createTrigger(NotificationTrigger(payload))
+            = triggersRepository.createTrigger(NotificationTrigger(payload = payload))
 }

@@ -10,7 +10,7 @@ sealed class NotificationTriggerPayload {
     class ZonePayload(val lat: Double, val lon: Double) : NotificationTriggerPayload()
 }
 
-class NotificationTrigger(val payload: NotificationTriggerPayload)
+data class NotificationTrigger(val id: Int? = null, val payload: NotificationTriggerPayload)
 
 sealed class PayloadLauncher {
     class Phone(val phone: String) : PayloadLauncher()

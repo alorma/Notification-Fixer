@@ -5,7 +5,7 @@ import android.util.Log
 class AndroidLogger : Logger {
 
     companion object {
-        private const val TAG = "Notfix"
+        private const val TAG = "Notifix"
     }
 
     override fun i(msg: String) {
