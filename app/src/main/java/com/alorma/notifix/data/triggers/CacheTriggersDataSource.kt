@@ -72,12 +72,12 @@ class CacheTriggersDataSource @Inject constructor(
 
     private fun checkPhoneTrigger(it: NotificationTrigger, payloadLauncher: PayloadLauncher.Phone): Boolean =
             (it.payload as? NotificationTriggerPayload.NumberPayload.PhonePayload)?.let {
-                checkPhone(payloadLauncher.phone, it.phone)
+                checkPhone(payloadLauncher.phone, it.phone) || checkPhone(it.phone, payloadLauncher.phone)
             } ?: false
 
     private fun checkSmsTrigger(it: NotificationTrigger, payloadLauncher: PayloadLauncher.Sms): Boolean =
             (it.payload as? NotificationTriggerPayload.NumberPayload.SmsPayload)?.let {
-                checkPhone(payloadLauncher.phone, it.phone)
+                checkPhone(payloadLauncher.phone, it.phone) || checkPhone(it.phone, payloadLauncher.phone)
             } ?: false
 
     private fun checkPhone(phone: String, trigger: String) =
