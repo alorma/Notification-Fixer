@@ -20,4 +20,5 @@
     <string name="config_zone">Select location</string>
     <string name="use_num_select_contact">Use contact</string>
     <string name="no_phone">No phone</string>
+    <string name="notification_action_dismiss">DISMISS</string>
 </resources>

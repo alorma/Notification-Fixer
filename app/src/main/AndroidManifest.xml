@@ -62,6 +62,7 @@
         </receiver>
 
         <service android:name=".service.TimeNotificationService" />
+        <service android:name=".service.DismissNotificationService" />
     </application>
 
 </manifest>

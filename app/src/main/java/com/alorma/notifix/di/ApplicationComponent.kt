@@ -5,6 +5,7 @@ import com.alorma.notifix.di.module.ApplicationModule
 import com.alorma.notifix.di.module.DataModule
 import com.alorma.notifix.receiver.CallReceiver
 import com.alorma.notifix.receiver.SmsReceiver
+import com.alorma.notifix.service.DismissNotificationService
 import com.alorma.notifix.service.TimeNotificationService
 import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.features.notifications.MainActivity
@@ -25,4 +26,5 @@ interface ApplicationComponent {
     infix fun inject(callReceiver: CallReceiver)
     infix fun inject(smsReceiver: SmsReceiver)
     infix fun inject(timeNotificationService: TimeNotificationService)
+    infix fun inject(dismissNotificationService: DismissNotificationService)
 }
