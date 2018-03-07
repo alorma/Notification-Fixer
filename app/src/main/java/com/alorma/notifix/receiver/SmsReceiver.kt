@@ -32,12 +32,6 @@ class SmsReceiver: BroadcastReceiver() {
     }
 
     private fun onPhoneReceived(phone: String) {
-        CompositeDisposable() += useCase.execute(PayloadLauncher.Sms(phone))
-                .observeOnUI()
-                .subscribe({
-                    logger.d("Call success")
-                }, {
-                    logger.e(it.message ?: "Call error", it)
-                })
+
     }
 }

@@ -20,7 +20,7 @@ class CallReceiver : BroadcastReceiver() {
     lateinit var getTriggerUseCase: GetTriggerUseCase
 
     @Inject
-    lateinit var useCase: ShowNotificationsUseCase
+    lateinit var showNotificationsUseCase: ShowNotificationsUseCase
 
     @Inject
     lateinit var logger: Logger
@@ -39,27 +39,18 @@ class CallReceiver : BroadcastReceiver() {
     }
 
     private fun onPhoneReceived(phone: String) {
-
-        val launcher = PayloadLauncher.Phone(phone)
-
-        CompositeDisposable() += getTriggerUseCase.execute(launcher)
+        CompositeDisposable() += getTriggerUseCase.execute(PayloadLauncher.Phone(phone))
+                .filter { it.id != null }
+                .map { it.id }
+                .flatMapCompletable {
+                    showNotificationsUseCase.execute(it)
+                }
                 .observeOnUI()
                 .subscribe({
-                    logger.d("Trigger found $it")
+                    logger.d("Complete!")
                 }, {
-                    logger.d("Trigger not found: $it")
+                    logger.d("Error: $it")
                 })
-
-
-        /*
-        CompositeDisposable() += useCase.execute()
-                .observeOnUI()
-                .subscribe({
-                    logger.d("Call success")
-                }, {
-                    logger.e(it.message ?: "Call error", it)
-                })
-        */
     }
 }
 

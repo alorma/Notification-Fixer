@@ -22,7 +22,7 @@ class NotificationsRepository @Inject constructor
             }
             .subscribeOnIO()
 
-    fun showNotifications(trigger: PayloadLauncher): Completable = cacheNotificationsDataSource.getEnabledNotifications(trigger)
+    fun showNotifications(trigger: Int): Completable = cacheNotificationsDataSource.getEnabledNotifications(trigger)
             .flatMapCompletable {
                 displayNotificationDataSource.showOneFromTrigger(it)
             }
