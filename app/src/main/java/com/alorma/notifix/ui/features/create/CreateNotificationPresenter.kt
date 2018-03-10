@@ -27,7 +27,6 @@ class CreateNotificationPresenter @Inject constructor(
             is OnTriggerSelected -> navigate(routeMapper.mapTrigger(action.type))
             is NewNotificationAction -> onNewAction(action)
             is PreviewNotificationAction -> onPreviewAction(action)
-            is AddTriggerAction -> navigate(SelectTrigger())
             is TriggerCreatedAction -> onTriggerCreated(action)
         }
     }

@@ -74,15 +74,5 @@
 
             </LinearLayout>
 
-        <Button
-            android:id="@+id/addTrigger"
-            style="@style/AddNotification.Button"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:gravity="center_vertical|start"
-            android:text="Add trigger"
-            android:theme="@style/AppTheme.Inverse"
-            android:visibility="gone" />
-
     </LinearLayout>
 </LinearLayout>

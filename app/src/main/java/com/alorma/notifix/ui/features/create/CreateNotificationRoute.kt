@@ -5,8 +5,6 @@ import com.alorma.notifix.ui.commons.Route
 sealed class CreateNotificationRoute : Route()
 class SuccessGoBack : CreateNotificationRoute()
 
-class SelectTrigger : CreateNotificationRoute()
-
 sealed class ConfigureTrigger : CreateNotificationRoute() {
     class SmsTrigger : ConfigureTrigger()
     class PhoneTrigger : ConfigureTrigger()

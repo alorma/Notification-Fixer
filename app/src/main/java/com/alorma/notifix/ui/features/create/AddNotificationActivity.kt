@@ -7,8 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.SelectTriggerTypeFragment
-import com.alorma.notifix.ui.features.trigger.TriggerRoute
+import com.alorma.notifix.ui.features.trigger.*
 import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
 import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerActivity
@@ -57,24 +56,20 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
             presenter action getNewNotificationAction()
         }
 
-        addTrigger.setOnClickListener {
-            presenter action AddTriggerAction()
-        }
-
         selectTriggerPhone.setOnClickListener {
-
+            presenter action OnTriggerSelected(Phone)
         }
 
         selectTriggerSms.setOnClickListener {
-
+            presenter action OnTriggerSelected(Sms)
         }
 
         selectTriggerTime.setOnClickListener {
-
+            presenter action OnTriggerSelected(Time)
         }
 
         selectTriggerZone.setOnClickListener {
-
+            presenter action OnTriggerSelected(Zone)
         }
 
     }
@@ -109,18 +104,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     override fun navigate(route: CreateNotificationRoute) {
         when (route) {
             is SuccessGoBack -> onSaveSuccess()
-            is SelectTrigger -> openNewTrigger()
             is ConfigureTrigger -> openConfTrigger(route)
-        }
-    }
-
-    private fun openNewTrigger() {
-        SelectTriggerTypeFragment().apply {
-            addListener {
-                presenter action OnTriggerSelected(it)
-            }
-
-            show(supportFragmentManager, "trigger")
         }
     }
 
