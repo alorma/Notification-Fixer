@@ -61,6 +61,22 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
             presenter action AddTriggerAction()
         }
 
+        selectTriggerPhone.setOnClickListener {
+
+        }
+
+        selectTriggerSms.setOnClickListener {
+
+        }
+
+        selectTriggerTime.setOnClickListener {
+
+        }
+
+        selectTriggerZone.setOnClickListener {
+
+        }
+
     }
 
     private fun previewNotification() {
