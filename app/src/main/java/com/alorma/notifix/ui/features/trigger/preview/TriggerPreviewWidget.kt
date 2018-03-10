@@ -1,4 +1,4 @@
-package com.alorma.notifix.ui.widget
+package com.alorma.notifix.ui.features.trigger.preview
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import kotlinx.android.synthetic.main.trigger_preview.*
+import javax.inject.Inject
 
-class TriggerPreviewWidget : Fragment() {
+class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
 
     companion object {
         private const val EXTRA_ID = "extra_id"
@@ -20,6 +21,9 @@ class TriggerPreviewWidget : Fragment() {
             }
         }
     }
+
+    @Inject
+    lateinit var presenter: TriggerPreviewPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +39,24 @@ class TriggerPreviewWidget : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        presenter init this
+
         arguments?.getLong(EXTRA_ID)?.let {
             loadTrigger(it)
         }
     }
 
     private fun loadTrigger(it: Long) {
-        triggerType.text = it.toString()
+        presenter action TriggerPreviewAction.LoadTrigger(it)
+    }
+
+    override fun render(state: TriggerPreviewState) {
+        when(state) {
+            is TriggerPreviewState.Success -> triggerType.text = state.toString()
+        }
+    }
+
+    override fun navigate(route: TriggerPreviewRoute) {
+
     }
 }

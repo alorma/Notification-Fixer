@@ -21,7 +21,7 @@ class CreateZoneTriggerPresenter @Inject constructor(
         private val createTriggerUseCase: CreateTriggerUseCase,
         @Named(CreateTriggerModule.PERMISSION_LOCATION)
         private val permissionRequest: DexterBuilder.SinglePermissionListener,
-        val logger: Logger)
+        logger: Logger)
     : BasePresenter<CreateZoneTriggerState, TriggerRoute, CreateZoneTriggerAction, CreateZoneTriggerView>(logger) {
 
     override fun action(action: CreateZoneTriggerAction) {

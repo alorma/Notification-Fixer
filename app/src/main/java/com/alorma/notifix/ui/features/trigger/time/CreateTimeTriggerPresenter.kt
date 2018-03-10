@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class CreateTimeTriggerPresenter @Inject constructor(
         private val createTriggerUseCase: CreateTriggerUseCase,
-        val logger: Logger)
+        logger: Logger)
     : BasePresenter<CreateTimeTriggerState, TriggerRoute, CreateTimeTriggerAction, CreateTimeTriggerView>(logger) {
 
     override fun action(action: CreateTimeTriggerAction) {

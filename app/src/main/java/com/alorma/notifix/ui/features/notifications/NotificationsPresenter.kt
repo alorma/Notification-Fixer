@@ -17,7 +17,7 @@ class NotificationsPresenter @Inject constructor(
         private val updateNotificationUseCase: UpdateNotificationUseCase,
         private val stateMapper: NotificationsStateMapper,
         private val routeMapper: NotificationsRouteMapper,
-        private val logger: Logger)
+        logger: Logger)
     : BasePresenter<NotificationsState, NotificationsRoute,
         NotificationsAction, NotificationsView>(logger) {
 

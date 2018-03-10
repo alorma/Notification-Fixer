@@ -9,6 +9,9 @@ import javax.inject.Inject
 
 class TriggersRepository @Inject constructor(private val cacheTriggersDataSource: CacheTriggersDataSource) {
 
+    fun getById(id: Long): Single<NotificationTrigger> =
+            cacheTriggersDataSource.get(id).subscribeOnIO()
+
     fun getByPayload(payloadLauncher: PayloadLauncher): Single<NotificationTrigger> =
             cacheTriggersDataSource.get(payloadLauncher).subscribeOnIO()
 

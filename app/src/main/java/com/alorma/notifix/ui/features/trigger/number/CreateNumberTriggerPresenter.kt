@@ -25,7 +25,7 @@ class CreateNumberTriggerPresenter @Inject constructor(
         @Named(CreateTriggerModule.PERMISSION_READ_CONTACTS)
         private val permissionRequest: DexterBuilder.MultiPermissionListener,
         private val androidGetContact: AndroidGetContact,
-        val logger: Logger)
+        logger: Logger)
     : BasePresenter<CreateNumberTriggerState, Route, CreateNumberTriggerAction, CreateNumberTriggerView>(logger) {
 
     private lateinit var selectedUri: Uri

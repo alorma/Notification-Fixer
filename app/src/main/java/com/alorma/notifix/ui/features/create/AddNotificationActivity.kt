@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.view.View.VISIBLE
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
@@ -13,7 +12,7 @@ import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragm
 import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
 import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerActivity
 import com.alorma.notifix.ui.utils.dsl
-import com.alorma.notifix.ui.widget.TriggerPreviewWidget
+import com.alorma.notifix.ui.features.trigger.preview.TriggerPreviewWidget
 import kotlinx.android.synthetic.main.activity_add_notification.*
 import kotlinx.android.synthetic.main.add_item_button.*
 import kotlinx.android.synthetic.main.add_item_colors.*

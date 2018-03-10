@@ -7,7 +7,7 @@ import android.arch.lifecycle.OnLifecycleEvent
 import com.alorma.notifix.data.Logger
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BasePresenter<in S : State, in R : Route, in A : Action, in V : BaseView<S, R>>(private val logger: Logger)
+abstract class BasePresenter<in S : State, in R : Route, in A : Action, in V : BaseView<S, R>>(protected val logger: Logger)
     : LifecycleObserver {
 
     internal val disposables: CompositeDisposable = CompositeDisposable()

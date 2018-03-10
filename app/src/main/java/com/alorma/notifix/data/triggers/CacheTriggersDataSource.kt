@@ -58,6 +58,9 @@ class CacheTriggersDataSource @Inject constructor(
         am.setRepeating(RTC_WAKEUP, time, millisRepeat, pending)
     }
 
+    fun get(id: Long): Single<NotificationTrigger> =
+            triggersDao.getTrigger(id).map { triggersMapper.map(it) }
+
     fun get(payloadLauncher: PayloadLauncher): Single<NotificationTrigger> =
             triggersDao.getTriggers().flatMapIterable { it }.map {
                 triggersMapper.map(it)

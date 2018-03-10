@@ -11,7 +11,7 @@ import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.features.notifications.MainActivity
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerComponent
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
-import com.alorma.notifix.ui.widget.TriggerPreviewWidget
+import com.alorma.notifix.ui.features.trigger.preview.TriggerPreviewWidget
 import dagger.Component
 import javax.inject.Singleton
 
