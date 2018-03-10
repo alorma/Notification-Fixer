@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.*
+import com.alorma.notifix.ui.features.trigger.TriggerRoute
 import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
 import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
 import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerActivity
@@ -56,22 +56,9 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
             presenter action getNewNotificationAction()
         }
 
-        selectTriggerPhone.setOnClickListener {
-            presenter action OnTriggerSelected(Phone)
+        triggerSelector.setCallback {
+            presenter action OnTriggerSelected(it)
         }
-
-        selectTriggerSms.setOnClickListener {
-            presenter action OnTriggerSelected(Sms)
-        }
-
-        selectTriggerTime.setOnClickListener {
-            presenter action OnTriggerSelected(Time)
-        }
-
-        selectTriggerZone.setOnClickListener {
-            presenter action OnTriggerSelected(Zone)
-        }
-
     }
 
     private fun previewNotification() {
