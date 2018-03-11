@@ -3,6 +3,7 @@ package com.alorma.notifix.ui.features.trigger.number
 import android.net.Uri
 import com.alorma.notifix.data.Logger
 import com.alorma.notifix.data.framework.AndroidGetContact
+import com.alorma.notifix.domain.model.Contact
 import com.alorma.notifix.domain.model.NotificationTriggerPayload
 import com.alorma.notifix.domain.usecase.CreateTriggerUseCase
 import com.alorma.notifix.ui.commons.BasePresenter
@@ -29,7 +30,7 @@ class CreateNumberTriggerPresenter @Inject constructor(
     : BasePresenter<CreateNumberTriggerState, Route, CreateNumberTriggerAction, CreateNumberTriggerView>(logger) {
 
     private lateinit var selectedUri: Uri
-    private lateinit var contactPhone: String
+    private lateinit var contact: Contact
 
     override fun action(action: CreateNumberTriggerAction) {
         when (action) {
@@ -66,24 +67,31 @@ class CreateNumberTriggerPresenter @Inject constructor(
                 .subscribeOnIO()
                 .observeOnUI()
                 .subscribe({
-                    if (it.phone != null) {
-                        this@CreateNumberTriggerPresenter.contactPhone = it.phone
-                        render(CreateNumberTriggerState.ContactLoaded(it))
-                    }
+                    this@CreateNumberTriggerPresenter.contact = it
+                    render(CreateNumberTriggerState.ContactLoaded(it))
                 }, {
                     logger.e("Contact error: $it", it)
                 })
     }
 
     private fun onSelectContact(action: CreateNumberTriggerAction.SelectContactAction) {
-        val payload: NotificationTriggerPayload.NumberPayload = when (action.type) {
-            is Type.PHONE -> NotificationTriggerPayload.NumberPayload.PhonePayload(selectedUri.toString(), contactPhone)
-            is Type.SMS -> NotificationTriggerPayload.NumberPayload.SmsPayload(selectedUri.toString(), contactPhone)
+        val phone = contact.phone
+        if (phone != null) {
+            val payload: NotificationTriggerPayload.NumberPayload = when (action.type) {
+                is Type.PHONE -> {
+                    NotificationTriggerPayload.NumberPayload
+                            .PhonePayload(selectedUri.toString(), contact.name, phone, contact.photo)
+                }
+                is Type.SMS -> {
+                    NotificationTriggerPayload.NumberPayload
+                            .SmsPayload(selectedUri.toString(), contact.name, phone, contact.photo)
+                }
+            }
+            disposables += createTriggerUseCase.execute(payload)
+                    .observeOnUI()
+                    .subscribe({
+                        navigate(TriggerRoute.Success(it))
+                    }, {})
         }
-        disposables += createTriggerUseCase.execute(payload)
-                .observeOnUI()
-                .subscribe({
-                    navigate(TriggerRoute.Success(it))
-                }, {})
     }
 }

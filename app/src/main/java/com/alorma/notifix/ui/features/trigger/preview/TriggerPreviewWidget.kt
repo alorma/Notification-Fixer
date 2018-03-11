@@ -1,5 +1,6 @@
 package com.alorma.notifix.ui.features.trigger.preview
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -7,8 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
+import com.alorma.notifix.ui.utils.GlideApp
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.trigger_preview.*
 import javax.inject.Inject
+import android.provider.ContactsContract
+import android.content.ContentUris
+
 
 class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
 
@@ -51,8 +57,38 @@ class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
     }
 
     override fun render(state: TriggerPreviewState) {
-        when(state) {
-            is TriggerPreviewState.Success -> triggerType.text = state.toString()
+        when (state) {
+            is TriggerPreviewState.Success -> when (state) {
+                is TriggerPreviewState.Success.Phone -> showPhoneContact(state)
+                is TriggerPreviewState.Success.Sms -> showSmsContact(state)
+                is TriggerPreviewState.Success.Time -> setTriggerIcon(R.drawable.ic_av_timer)
+                is TriggerPreviewState.Success.Zone -> setTriggerIcon(R.drawable.ic_location)
+            }
+        }
+    }
+
+    private fun showPhoneContact(state: TriggerPreviewState.Success.Phone) {
+        showContact(state.name, state.phone, state.photo)
+        setTriggerIcon(R.drawable.ic_phone_in_talk)
+    }
+
+    private fun showSmsContact(state: TriggerPreviewState.Success.Sms) {
+        showContact(state.name, state.phone, state.photo)
+        setTriggerIcon(R.drawable.ic_sms)
+    }
+
+    private fun setTriggerIcon(icon: Int) {
+        triggerTypeIcon.setImageResource(icon)
+    }
+
+    private fun showContact(name: String, phone: String, avatar: String?) {
+        triggerText.text = "$name - $phone"
+
+        avatar?.let {
+            GlideApp.with(triggerImg)
+                    .load(avatar)
+                    .transform(CircleCrop())
+                    .into(triggerImg)
         }
     }
 

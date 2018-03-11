@@ -7,8 +7,8 @@ import com.alorma.notifix.ui.commons.State
 
 sealed class TriggerPreviewState : State() {
     sealed class Success: TriggerPreviewState() {
-        class Phone: Success()
-        class Sms: Success()
+        data class Phone(val uri: String, val name: String, val phone: String, val photo: String?) : Success()
+        data class Sms(val uri: String, val name: String, val phone: String, val photo: String?) : Success()
         class Time: Success()
         class Zone: Success()
     }
