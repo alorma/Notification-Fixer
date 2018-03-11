@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.ContactsContract
 import com.alorma.notifix.domain.model.Contact
+import com.alorma.notifix.ui.utils.subscribeOnIO
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ class AndroidGetContact @Inject constructor(private val context: Context) {
     fun loadContact(contactUri: Uri): Single<Contact> {
         return Single.fromCallable {
             getContact(contactUri)
-        }
+        }.subscribeOnIO()
     }
 
     private fun getContact(contactUri: Uri): Contact {
@@ -38,5 +39,6 @@ class AndroidGetContact @Inject constructor(private val context: Context) {
             throw NoSuchElementException()
         }
     }
+
     private fun contentResolver(): ContentResolver = context.contentResolver
 }

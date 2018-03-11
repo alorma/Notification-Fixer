@@ -3,16 +3,17 @@ package com.alorma.notifix.ui.features.create
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View.VISIBLE
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.features.trigger.TriggerRoute
 import com.alorma.notifix.ui.features.trigger.number.ConfigureNumberTriggerFragment
+import com.alorma.notifix.ui.features.trigger.preview.TriggerPreviewWidget
 import com.alorma.notifix.ui.features.trigger.time.ConfigureTimeTriggerFragment
 import com.alorma.notifix.ui.features.trigger.zone.ConfigureZoneTriggerActivity
 import com.alorma.notifix.ui.utils.dsl
-import com.alorma.notifix.ui.features.trigger.preview.TriggerPreviewWidget
 import kotlinx.android.synthetic.main.activity_add_notification.*
 import kotlinx.android.synthetic.main.add_item_button.*
 import kotlinx.android.synthetic.main.add_item_colors.*
@@ -101,29 +102,39 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
 
     private fun openConfTrigger(route: ConfigureTrigger) {
         when (route) {
-            is ConfigureTrigger.SmsTrigger -> openSmsTrigger()
             is ConfigureTrigger.PhoneTrigger -> openPhoneTrigger()
+            is ConfigureTrigger.SmsTrigger -> openSmsTrigger()
             is ConfigureTrigger.TimeTrigger -> openTimeTrigger()
             is ConfigureTrigger.ZoneTrigger -> openZoneTrigger()
         }
     }
 
     private fun openPhoneTrigger() {
-        ConfigureNumberTriggerFragment().apply {
+        val fragment = ConfigureNumberTriggerFragment().apply {
             type = ConfigureNumberTriggerFragment.PHONE
             callback = { id ->
                 this@AddNotificationActivity.presenter action TriggerCreatedAction(id)
             }
-        }.show(supportFragmentManager, REQUEST_TRIGGER_PHONE)
+        }
+
+        addNoUiFragment({ fragment }, { ConfigureNumberTriggerFragment.PHONE })
     }
 
     private fun openSmsTrigger() {
-        ConfigureNumberTriggerFragment().apply {
+        val fragment = ConfigureNumberTriggerFragment().apply {
             type = ConfigureNumberTriggerFragment.SMS
             callback = { id ->
                 this@AddNotificationActivity.presenter action TriggerCreatedAction(id)
             }
-        }.show(supportFragmentManager, REQUEST_TRIGGER_SMS)
+        }
+
+        addNoUiFragment({ fragment }, { ConfigureNumberTriggerFragment.SMS })
+    }
+
+    private fun addNoUiFragment(fragment: () -> Fragment, tag: () -> Any) {
+        supportFragmentManager.beginTransaction().apply {
+            add(fragment(), tag().toString())
+        }.commit()
     }
 
     private fun openTimeTrigger() {

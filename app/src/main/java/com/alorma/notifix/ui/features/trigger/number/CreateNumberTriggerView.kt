@@ -1,7 +1,6 @@
 package com.alorma.notifix.ui.features.trigger.number
 
 import android.net.Uri
-import com.alorma.notifix.domain.model.Contact
 import com.alorma.notifix.ui.commons.Action
 import com.alorma.notifix.ui.commons.BaseView
 import com.alorma.notifix.ui.commons.Route
@@ -13,9 +12,8 @@ sealed class Type {
 }
 
 sealed class CreateNumberTriggerAction : Action() {
-    class RequestContactAction : CreateNumberTriggerAction()
+    data class RequestContactAction(val type: Type) : CreateNumberTriggerAction()
     class ContactImportAction(val uri: Uri) : CreateNumberTriggerAction()
-    class SelectContactAction(val type: Type) : CreateNumberTriggerAction()
 }
 
 sealed class CreateNumberTriggerRoute : Route() {
@@ -25,7 +23,6 @@ sealed class CreateNumberTriggerRoute : Route() {
 sealed class CreateNumberTriggerState : State() {
     class DeniedPermissionMessage : CreateNumberTriggerState()
     class DeniedAlwaysPermissionMessage : CreateNumberTriggerState()
-    class ContactLoaded(val contact: Contact) : CreateNumberTriggerState()
 }
 
 interface CreateNumberTriggerView : BaseView<CreateNumberTriggerState, Route>

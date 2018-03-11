@@ -1,6 +1,5 @@
 package com.alorma.notifix.ui.features.trigger.preview
 
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -10,10 +9,12 @@ import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
 import com.alorma.notifix.ui.utils.GlideApp
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.mapbox.mapboxsdk.camera.CameraPosition
 import kotlinx.android.synthetic.main.trigger_preview.*
 import javax.inject.Inject
-import android.provider.ContactsContract
-import android.content.ContentUris
+import com.mapbox.mapboxsdk.constants.Style.MAPBOX_STREETS
+import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.snapshotter.MapSnapshotter
 
 
 class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
@@ -61,35 +62,59 @@ class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
             is TriggerPreviewState.Success -> when (state) {
                 is TriggerPreviewState.Success.Phone -> showPhoneContact(state)
                 is TriggerPreviewState.Success.Sms -> showSmsContact(state)
-                is TriggerPreviewState.Success.Time -> setTriggerIcon(R.drawable.ic_av_timer)
-                is TriggerPreviewState.Success.Zone -> setTriggerIcon(R.drawable.ic_location)
+                is TriggerPreviewState.Success.Time -> showTime(state)
+                is TriggerPreviewState.Success.Zone -> showZone(state)
             }
         }
     }
 
     private fun showPhoneContact(state: TriggerPreviewState.Success.Phone) {
-        showContact(state.name, state.phone, state.photo)
+        showContact(state.photo)
         setTriggerIcon(R.drawable.ic_phone_in_talk)
     }
 
     private fun showSmsContact(state: TriggerPreviewState.Success.Sms) {
-        showContact(state.name, state.phone, state.photo)
+        showContact(state.photo)
         setTriggerIcon(R.drawable.ic_sms)
     }
 
-    private fun setTriggerIcon(icon: Int) {
-        triggerTypeIcon.setImageResource(icon)
-    }
-
-    private fun showContact(name: String, phone: String, avatar: String?) {
-        triggerText.text = "$name - $phone"
-
+    private fun showContact(avatar: String?) {
         avatar?.let {
             GlideApp.with(triggerImg)
                     .load(avatar)
                     .transform(CircleCrop())
                     .into(triggerImg)
         }
+    }
+
+    private fun showTime(state: TriggerPreviewState.Success.Time) {
+        setTriggerIcon(R.drawable.ic_av_timer)
+    }
+
+    private fun showZone(state: TriggerPreviewState.Success.Zone) {
+        setTriggerIcon(R.drawable.ic_location)
+
+        context?.let {
+            val options = MapSnapshotter.Options(triggerImg.width, triggerImg.height).apply {
+                withPixelRatio(1)
+                withCameraPosition(CameraPosition.Builder().apply {
+                    target(LatLng(state.lat, state.lon))
+                    zoom(15.toDouble())
+                }.build())
+            }
+
+            MapSnapshotter(it, options).start {
+                GlideApp.with(triggerImg)
+                        .load(it.bitmap)
+                        .transform(CircleCrop())
+                        .into(triggerImg)
+
+            }
+        }
+    }
+
+    private fun setTriggerIcon(icon: Int) {
+        triggerTypeIcon.setImageResource(icon)
     }
 
     override fun navigate(route: TriggerPreviewRoute) {
