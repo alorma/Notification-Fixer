@@ -30,10 +30,8 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Mapbox.getInstance(this, getString(R.string.MAPS_KEY))
-
         component inject this
-
+        Mapbox.getInstance(this, getString(R.string.MAPS_KEY))
         presenter.init(this)
 
         initNotificationsService()
