@@ -12,11 +12,11 @@ import javax.inject.Inject
 class CacheNotificationsDataSource @Inject constructor(private val notificationDao: NotificationDao,
                                                        private val mapper: NotificationsDataMapper) {
 
-    fun getNotifications(): Flowable<List<AppNotification>> = notificationDao.getNotifications().map {
+    fun getNotifications(): Single<List<AppNotification>> = notificationDao.getNotifications().map {
         mapper.map(it)
     }
 
-    fun getEnabledNotifications(): Flowable<List<AppNotification>> = notificationDao.getNotifications()
+    fun getEnabledNotifications(): Single<List<AppNotification>> = notificationDao.getNotifications()
             .map { mapper.mapEnabled(it) }
 
     fun getEnabledNotifications(trigger: Int): Flowable<AppNotification> =

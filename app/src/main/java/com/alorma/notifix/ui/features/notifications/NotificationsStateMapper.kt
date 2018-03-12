@@ -13,6 +13,8 @@ class NotificationsStateMapper @Inject constructor() {
     private fun mapTrigger(it: NotificationTrigger): TriggerViewModel
             = TriggerViewModel(it.id ?: 0)
 
+    fun mapError(it: Throwable) = Invalid(it)
+
     fun mapUpdate(it: NotificationViewModel) = AppNotification(it.id, it.title, it.text, it.color,
             it.trigger?.id, null, it.checked)
 }

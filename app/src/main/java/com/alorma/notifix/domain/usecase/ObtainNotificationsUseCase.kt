@@ -12,15 +12,17 @@ class ObtainNotificationsUseCase @Inject constructor(
         private val triggersRepository: TriggersRepository) {
 
     fun execute(): Single<List<AppNotification>> = notificationsRepository.getNotifications()
+            .toFlowable()
             .flatMapIterable { it }
             .flatMapSingle { notification -> checkTrigger(notification) }
             .toList()
 
-    private fun checkTrigger(notification: AppNotification): Single<AppNotification>? {
-        return notification.triggerId?.let {
-            mapTrigger(it).map { notification.copy(trigger = it) }
-        } ?: Single.just(notification)
-    }
+    private fun checkTrigger(notification: AppNotification): Single<AppNotification>? =
+            notification.triggerId?.let {
+                mapTrigger(it).map {
+                    notification.copy(trigger = it)
+                }
+            } ?: Single.just(notification)
 
     private fun mapTrigger(it: Int): Single<NotificationTrigger> =
             triggersRepository.getById(it)

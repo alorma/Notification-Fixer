@@ -23,7 +23,7 @@ interface NotificationDao {
 
     @Language("RoomSql")
     @Query("SELECT * FROM $TABLE")
-    fun getNotifications(): Flowable<List<NotificationEntity>>
+    fun getNotifications(): Single<List<NotificationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(notificationEntity: NotificationEntity): Long

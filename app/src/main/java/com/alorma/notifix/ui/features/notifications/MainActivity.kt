@@ -3,6 +3,7 @@ package com.alorma.notifix.ui.features.notifications
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import com.alorma.notifix.NotifixApplication.Companion.component
 import com.alorma.notifix.R
@@ -63,10 +64,9 @@ class MainActivity : AppCompatActivity(), NotificationsView {
         recycler.setHasFixedSize(true)
     }
 
-    override fun render(state: NotificationsState) {
-        return when (state) {
-            is ShowNotifications -> onNotificationsList(state.list)
-        }
+    override fun render(state: NotificationsState) = when (state) {
+        is ShowNotifications -> onNotificationsList(state.list)
+        is Invalid -> showInvalid(state.it)
     }
 
     private fun onNotificationsList(list: List<NotificationViewModel>) {
@@ -82,6 +82,10 @@ class MainActivity : AppCompatActivity(), NotificationsView {
     private fun onCreateNotification() {
         val intent = Intent(this, AddNotificationActivity::class.java)
         startActivityForResult(intent, REQUEST_CODE_CREATE)
+    }
+
+    private fun showInvalid(it: Throwable) {
+        Snackbar.make(recycler, "Error: $it", Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -38,10 +38,18 @@ class NotificationsPresenter @Inject constructor(
 
     private fun loadNotifications() {
         disposables += obtainNotificationsUseCase.execute()
+                .doOnSubscribe {
+                    logger.i("Start notifications")
+                }
+                .doOnError {
+                    logger.e("What?", it)
+                }
                 .observeOnUI()
                 .subscribe({
                     render(stateMapper.mapSuccessState(it))
-                }, {})
+                }, {
+                    render(stateMapper.mapError(it))
+                })
     }
 
     private fun showNotifications() {
