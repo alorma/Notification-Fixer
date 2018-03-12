@@ -200,7 +200,7 @@ class ConfigureZoneTriggerActivity : AppCompatActivity(), CreateZoneTriggerView,
             is TriggerRoute.Success -> {
                 val intent: Intent = Intent().apply {
                     putExtras(Bundle().apply {
-                        putLong(TRIGGER_ID, route.triggerId)
+                        putInt(TRIGGER_ID, route.triggerId)
                     })
                 }
                 setResult(Activity.RESULT_OK, intent)

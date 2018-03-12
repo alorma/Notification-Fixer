@@ -19,7 +19,7 @@ class TriggerPreviewPresenter @Inject constructor(
         }
     }
 
-    private fun onLoadTrigger(id: Long) {
+    private fun onLoadTrigger(id: Int) {
         disposables += triggerUseCase.execute(id)
                 .observeOnUI()
                 .subscribe({

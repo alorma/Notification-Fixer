@@ -17,7 +17,7 @@ sealed class TriggerPreviewState : State() {
 sealed class TriggerPreviewRoute : Route()
 
 sealed class TriggerPreviewAction : Action() {
-    data class LoadTrigger(val id: Long): TriggerPreviewAction()
+    data class LoadTrigger(val id: Int): TriggerPreviewAction()
 }
 
 interface TriggerPreviewView: BaseView<TriggerPreviewState, TriggerPreviewRoute>

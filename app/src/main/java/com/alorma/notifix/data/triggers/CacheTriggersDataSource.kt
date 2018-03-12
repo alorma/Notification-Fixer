@@ -26,26 +26,26 @@ class CacheTriggersDataSource @Inject constructor(
         private const val REQUEST = 112
     }
 
-    fun save(trigger: NotificationTrigger): Single<Long> = Single.fromCallable {
+    fun save(trigger: NotificationTrigger): Single<Int> = Single.fromCallable {
         val entity: TriggerEntity = triggersMapper.map(trigger)
-        triggersDao.insert(entity).apply {
+        triggersDao.insert(entity).toInt().apply {
             setupTrigger(trigger, this)
         }
     }
 
-    private fun setupTrigger(trigger: NotificationTrigger, triggerId: Long) {
+    private fun setupTrigger(trigger: NotificationTrigger, triggerId: Int) {
         when (trigger.payload) {
             is NotificationTriggerPayload.TimePayload -> setupTimeTrigger(trigger.payload, triggerId)
         }
     }
 
-    private fun setupTimeTrigger(payload: NotificationTriggerPayload.TimePayload, triggerId: Long) {
+    private fun setupTimeTrigger(payload: NotificationTriggerPayload.TimePayload, triggerId: Int) {
         val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val millisRepeat = TimeUnit.SECONDS.toMillis(30)
 
         val intent = Intent(context, TimeNotificationService::class.java).apply {
             putExtras(Bundle().apply {
-                putLong(TimeNotificationService.TRIGGER_ID, triggerId)
+                putInt(TimeNotificationService.TRIGGER_ID, triggerId)
             })
         }
         val pending = PendingIntent.getService(context, REQUEST, intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -58,7 +58,7 @@ class CacheTriggersDataSource @Inject constructor(
         am.setRepeating(RTC_WAKEUP, time, millisRepeat, pending)
     }
 
-    fun get(id: Long): Single<NotificationTrigger> =
+    fun get(id: Int): Single<NotificationTrigger> =
             triggersDao.getTrigger(id).map { triggersMapper.map(it) }
 
     fun get(payloadLauncher: PayloadLauncher): Single<NotificationTrigger> =

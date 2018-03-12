@@ -41,7 +41,7 @@ class NotificationsPresenter @Inject constructor(
                 .observeOnUI()
                 .subscribe({
                     render(stateMapper.mapSuccessState(it))
-                }, {}, {})
+                }, {})
     }
 
     private fun showNotifications() {

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetTriggerUseCase @Inject constructor(private val triggersRepository: TriggersRepository) {
 
-    fun execute(id: Long): Single<NotificationTrigger> = triggersRepository.getById(id)
+    fun execute(id: Int): Single<NotificationTrigger> = triggersRepository.getById(id)
 
     fun execute(payloadLauncher: PayloadLauncher): Single<NotificationTrigger> =
             triggersRepository.getByPayload(payloadLauncher)

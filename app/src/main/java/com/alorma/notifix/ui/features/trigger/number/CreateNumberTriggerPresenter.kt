@@ -72,9 +72,9 @@ class CreateNumberTriggerPresenter @Inject constructor(
                 })
     }
 
-    private fun onSelectContact(contact: Contact): Single<Long> = contact.phone?.let {
+    private fun onSelectContact(contact: Contact): Single<Int> = contact.phone?.let {
         createTriggerUseCase.execute(mapPayload(contact, it))
-    } ?: Single.never<Long>()
+    } ?: Single.never<Int>()
 
     private fun mapPayload(contact: Contact, phone: String): NotificationTriggerPayload.NumberPayload =
             when (type) {

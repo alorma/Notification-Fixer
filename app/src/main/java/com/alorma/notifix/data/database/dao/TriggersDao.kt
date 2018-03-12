@@ -15,7 +15,7 @@ interface TriggersDao {
 
     @Language("RoomSql")
     @Query("SELECT * FROM $TABLE WHERE ${TriggerEntity.FIELD_ID}=:id LIMIT 1")
-    fun getTrigger(id: Long): Single<TriggerEntity>
+    fun getTrigger(id: Int): Single<TriggerEntity>
 
     @Language("RoomSql")
     @Query("SELECT * FROM $TABLE")

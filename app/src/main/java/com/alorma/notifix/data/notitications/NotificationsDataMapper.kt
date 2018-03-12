@@ -15,7 +15,7 @@ class NotificationsDataMapper @Inject constructor() {
     }.map { map(it) }
 
     fun map(it: NotificationEntity): AppNotification = AppNotification(it.id
-            ?: 0, it.title, it.text, it.color, it.trigger, it.checked)
+            ?: 0, it.title, it.text, it.color, it.trigger, null, it.checked)
 
     fun mapInsert(it: CreateAppNotification): NotificationEntity = NotificationEntity(title = it.title,
             text = it.text,

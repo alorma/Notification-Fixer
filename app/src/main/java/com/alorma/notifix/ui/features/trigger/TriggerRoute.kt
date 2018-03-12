@@ -6,7 +6,7 @@ open class TriggerRoute : Route() {
     companion object {
         const val TRIGGER_ID = "trigger_id"
     }
-    class Success(val triggerId: Long): TriggerRoute()
+    class Success(val triggerId: Int): TriggerRoute()
     class Cancel: TriggerRoute()
     class Error: TriggerRoute()
 }

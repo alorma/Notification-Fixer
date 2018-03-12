@@ -25,7 +25,7 @@ class ConfigureNumberTriggerFragment : DialogFragment(), CreateNumberTriggerView
 
     lateinit var type: Type
 
-    var callback: ((Long) -> Unit)? = null
+    var callback: ((Int) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

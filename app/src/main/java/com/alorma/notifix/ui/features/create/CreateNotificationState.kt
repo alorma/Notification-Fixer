@@ -4,6 +4,6 @@ import com.alorma.notifix.ui.commons.State
 
 sealed class CreateNotificationState : State() {
     sealed class Trigger : CreateNotificationState() {
-        class Any(val triggerId: Long): Trigger()
+        class Any(val triggerId: Int): Trigger()
     }
 }

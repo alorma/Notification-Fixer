@@ -15,10 +15,10 @@
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/notification_row_flat_height"
-        android:orientation="horizontal"
-        android:id="@+id/topLayout">
+        android:orientation="horizontal">
 
         <View
             android:id="@+id/colorLabel"
@@ -62,35 +62,12 @@
         android:id="@+id/expandedLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:layout_height="@dimen/notification_row_expand_height"
         android:layout_marginTop="@dimen/notification_row_flat_height"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_height="@dimen/notification_row_expand_height">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="EXPANDED" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="EXPANDED" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="EXPANDED" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="EXPANDED" />
-
-        <TextView
+            android:id="@+id/textTrigger"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

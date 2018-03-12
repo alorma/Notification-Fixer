@@ -20,7 +20,7 @@ class CreateNotificationPresenter @Inject constructor(
     : BasePresenter<CreateNotificationState, CreateNotificationRoute,
         CreateNotificationAction, CreateNotificationView>(logger) {
 
-    private var triggerId: Long? = null
+    private var triggerId: Int? = null
 
     override fun action(action: CreateNotificationAction) {
         when (action) {

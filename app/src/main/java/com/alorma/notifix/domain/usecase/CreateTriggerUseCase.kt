@@ -8,6 +8,6 @@ import javax.inject.Inject
 
 class CreateTriggerUseCase @Inject constructor(private val triggersRepository: TriggersRepository) {
 
-    fun execute(payload: NotificationTriggerPayload): Single<Long>
+    fun execute(payload: NotificationTriggerPayload): Single<Int>
             = triggersRepository.createTrigger(NotificationTrigger(payload = payload))
 }

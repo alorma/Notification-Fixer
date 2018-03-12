@@ -29,8 +29,6 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
     lateinit var presenter: CreateNotificationPresenter
 
     companion object {
-        private const val REQUEST_TRIGGER_PHONE = "PHONE"
-        private const val REQUEST_TRIGGER_SMS = "SMS"
         private const val REQUEST_TRIGGER_TIME = "TIME"
         private const val REQUEST_TRIGGER_ZONE = 112
     }
@@ -159,7 +157,7 @@ class AddNotificationActivity : AppCompatActivity(), CreateNotificationView {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_TRIGGER_ZONE) {
-                val triggerId = data?.extras?.getLong(TriggerRoute.TRIGGER_ID) ?: 0
+                val triggerId = data?.extras?.getInt(TriggerRoute.TRIGGER_ID) ?: 0
                 presenter action TriggerCreatedAction(triggerId)
             }
         }

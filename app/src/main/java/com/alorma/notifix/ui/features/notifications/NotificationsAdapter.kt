@@ -69,6 +69,10 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                 title.setOnClickListener {
                     animations.toggleElevation(notificationCard, topLayout, expandedLayout)
                 }
+
+                viewModel.trigger?.let {
+                    textTrigger.text = "${it.id} - $it"
+                }
             }
         }
     }

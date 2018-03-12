@@ -10,11 +10,10 @@ import com.alorma.notifix.R
 import com.alorma.notifix.ui.utils.GlideApp
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.mapbox.mapboxsdk.camera.CameraPosition
-import kotlinx.android.synthetic.main.trigger_preview.*
-import javax.inject.Inject
-import com.mapbox.mapboxsdk.constants.Style.MAPBOX_STREETS
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.snapshotter.MapSnapshotter
+import kotlinx.android.synthetic.main.trigger_preview.*
+import javax.inject.Inject
 
 
 class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
@@ -22,9 +21,9 @@ class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
     companion object {
         private const val EXTRA_ID = "extra_id"
 
-        fun newInstance(triggerId: Long) = TriggerPreviewWidget().apply {
+        fun newInstance(triggerId: Int) = TriggerPreviewWidget().apply {
             arguments = Bundle().apply {
-                putLong(EXTRA_ID, triggerId)
+                putInt(EXTRA_ID, triggerId)
             }
         }
     }
@@ -48,12 +47,12 @@ class TriggerPreviewWidget : Fragment(), TriggerPreviewView {
 
         presenter init this
 
-        arguments?.getLong(EXTRA_ID)?.let {
+        arguments?.getInt(EXTRA_ID)?.let {
             loadTrigger(it)
         }
     }
 
-    private fun loadTrigger(it: Long) {
+    private fun loadTrigger(it: Int) {
         presenter action TriggerPreviewAction.LoadTrigger(it)
     }
 

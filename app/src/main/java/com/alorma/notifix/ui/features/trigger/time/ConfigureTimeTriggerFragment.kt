@@ -18,7 +18,7 @@ class ConfigureTimeTriggerFragment : DialogFragment(), CreateTimeTriggerView {
     @Inject
     lateinit var presenter: CreateTimeTriggerPresenter
 
-    var callback: ((Long) -> Unit)? = null
+    var callback: ((Int) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

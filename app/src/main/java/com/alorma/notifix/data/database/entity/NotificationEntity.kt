@@ -10,7 +10,7 @@ class NotificationEntity(@PrimaryKey(autoGenerate = true) val id: Int? = null,
                          @ColumnInfo(name = "title") val title: String,
                          @ColumnInfo(name = "text") val text: String?,
                          @ColumnInfo(name = "color") val color: Int,
-                         @ColumnInfo(name = FIELD_TRIGGER) val trigger: Long?,
+                         @ColumnInfo(name = FIELD_TRIGGER) val trigger: Int?,
                          @ColumnInfo(name = NotificationDao.COL_CHECKED) val checked: Boolean) {
     companion object {
         const val FIELD_TRIGGER = "trigger"
