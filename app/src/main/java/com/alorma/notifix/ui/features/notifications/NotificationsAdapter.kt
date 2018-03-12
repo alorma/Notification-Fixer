@@ -7,9 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import android.widget.ImageView
 import com.alorma.notifix.R
+import com.alorma.notifix.ui.features.trigger.preview.TriggerPreviewState
+import com.alorma.notifix.ui.utils.GlideApp
 import com.alorma.notifix.ui.utils.NotificationCardAnimations
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.snapshotter.MapSnapshotter
 import kotlinx.android.synthetic.main.row_notification.view.*
+import kotlinx.android.synthetic.main.trigger_preview.*
 
 class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecked: Boolean) -> Unit)
     : RecyclerView.Adapter<NotificationsAdapter.Holder>() {
@@ -71,9 +79,53 @@ class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecke
                 }
 
                 viewModel.trigger?.let {
-                    textTrigger.text = "${it.id} - $it"
-                }
+                    when (it) {
+                        is TriggerViewModel.Phone -> {
+                            it.avatar?.let { showAvatar(triggerImg, it) }
+                            triggerTypeIcon.setImageResource(R.drawable.ic_phone_in_talk)
+                        }
+                        is TriggerViewModel.Sms -> {
+                            it.avatar?.let { showAvatar(triggerImg, it) }
+                            triggerTypeIcon.setImageResource(R.drawable.ic_sms)
+                        }
+                        is TriggerViewModel.Time -> triggerTypeIcon.setImageResource(R.drawable.ic_av_timer)
+                        is TriggerViewModel.Zone -> {
+                            //showZone(triggerImg, it)
+                            triggerTypeIcon.setImageResource(R.drawable.ic_location)
+                        }
+                    }
+                } ?: hideTrigger(triggerImg, triggerTypeIcon)
             }
+        }
+
+        private fun showAvatar(imageView: ImageView, avatar: String) {
+            GlideApp.with(imageView)
+                    .load(avatar)
+                    .transform(CircleCrop())
+                    .into(imageView)
+        }
+
+        private fun showZone(imageView: ImageView, state: TriggerViewModel.Zone) {
+            val options = MapSnapshotter.Options(imageView.width, imageView.height).apply {
+                withPixelRatio(1)
+                withCameraPosition(CameraPosition.Builder().apply {
+                    target(LatLng(state.lat, state.lon))
+                    zoom(15.toDouble())
+                }.build())
+            }
+
+            MapSnapshotter(imageView.context, options).start {
+                GlideApp.with(imageView)
+                        .load(it.bitmap)
+                        .transform(CircleCrop())
+                        .into(imageView)
+
+            }
+        }
+
+        private fun hideTrigger(triggerImg: ImageView, triggerTypeIcon: ImageView) {
+            triggerImg.visibility = View.GONE
+            triggerTypeIcon.visibility = View.GONE
         }
     }
 

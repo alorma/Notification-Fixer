@@ -66,12 +66,35 @@
         android:orientation="vertical"
         tools:layout_height="@dimen/notification_row_expand_height">
 
-        <TextView
-            android:id="@+id/textTrigger"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="EXPANDED" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/triggerImg"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/trigger_selector"
+                    android:elevation="4dp" />
+
+                <ImageView
+                    android:id="@+id/triggerTypeIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/trigger_selector"
+                    android:elevation="8dp"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_phone_in_talk" />
+            </FrameLayout>
+        </FrameLayout>
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -11,6 +11,7 @@ import com.alorma.notifix.background.notifications.NotificationsBootBroadcast
 import com.alorma.notifix.ui.features.create.AddNotificationActivity
 import com.alorma.notifix.ui.features.create.OnCreateSucces
 import com.alorma.notifix.ui.utils.dsl
+import com.mapbox.mapboxsdk.Mapbox
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity(), NotificationsView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        Mapbox.getInstance(this, getString(R.string.MAPS_KEY))
 
         component inject this
 
