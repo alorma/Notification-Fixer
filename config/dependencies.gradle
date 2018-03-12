@@ -82,7 +82,6 @@ ext {
     dexter = "com.karumi:dexter:$dexterVersion"
 
     mapbox = [
-            library : "com.mapbox.mapboxsdk:mapbox-android-sdk:5.5.0",
-            location: "com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.3.0"
+            library : "com.mapbox.mapboxsdk:mapbox-android-sdk:5.5.0"
     ]
 }

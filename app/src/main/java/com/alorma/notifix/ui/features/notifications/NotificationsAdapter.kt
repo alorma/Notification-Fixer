@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.ImageView
 import com.alorma.notifix.R
-import com.alorma.notifix.ui.features.trigger.preview.TriggerPreviewState
 import com.alorma.notifix.ui.utils.GlideApp
 import com.alorma.notifix.ui.utils.NotificationCardAnimations
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -17,7 +16,6 @@ import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.snapshotter.MapSnapshotter
 import kotlinx.android.synthetic.main.row_notification.view.*
-import kotlinx.android.synthetic.main.trigger_preview.*
 
 class NotificationsAdapter(private val onChange: NotificationViewModel.(isChecked: Boolean) -> Unit)
     : RecyclerView.Adapter<NotificationsAdapter.Holder>() {

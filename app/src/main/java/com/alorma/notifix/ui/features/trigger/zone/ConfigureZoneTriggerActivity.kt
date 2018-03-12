@@ -19,7 +19,6 @@ import com.alorma.notifix.ui.features.trigger.TriggerRoute.Companion.TRIGGER_ID
 import com.alorma.notifix.ui.features.trigger.di.CreateTriggerModule
 import com.alorma.notifix.ui.utils.dsl
 import com.alorma.notifix.ui.utils.toast
-import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
@@ -52,9 +51,7 @@ class ConfigureZoneTriggerActivity : AppCompatActivity(), CreateZoneTriggerView,
         setContentView(R.layout.configure_zone_activity)
 
         component add CreateTriggerModule(this) inject this
-        Mapbox.getInstance(this, getString(R.string.MAPS_KEY))
         presenter init this
-
 
         toolbar.dsl {
             back { action = { finish() } }

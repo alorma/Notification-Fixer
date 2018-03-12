@@ -57,7 +57,6 @@ dependencies {
     kapt arch.lifecycle.compiler
 
     api mapbox.library
-    implementation mapbox.location
 
     testImplementation testing.jUnit
     testImplementation testing.mockito.core
