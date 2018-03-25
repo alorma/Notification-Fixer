@@ -37,11 +37,9 @@ class TimeNotificationService: IntentService("TimeNotificationService") {
 
 
         if (intent.hasExtra(TimeNotificationService.TRIGGER_ID)) {
-            val hour = intent.getIntExtra(TimeNotificationService.TRIGGER_HOUR, -1)
-            val minute = intent.getIntExtra(TimeNotificationService.TRIGGER_MINUTE, -1)
             val id = intent.getIntExtra(TimeNotificationService.TRIGGER_ID, -1)
             if (id != -1) {
-                CompositeDisposable() += getTriggerUseCase.execute(PayloadLauncher.Time(hour, minute))
+                CompositeDisposable() += getTriggerUseCase.execute(id)
                         .filter { it.id != null }
                         .map { it.id }
                         .flatMapCompletable {
