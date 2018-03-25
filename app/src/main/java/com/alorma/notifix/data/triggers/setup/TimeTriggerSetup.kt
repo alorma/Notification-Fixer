@@ -25,6 +25,8 @@ class TimeTriggerSetup @Inject constructor(private val context: Context) :
         val intent = Intent(context, TimeNotificationService::class.java).apply {
             putExtras(Bundle().apply {
                 putInt(TimeNotificationService.TRIGGER_ID, triggerId)
+                putInt(TimeNotificationService.TRIGGER_HOUR, payload.hour)
+                putInt(TimeNotificationService.TRIGGER_MINUTE, payload.minute)
             })
         }
         val pending = PendingIntent.getService(context, REQUEST, intent, PendingIntent.FLAG_CANCEL_CURRENT)
